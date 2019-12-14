@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     // ATTRIBUTES
     private ImageButton fileUploadButton;
+    private ImageButton viewMsgStatButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +44,16 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setType("text/plain");
-                // TODO : SOLVE THIS LINE FOR FILE I/O
                 startActivityForResult(intent, 10);
+            }
+        });
+
+        viewMsgStatButton = findViewById(R.id.viewMsgStatButton);
+        viewMsgStatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MessageStatisticsActivity.class);
+                startActivityForResult(intent, 100);
             }
         });
     }

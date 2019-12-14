@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_activity_background"
+    android:background="#FFFFFF"
     android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"><![CDATA[
-    tools:context=".MainActivity"
+    tools:context=".MessageStatisticsActivity"
     tools:showIn="@layout/activity_main">
     ]]>
 
@@ -19,17 +19,61 @@
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
         android:layout_marginBottom="1dp"
+        android:fontFamily="@font/special_font_one"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
-        <TextView
-            android:id="@+id/textView2"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="HELLO WORLD" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/senderOneMsgCount"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="80dp"
+                android:layout_marginTop="100dp"
+                android:fontFamily="@font/special_font_one"
+                android:text="Total Messages"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/senderOneWPM"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="300dp"
+                android:layout_marginTop="100dp"
+                android:text="Words per message"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/senderTwoMsgCount"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="80dp"
+                android:layout_marginTop="200dp"
+                android:fontFamily="@font/special_font_one"
+                android:text="Total Messages"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/senderTwoWPM"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="300dp"
+                android:layout_marginTop="200dp"
+                android:text="Words per message"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+
+        </RelativeLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
