@@ -1,73 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_activity_background"
+    android:background="@drawable/main_menu_bg"
     android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"><![CDATA[
-    tools:context=".MainActivity"
-    tools:showIn="@layout/activity_main">
-    ]]>
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <ImageButton
-        android:id="@+id/fileUploadButton"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="57dp"
-        android:layout_marginEnd="57dp"
-        android:layout_marginBottom="86dp"
-        android:background="@drawable/transparent_button"
-        android:padding="10dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/viewMsgStatButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:srcCompat="@drawable/file_upload_button" />
 
-    <ImageButton
-        android:id="@+id/viewMsgStatButton"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="57dp"
-        android:layout_marginEnd="57dp"
-        android:layout_marginBottom="86dp"
-        android:background="@drawable/transparent_button"
-        android:padding="10dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/viewReplyTimesButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fileUploadButton"
-        app:srcCompat="@drawable/view_message_stats_button" />
-
-    <ImageButton
-        android:id="@+id/viewReplyTimesButton"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="57dp"
-        android:layout_marginEnd="57dp"
-        android:layout_marginBottom="48dp"
-        android:background="@drawable/transparent_button"
-        android:padding="10dp"
-        android:scaleType="fitXY"
+    <!--FRAMING BORDER AROUND MAIN MENU-->
+    <TextView
+        android:id="@+id/whiteRectBorder"
+        android:layout_width="370dp"
+        android:layout_height="650dp"
+        android:background="@drawable/white_rect_bd"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewMsgStatButton"
-        app:srcCompat="@drawable/view_reply_times_button" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/fileUploadButton"
+
+    <!--CIRCULAR BUTTONS OUTLINE-->
+    <TextView
+        android:id="@+id/circularBorderUpload"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_marginStart="118dp"
+        android:layout_marginTop="81dp"
+        android:layout_marginEnd="118dp"
+        android:layout_marginBottom="500dp"
+        android:background="@drawable/circular_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/main_activity_top_banner" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/circularBorderAnalyze"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_marginStart="118dp"
+        android:layout_marginTop="278dp"
+        android:layout_marginEnd="118dp"
+        android:layout_marginBottom="278dp"
+        android:background="@drawable/circular_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/circularBorderGraph"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_marginStart="119dp"
+        android:layout_marginTop="521dp"
+        android:layout_marginEnd="118dp"
+        android:layout_marginBottom="67dp"
+        android:background="@drawable/circular_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!--SOLID CIRCULAR BUTTONS-->
+    <Button
+        android:id="@+id/uploadButton"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="129dp"
+        android:layout_marginTop="91dp"
+        android:layout_marginEnd="129dp"
+        android:layout_marginBottom="509dp"
+        android:background="@drawable/solid_circle"
+        android:fontFamily="@font/playfairdisplay_bold"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:text="@string/menuUploadButton"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/analyzeButton"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="286dp"
+        android:layout_marginEnd="131dp"
+        android:layout_marginBottom="287dp"
+        android:background="@drawable/solid_circle"
+        android:fontFamily="@font/playfairdisplay_bold"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:text="@string/menuAnalyzeButton"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/graphButton"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="129dp"
+        android:layout_marginTop="530dp"
+        android:layout_marginEnd="128dp"
+        android:layout_marginBottom="75dp"
+        android:background="@drawable/solid_circle"
+        android:fontFamily="@font/playfairdisplay_bold"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:text="@string/menuGraphButton"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

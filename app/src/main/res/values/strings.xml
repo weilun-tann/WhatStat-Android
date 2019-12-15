@@ -1,8 +1,20 @@
 <resources>
-    <string name="app_name">whatsapp</string>
+
+    <!--MAIN APP-->
+    <string name="app_name">WhatsAnalyzer</string>
     <string name="action_settings">Settings</string>
 
-    <string name="title_activity_message_statistics">MessageStatisticsActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <!--MAIN MENU ACTIVITY-->
+    <string name="menuUploadButton">UPLOAD</string>
+    <string name="menuAnalyzeButton">ANALYZE</string>
+    <string name="menuGraphButton">GRAPH</string>
+
+    <!--MESSAGE STATISTICS ACTIVITY-->
+    <string name="MsgStats_Title"></string>
+    <string name="MsgStats_NumMessages">TOTAL MESSAGES</string>
+    <string name="MsgStats_NumWords">TOTAL WORDS</string>
+    <string name="MsgStats_WPM">WORDS PER MESSAGE</string>
+    <string name="MsgStats_AvgReplyTime">AVERAGE REPLY TIME</string>
+
+
 </resources>

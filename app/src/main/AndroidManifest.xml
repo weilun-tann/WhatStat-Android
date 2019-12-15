@@ -17,7 +17,7 @@
         <activity
             android:name=".MessageStatisticsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_message_statistics"
+            android:label="@string/MsgStats_Title"
             android:theme="@style/FullscreenTheme"></activity>
         <activity
             android:name=".MainActivity"

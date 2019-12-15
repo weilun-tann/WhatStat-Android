@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="mainMenuButtonBorder">#FFFFFF</color>
+    <color name="mainMenuButtonFill">#FFFFFF</color>
+
     <color name="colorStatsLeft">#8EDC5E</color>
     <color name="colorStatsRight">#FFFFFF</color>
 
