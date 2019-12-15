@@ -1,12 +1,20 @@
 package com.jed.whatsapp;
 
+import android.content.Context;
+import android.net.Uri;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.String;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.*;
 
 public class FileProcessing {
@@ -24,29 +32,45 @@ public class FileProcessing {
         return fileContents;
     }
 
-    public static List<String> getFileContentLines() {
-        return fileContentLines;
+    public static File getUploadedFile() {
+        return uploadedFile;
     }
 
-    public static List<Date> getMessageTimeStamp() {
-        return messageTimeStamp;
-    }
+    public static List<String> getFileContentLines() { return fileContentLines; }
 
-    public static List<String> getSender() {
-        return sender;
-    }
+    public static List<Date> getMessageTimeStamp() { return messageTimeStamp; }
 
-    public static List<String> getMessageBody() {
-        return messageBody;
-    }
+    public static List<String> getSender() { return sender; }
 
-    public static List<Message> getConversationHistory() {
-        return conversationHistory;
-    }
+    public static List<String> getMessageBody() { return messageBody; }
+
+    public static List<Message> getConversationHistory() { return conversationHistory; }
 
     // LOGIC METHODS
     public static void setUploadedFile(File f) {
         uploadedFile = f;
+    }
+
+    public static void readFile(Uri fileURI, Context fileContext) throws IOException {
+
+        // WIPE INTERNAL STATE BEFORE FILE READ
+        wipeInternalState();
+
+        // PERFORM FILE READ
+        StringBuilder text = new StringBuilder();
+        InputStream fileIS = fileContext.getContentResolver().openInputStream(fileURI);
+        BufferedReader br =
+                new BufferedReader(new InputStreamReader(Objects.requireNonNull(fileIS)));
+        String line;
+
+        while ((line = br.readLine()) != null) {
+            text.append(line);
+            text.append('\n');
+        }
+
+        fileContents = text.toString();
+        fileContentLines = extractLines(fileContents);
+        br.close();
     }
 
     static void wipeInternalState() {
@@ -70,20 +94,17 @@ public class FileProcessing {
     }
 
     static void addSender(String mySender) {
-        if (mySender != null) {
+        if (mySender != null && mySender != "") {
             sender.add(mySender);
         }
     }
 
     static void retrieveConversationHistory() {
-        if (fileContents.equals("")) {
-            return;
-        }
+
+        if (fileContentLines.size() == 0) { return; }
 
         // EXTRACT THE 3 ELEMENTS
-        String[] fileContentLines = extractLines(fileContents);
         for (String line : fileContentLines) {
-//        forLoopCounter++;
             Date lineDate = retrieveDate(line);
             String lineSender = retrieveSender(line);
             String lineMessageBody = retrieveMessageBody(line);
@@ -95,30 +116,22 @@ public class FileProcessing {
                 addMessageBody(lineMessageBody);
                 conversationHistory
                         .add(new Message(lineDate, lineSender, lineMessageBody));
-//          noNullDate++;
-            } else {
-//          nullDate++;
             }
         }
 
-        // DOUBLE CONFIRM OUR ELEMENTS
-//      System.out.println("DOUBLE CONFIRM");
-//      System.out.println("sender.toSet() : ${sender.toSet()}");
-//      System.out.println(messageTimeStamp);
-//      System.out.println(messageBody);
-//
-        System.out.println("s1 : ${sender.length}");
-        System.out.println("s2 : ${messageTimeStamp.length}");
-        System.out.println("s3 : ${messageBody.length}");
-        System.out.println("s4 : ${conversationHistory.length}");
+        // @DEBUG
+        System.out.println("sender.size() : " + sender.size());
+        System.out.println("messageTimeStamp.size() : " + messageTimeStamp.size());
+        System.out.println("messageBody.size() : " + messageBody.size());
+        System.out.println("conversationHistory.size() : " + conversationHistory.size());
     }
 
 
     static Date retrieveDate(String line) {
         try {
-            if (line.substring(18, 19) == "m") {
+            if (line.substring(18, 19).equals("m")) {
                 return parseDateString(line.substring(0, 19));
-            } else if (line.substring(19, 20) == "m") {
+            } else if (line.substring(19, 20).equals("m")) {
                 return parseDateString(line.substring(0, 20));
             } else {
                 return null;
@@ -132,30 +145,34 @@ public class FileProcessing {
         Pattern p = Pattern.compile("m - .*?:");
         Matcher m = p.matcher(line);
         try {
-            String senderName = m.group(1);
-            return senderName.substring(4, senderName.length() - 1);
+            String senderName = null;
+            if (m.find()) {
+                senderName = m.group();
+                return senderName.substring(4, senderName.length() - 1);
+            } else {
+                return null;
+            }
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
 
     static String retrieveMessageBody(String line) {
-        Pattern p = Pattern.compile(".*:.*?: ");
+        Pattern p = Pattern.compile(".*m - .*?: ");
         Matcher m = p.matcher(line);
-
-        try {
-            String removedBody = m.group(1);
+        if (m.find()) {
+            String removedBody = m.group();
             String messageBody = line.substring(removedBody.length(), line.length());
             return messageBody;
-        } catch (Exception e) {
+        } else {
             return null;
         }
     }
 
-    static String[] extractLines(String fileContents) {
+    static List<String> extractLines(String fileContents) {
         try {
-            String[] fileContentLines = fileContents.split("\n");
-            return fileContentLines;
+            return Arrays.asList(fileContents.split("\n"));
         } catch (Exception e) {
             System.out.println("Empty fileContents");
             return null;

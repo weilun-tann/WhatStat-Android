@@ -13,15 +13,23 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
+
+import static com.jed.whatsapp.FileProcessing.*;
+import static com.jed.whatsapp.FileProcessing.setUploadedFile;
 
 // TODO : Add onClick to button in main_activity.xml
-public class MainActivity extends AppCompatActivity {
+public class MainActivity<UPLOAD_FILE_REQUEST_CODE> extends AppCompatActivity {
 
     // ATTRIBUTES
     private ImageButton fileUploadButton;
     private ImageButton viewMsgStatButton;
+    private static final int UPLOAD_FILE_REQUEST_CODE = 1;
+    private static final int VIEW_STATS_REQUEST_CODE = 2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setType("text/plain");
-                startActivityForResult(intent, 10);
+                startActivityForResult(intent, UPLOAD_FILE_REQUEST_CODE);
             }
         });
 
@@ -61,9 +69,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
-            String selectedFilePath = data.getData().getPath();
-            File selectedFile = new File(selectedFilePath);
-            FileProcessing.setUploadedFile(selectedFile);
+            switch (requestCode) {
+                case UPLOAD_FILE_REQUEST_CODE:
+                    String selectedFilePath = data.getData().getPath();
+                    File selectedFile = new File(selectedFilePath);
+                    setUploadedFile(selectedFile);
+
+                    try {
+                        readFile(data.getData(), getApplicationContext());
+                        FileProcessing.retrieveConversationHistory();
+                    } catch (IOException e) {
+                        Toast.makeText(getApplicationContext(), "Upload failed. Supports .txt files only.",
+                                Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                    break;
+            }
         }
     }
 
