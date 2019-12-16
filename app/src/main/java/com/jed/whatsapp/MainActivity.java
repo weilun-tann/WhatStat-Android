@@ -9,18 +9,12 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.Toast;
 
 import java.io.File;
-import java.io.IOException;
-
-import static com.jed.whatsapp.FileProcessing.*;
-import static com.jed.whatsapp.FileProcessing.setUploadedFile;
 
 // TODO : Add onClick to button in main_activity.xml
 public class MainActivity extends AppCompatActivity {
@@ -47,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // UPLOAD BUTTON
-        Button uploadButton = findViewById(R.id.uploadButton);
+        final Button uploadButton = findViewById(R.id.uploadButton);
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,16 +49,19 @@ public class MainActivity extends AppCompatActivity {
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 intent.setType("text/plain");
                 startActivityForResult(intent, UPLOAD_REQUEST_CODE);
+                overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
             }
         });
 
         // ANALYZE BUTTON
-        Button analyzeButton = findViewById(R.id.analyzeButton);
+        final Button analyzeButton = findViewById(R.id.analyzeButton);
         analyzeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // TODO : PERFORM MULTITHREAD HERE
                 Intent intent = new Intent(MainActivity.this, MessageStatisticsActivity.class);
                 startActivityForResult(intent, 100);
+                overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
             }
         });
 
@@ -85,15 +82,8 @@ public class MainActivity extends AppCompatActivity {
                 case UPLOAD_REQUEST_CODE:
                     String selectedFilePath = data.getData().getPath();
                     File selectedFile = new File(selectedFilePath);
-                    setUploadedFile(selectedFile);
-
-                    try {
-                        readFile(data.getData(), getApplicationContext());
-                        FileProcessing.retrieveConversationHistory();
-                    } catch (IOException e) {
-                        Toast.makeText(getApplicationContext(), "Mhm... are you sure that was a " +
-                                "WhatsApp conversation text file?", Toast.LENGTH_SHORT).show();
-                    }
+                    FileProcessing.setUploadedFile(selectedFile);
+                    FileProcessing.setUserIntent(data);
                     break;
 
                 case ANALYZE_REQUEST_CODE:

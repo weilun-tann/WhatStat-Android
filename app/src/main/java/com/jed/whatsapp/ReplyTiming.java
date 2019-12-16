@@ -24,12 +24,18 @@ public class ReplyTiming {
     public static List<Date> getSenderOneTimeStamp() {
         return senderOneTimeStamp;
     }
-    public static List<Long> getSenderOneReplyTimeInMinutes() { return senderOneReplyTimeInMinutes; }
+
+    public static List<Long> getSenderOneReplyTimeInMinutes() {
+        return senderOneReplyTimeInMinutes;
+    }
 
     public static List<Date> getSenderTwoTimeStamp() {
         return senderTwoTimeStamp;
     }
-    public static List<Long> getSenderTwoReplyTimeInMinutes() { return senderTwoReplyTimeInMinutes; }
+
+    public static List<Long> getSenderTwoReplyTimeInMinutes() {
+        return senderTwoReplyTimeInMinutes;
+    }
 
     public static List<String> getSenderList() {
         return uniqueSenderList;
@@ -38,15 +44,26 @@ public class ReplyTiming {
     public static double getSenderOneAverageReplyTiming() {
         return senderOneAverageReplyTiming;
     }
-    public static double getSenderTwoAverageReplyTiming() { return senderTwoAverageReplyTiming; }
 
-    public static int getSenderOneTotalMessages() { return senderOneTotalMessages; }
+    public static double getSenderTwoAverageReplyTiming() {
+        return senderTwoAverageReplyTiming;
+    }
+
+    public static int getSenderOneTotalMessages() {
+        return senderOneTotalMessages;
+    }
+
     public static int getSenderTwoTotalMessages() {
         return senderTwoTotalMessages;
     }
 
-    public static long getSenderOneTotalWords() { return senderOneTotalWords; }
-    public static long getSenderTwoTotalWords() { return senderTwoTotalWords; }
+    public static long getSenderOneTotalWords() {
+        return senderOneTotalWords;
+    }
+
+    public static long getSenderTwoTotalWords() {
+        return senderTwoTotalWords;
+    }
 
 
     // LOGIC METHODS
@@ -67,7 +84,7 @@ public class ReplyTiming {
         changeSenderList();
 
         // PROCESS THE DATAFRAME
-        processWhatsAppDF();
+        processReplyTimings();
 
         // COUNT THE NUMBER OF MESSAGES
         countMessages();
@@ -100,13 +117,13 @@ public class ReplyTiming {
         senderTwoAverageReplyTiming = 0;
         senderOneTotalMessages = 0;
         senderTwoTotalMessages = 0;
+        senderOneTotalWords = 0;
+        senderTwoTotalWords = 0;
     }
 
     static void countMessages() {
         int i = 0;
         for (String s : FileProcessing.getSender()) {
-            System.out.println(s);
-            System.out.println("word length : " + s.split(" ").length);
             if (s.equals(getSenderList().get(0))) {
                 senderOneTotalMessages++;
                 senderOneTotalWords += FileProcessing.getMessageBody().get(i).split(" ").length;
@@ -118,8 +135,7 @@ public class ReplyTiming {
         }
     }
 
-    static void processWhatsAppDF() {
-
+    static void processReplyTimings() {
         for (int i = 1; i < FileProcessing.getSender().size(); i++) {
             // PROCESS IFF DIFFERENT SENDERS
             if (!FileProcessing.getSender().get(i).equals(FileProcessing.getSender().get(i - 1))) {

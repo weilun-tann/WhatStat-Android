@@ -6,9 +6,9 @@ import java.util.Date;
 public class Message {
 
     // ATTRIBUTES
-    Date messageDate;
-    String sender;
-    String messageText;
+    private Date messageDate;
+    private String sender;
+    private String messageText;
 
     // METHODS
     Message(Date messageDate, String sender, String messageText) {

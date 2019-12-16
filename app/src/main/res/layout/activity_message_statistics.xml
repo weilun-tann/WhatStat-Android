@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/msg_stats_bg"
-    android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"><![CDATA[
     tools:context=".MessageStatisticsActivity"
     tools:showIn="@layout/activity_main">

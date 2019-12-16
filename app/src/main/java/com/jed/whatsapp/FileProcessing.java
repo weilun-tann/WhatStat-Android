@@ -1,6 +1,7 @@
 package com.jed.whatsapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,6 +21,7 @@ import java.util.regex.*;
 public class FileProcessing {
     // ATTRIBUTES
     private static File uploadedFile;
+    private static Intent userIntent;
     private static String fileContents = "";
     private static List<String> fileContentLines = new ArrayList<String>();
     private static List<Date> messageTimeStamp = new ArrayList<Date>();
@@ -28,12 +30,14 @@ public class FileProcessing {
     private static List<Message> conversationHistory = new ArrayList<Message>();
 
     // ACCESSOR METHODS
-    public static String getFileContents() {
-        return fileContents;
-    }
-
     public static File getUploadedFile() {
         return uploadedFile;
+    }
+
+    public static Intent getUserIntent() { return userIntent; }
+
+    public static String getFileContents() {
+        return fileContents;
     }
 
     public static List<String> getFileContentLines() { return fileContentLines; }
@@ -51,25 +55,39 @@ public class FileProcessing {
         uploadedFile = f;
     }
 
+    public static void setUserIntent(Intent userIntent) {
+        FileProcessing.userIntent = userIntent;
+    }
+
     public static void readFile(Uri fileURI, Context fileContext) throws IOException {
 
         // WIPE INTERNAL STATE BEFORE FILE READ
         wipeInternalState();
 
         // PERFORM FILE READ
-        StringBuilder text = new StringBuilder();
+//        StringBuilder text = new StringBuilder();
         InputStream fileIS = fileContext.getContentResolver().openInputStream(fileURI);
         BufferedReader br =
                 new BufferedReader(new InputStreamReader(Objects.requireNonNull(fileIS)));
         String line;
 
         while ((line = br.readLine()) != null) {
-            text.append(line);
-            text.append('\n');
+            Date lineDate = retrieveDate(line);
+            String lineSender = retrieveSender(line);
+            String lineMessageBody = retrieveMessageBody(line);
+            if ((lineDate != null) &
+                    (lineSender != null) &
+                    (lineMessageBody != null)) {
+                addMessageTimeStamp(lineDate);
+                addSender(lineSender);
+                addMessageBody(lineMessageBody);
+                conversationHistory
+                        .add(new Message(lineDate, lineSender, lineMessageBody));
+            }
         }
-
-        fileContents = text.toString();
-        fileContentLines = extractLines(fileContents);
+//
+//        fileContents = text.toString();
+//        fileContentLines = extractLines(fileContents);
         br.close();
     }
 
@@ -104,20 +122,20 @@ public class FileProcessing {
         if (fileContentLines.size() == 0) { return; }
 
         // EXTRACT THE 3 ELEMENTS
-        for (String line : fileContentLines) {
-            Date lineDate = retrieveDate(line);
-            String lineSender = retrieveSender(line);
-            String lineMessageBody = retrieveMessageBody(line);
-            if ((lineDate != null) &
-                    (lineSender != null) &
-                    (lineMessageBody != null)) {
-                addMessageTimeStamp(lineDate);
-                addSender(lineSender);
-                addMessageBody(lineMessageBody);
-                conversationHistory
-                        .add(new Message(lineDate, lineSender, lineMessageBody));
-            }
-        }
+//        for (String line : fileContentLines) {
+//            Date lineDate = retrieveDate(line);
+//            String lineSender = retrieveSender(line);
+//            String lineMessageBody = retrieveMessageBody(line);
+//            if ((lineDate != null) &
+//                    (lineSender != null) &
+//                    (lineMessageBody != null)) {
+//                addMessageTimeStamp(lineDate);
+//                addSender(lineSender);
+//                addMessageBody(lineMessageBody);
+//                conversationHistory
+//                        .add(new Message(lineDate, lineSender, lineMessageBody));
+//            }
+//        }
 
         // @DEBUG
         System.out.println("sender.size() : " + sender.size());
@@ -153,7 +171,6 @@ public class FileProcessing {
                 return null;
             }
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -174,7 +191,6 @@ public class FileProcessing {
         try {
             return Arrays.asList(fileContents.split("\n"));
         } catch (Exception e) {
-            System.out.println("Empty fileContents");
             return null;
         }
     }
@@ -185,7 +201,6 @@ public class FileProcessing {
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy, HH:mm a", Locale.US);
             return format.parse(dt);
         } catch (Exception e) {
-            System.out.println("DateParse failed on : " + dt);
             return null;
         }
     }
