@@ -3,7 +3,6 @@ package com.jed.whatsapp;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +25,8 @@ public class WaitingScreenActivity extends AppCompatActivity {
             "You guys sure are close, hang on while I process your long texts!",
             "Almost done...",
             "Aren't you curious to see the results? I know I am!",
-            "Okay, let me get your graphs ready now!");
+            "Okay, let me get your graphs ready now!",
+            "Do star this open source project on my GitHub if you like it!");
 
 
     @Override
@@ -34,35 +34,33 @@ public class WaitingScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_screen);
 
-//        RelativeLayout cl = findViewById(R.id.layout);
-//        AnimationDrawable ad = (AnimationDrawable) cl.getBackground();
-//        ad.setEnterFadeDuration(2000);
-//        ad.setExitFadeDuration(4000);
-//        ad.start();
-        new logicThread().start();
-        new backgroundThread().start();
-        new textThread().start();
-
-        // Make the UI interactive via changing text
-//        Handler textHandler = new Handler();
-//        for (int i = 0; i < 99; i++) {
-//            textHandler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    talkToUser.setText(promptList.get(new Random().nextInt(promptList.size())));
-//                }
-//            }, 3000);
-//        }
+        // Perform analysis iff not already done
+        if (FileProcessing.getUploadedFile() != null) {
+            new logicThread().start();
+            new backgroundThread().start();
+            new textThread().start();
+        } else {
+            Intent intent = new Intent(WaitingScreenActivity.this, MessageStatisticsActivity.class);
+            startActivityForResult(intent, 300);
+            overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+            WaitingScreenActivity.this.finish();
+        }
     }
-
 
     // This thread shall run our 2 computationally-heavy methods
     public class logicThread extends Thread {
         @Override
         public void run() {
             try {
+                // 2 computationally-heavy methods
                 FileProcessing.readFile(FileProcessing.getUserIntent().getData(), getApplicationContext());
                 ReplyTiming.analyzeReplyTimings();
+
+                // Redirect user to analysis screen
+                Intent intent = new Intent(WaitingScreenActivity.this, MessageStatisticsActivity.class);
+                startActivityForResult(intent, 300);
+                overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+                WaitingScreenActivity.this.finish();
             } catch (IOException e) {
                 Toast.makeText(getApplicationContext(), "Umm... are you sure that was a WhatsApp text" +
                         " file?", Toast.LENGTH_SHORT).show();
@@ -87,14 +85,14 @@ public class WaitingScreenActivity extends AppCompatActivity {
         @Override
         public void run() {
             final TextView talkToUser = (TextView) findViewById(R.id.talkToUser);
-            Handler textHandler = new Handler();
             for (int i = 0; i < 99; i++) {
-                textHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        talkToUser.setText(promptList.get(new Random().nextInt(promptList.size())));
-                    }
-                }, 3000);
+                try {
+                    talkToUser.setText(promptList.get(new Random().nextInt(promptList.size())));
+                    sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    break;
+                }
             }
         }
     }

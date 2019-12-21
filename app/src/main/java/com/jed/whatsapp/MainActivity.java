@@ -16,7 +16,6 @@ import android.widget.Button;
 
 import java.io.File;
 
-// TODO : Add onClick to button in main_activity.xml
 public class MainActivity extends AppCompatActivity {
 
     // ATTRIBUTES

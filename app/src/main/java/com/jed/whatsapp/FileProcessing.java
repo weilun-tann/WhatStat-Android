@@ -20,8 +20,8 @@ import java.util.regex.*;
 
 public class FileProcessing {
     // ATTRIBUTES
-    private static File uploadedFile;
-    private static Intent userIntent;
+    private static File uploadedFile = null;
+    private static Intent userIntent = null;
     private static String fileContents = "";
     private static List<String> fileContentLines = new ArrayList<String>();
     private static List<Date> messageTimeStamp = new ArrayList<Date>();
@@ -85,7 +85,6 @@ public class FileProcessing {
                         .add(new Message(lineDate, lineSender, lineMessageBody));
             }
         }
-//
 //        fileContents = text.toString();
 //        fileContentLines = extractLines(fileContents);
         br.close();
@@ -117,11 +116,11 @@ public class FileProcessing {
         }
     }
 
-    static void retrieveConversationHistory() {
-
-        if (fileContentLines.size() == 0) { return; }
-
-        // EXTRACT THE 3 ELEMENTS
+//    static void retrieveConversationHistory() {
+//
+//        if (fileContentLines.size() == 0) { return; }
+//
+//        // EXTRACT THE 3 ELEMENTS
 //        for (String line : fileContentLines) {
 //            Date lineDate = retrieveDate(line);
 //            String lineSender = retrieveSender(line);
@@ -136,13 +135,13 @@ public class FileProcessing {
 //                        .add(new Message(lineDate, lineSender, lineMessageBody));
 //            }
 //        }
-
-        // @DEBUG
-        System.out.println("sender.size() : " + sender.size());
-        System.out.println("messageTimeStamp.size() : " + messageTimeStamp.size());
-        System.out.println("messageBody.size() : " + messageBody.size());
-        System.out.println("conversationHistory.size() : " + conversationHistory.size());
-    }
+//
+//        // @DEBUG
+//        System.out.println("sender.size() : " + sender.size());
+//        System.out.println("messageTimeStamp.size() : " + messageTimeStamp.size());
+//        System.out.println("messageBody.size() : " + messageBody.size());
+//        System.out.println("conversationHistory.size() : " + conversationHistory.size());
+//    }
 
 
     static Date retrieveDate(String line) {
@@ -187,13 +186,13 @@ public class FileProcessing {
         }
     }
 
-    static List<String> extractLines(String fileContents) {
-        try {
-            return Arrays.asList(fileContents.split("\n"));
-        } catch (Exception e) {
-            return null;
-        }
-    }
+//    static List<String> extractLines(String fileContents) {
+//        try {
+//            return Arrays.asList(fileContents.split("\n"));
+//        } catch (Exception e) {
+//            return null;
+//        }
+//    }
 
     static Date parseDateString(String dt) {
         try {
