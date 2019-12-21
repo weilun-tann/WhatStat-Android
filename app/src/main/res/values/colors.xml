@@ -5,8 +5,13 @@
     <color name="mainMenuButtonFill">#FFFFFF</color>
     <color name="mainMenuButtonOnClick">#55EFC4</color>
 
-    <color name="colorStatsLeft">#8EDC5E</color>
-    <color name="colorStatsRight">#FFFFFF</color>
+    <color name="colorStatsHeader">#F6E58D</color>
+
+    <color name="colorStatsLeftCircle">#00B894</color>
+    <color name="colorStatsRightCircle">#FFFFFF</color>
+
+    <color name="colorStatsLeftText">#000000</color>
+    <color name="colorStatsRightText">#000000</color>
 
     <color name="msgStatsCircle">#000000</color>
     <color name="msgStatsDescription">#000000</color>

@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_list"
+    android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
     tools:context=".MessageStatisticsActivity">
 
     <TextView
@@ -16,7 +17,7 @@
         android:layout_height="120dp"
         android:gravity="center"
         android:textSize="20sp"
-        android:text="You guys sure are close, hang on while I process your long texts!"
+        android:text=""
         android:fontFamily="@font/playfairdisplay_bold"
         android:layout_centerInParent="true">
     </TextView>

@@ -20,6 +20,7 @@ import java.util.regex.*;
 
 public class FileProcessing {
     // ATTRIBUTES
+    private static boolean initialized = false;
     private static File uploadedFile = null;
     private static Intent userIntent = null;
     private static String fileContents = "";
@@ -30,6 +31,9 @@ public class FileProcessing {
     private static List<Message> conversationHistory = new ArrayList<Message>();
 
     // ACCESSOR METHODS
+
+    public static boolean isInitialized() { return initialized; }
+
     public static File getUploadedFile() {
         return uploadedFile;
     }
@@ -51,6 +55,8 @@ public class FileProcessing {
     public static List<Message> getConversationHistory() { return conversationHistory; }
 
     // LOGIC METHODS
+    public static void setInitialized(boolean init) { initialized = init; }
+
     public static void setUploadedFile(File f) {
         uploadedFile = f;
     }
@@ -88,6 +94,8 @@ public class FileProcessing {
 //        fileContents = text.toString();
 //        fileContentLines = extractLines(fileContents);
         br.close();
+        // Set intialized to true
+        FileProcessing.setInitialized(true);
     }
 
     static void wipeInternalState() {

@@ -33,9 +33,10 @@ public class WaitingScreenActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_screen);
+        getSupportActionBar().hide();
 
         // Perform analysis iff not already done
-        if (FileProcessing.getUploadedFile() != null) {
+        if (!FileProcessing.isInitialized()) {
             new logicThread().start();
             new backgroundThread().start();
             new textThread().start();

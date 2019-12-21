@@ -12,27 +12,16 @@ import java.io.IOException;
 
 public class MessageStatisticsActivity extends AppCompatActivity {
 
-    // FOR PROGRESS BAR
-    static boolean proceed = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_statistics);
-
-        // TODO : IMPLEMENT PROGRESS BAR HERE
-        // YOU CANNOT PERFORM THIS IN THE BACKGROUND
-        // 1. LEAD USER TO WAITING SCREEN + ANIMATION
-        // 2. PERFORM THESE 2 METHODS IN BACKGROUND
-//        try {
-//            FileProcessing.readFile(FileProcessing.getUserIntent().getData(), getApplicationContext());
-//            ReplyTiming.analyzeReplyTimings();
-//        } catch (IOException e) {
-//            Toast.makeText(getApplicationContext(), "Umm... are you sure that was a WhatsApp text" +
-//                    " file?", Toast.LENGTH_SHORT).show();
-//        }
+        getSupportActionBar().hide();
 
         // SET THE VALUES FOR USER DISPLAY
+        TextView leftSenderName = (TextView) findViewById(R.id.leftSenderName);
+        TextView rightSenderName = (TextView) findViewById(R.id.rightSenderName);
+
         TextView leftCircleOne = (TextView) findViewById(R.id.leftCircleOne);
         TextView leftCircleTwo = (TextView) findViewById(R.id.leftCircleTwo);
         TextView leftCircleThree = (TextView) findViewById(R.id.leftCircleThree);
@@ -54,6 +43,9 @@ public class MessageStatisticsActivity extends AppCompatActivity {
             long senderTwoTotalWords = ReplyTiming.getSenderTwoTotalWords();
             long senderTwoWPM = ReplyTiming.getSenderTwoTotalWords() / ReplyTiming.getSenderTwoTotalMessages();
             double senderTwoAvgReplyTiming = ReplyTiming.getSenderTwoAverageReplyTiming();
+
+            leftSenderName.setText(ReplyTiming.getSenderList().get(0));
+            rightSenderName.setText(ReplyTiming.getSenderList().get(1));
 
             leftCircleOne.setText("" + senderOneTotalMessages);
             leftCircleTwo.setText("" + senderOneTotalWords);
