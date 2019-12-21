@@ -9,7 +9,6 @@
 
     <include layout="@layout/content_main" />
 
-    <!--TODO: ALIGN THIS TO BOTTOM RIGHT-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/emailButton"
         android:layout_width="wrap_content"

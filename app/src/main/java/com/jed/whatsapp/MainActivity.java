@@ -3,6 +3,7 @@ package com.jed.whatsapp;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -57,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         analyzeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO : PERFORM MULTITHREAD HERE
                 Intent intent = new Intent(MainActivity.this, WaitingScreenActivity.class);
                 startActivityForResult(intent, 100);
                 overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
@@ -65,11 +65,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // GRAPH BUTTON
-        Button graphButton = findViewById(R.id.graphButton);
+        final Button graphButton = findViewById(R.id.graphButton);
         graphButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO : IMPLEMENT GRAPHING ONCLICK FUNCTION
+                Intent intent = new Intent(MainActivity.this, LineChartTime.class);
+                startActivityForResult(intent, 400);
+                overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
             }
         });
     }

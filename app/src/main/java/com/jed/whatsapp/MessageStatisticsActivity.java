@@ -1,14 +1,10 @@
 package com.jed.whatsapp;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.PrecomputedText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.io.IOException;
 
 public class MessageStatisticsActivity extends AppCompatActivity {
 
@@ -16,21 +12,25 @@ public class MessageStatisticsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_statistics);
-        getSupportActionBar().hide();
+        try {
+            getSupportActionBar().hide();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 
         // SET THE VALUES FOR USER DISPLAY
-        TextView leftSenderName = (TextView) findViewById(R.id.leftSenderName);
-        TextView rightSenderName = (TextView) findViewById(R.id.rightSenderName);
+        TextView leftSenderName = findViewById(R.id.leftSenderName);
+        TextView rightSenderName = findViewById(R.id.rightSenderName);
 
-        TextView leftCircleOne = (TextView) findViewById(R.id.leftCircleOne);
-        TextView leftCircleTwo = (TextView) findViewById(R.id.leftCircleTwo);
-        TextView leftCircleThree = (TextView) findViewById(R.id.leftCircleThree);
-        TextView leftCircleFour = (TextView) findViewById(R.id.leftCircleFour);
+        TextView leftCircleOne = findViewById(R.id.leftCircleOne);
+        TextView leftCircleTwo = findViewById(R.id.leftCircleTwo);
+        TextView leftCircleThree = findViewById(R.id.leftCircleThree);
+        TextView leftCircleFour = findViewById(R.id.leftCircleFour);
 
-        TextView rightCircleOne = (TextView) findViewById(R.id.rightCircleOne);
-        TextView rightCircleTwo = (TextView) findViewById(R.id.rightCircleTwo);
-        TextView rightCircleThree = (TextView) findViewById(R.id.rightCircleThree);
-        TextView rightCircleFour = (TextView) findViewById(R.id.rightCircleFour);
+        TextView rightCircleOne = findViewById(R.id.rightCircleOne);
+        TextView rightCircleTwo = findViewById(R.id.rightCircleTwo);
+        TextView rightCircleThree = findViewById(R.id.rightCircleThree);
+        TextView rightCircleFour = findViewById(R.id.rightCircleFour);
 
         // RETRIEVE AND DISPLAY ALL RELEVANT FIELDS
         try {

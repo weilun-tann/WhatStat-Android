@@ -33,8 +33,11 @@ public class WaitingScreenActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_screen);
-        getSupportActionBar().hide();
-
+        try {
+            getSupportActionBar().hide();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
         // Perform analysis iff not already done
         if (!FileProcessing.isInitialized()) {
             new logicThread().start();

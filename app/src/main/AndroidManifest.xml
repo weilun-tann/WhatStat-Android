@@ -15,6 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".LineChartTime"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label=""
+            android:theme="@style/FullscreenTheme"></activity>
+        <activity
             android:name=".MessageStatisticsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/MsgStats_Title"
