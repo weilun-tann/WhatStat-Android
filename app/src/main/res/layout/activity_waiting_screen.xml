@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,4 +9,16 @@
     android:background="@drawable/gradient_list"
     tools:context=".MessageStatisticsActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/talkToUser"
+        android:layout_width="300dp"
+        android:layout_height="120dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:text="You guys sure are close, hang on while I process your long texts!"
+        android:fontFamily="@font/playfairdisplay_bold"
+        android:layout_centerInParent="true">
+    </TextView>
+
+</RelativeLayout>

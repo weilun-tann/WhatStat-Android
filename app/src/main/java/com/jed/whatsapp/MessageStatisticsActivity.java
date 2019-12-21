@@ -1,7 +1,5 @@
 package com.jed.whatsapp;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.PrecomputedText;
@@ -26,13 +24,13 @@ public class MessageStatisticsActivity extends AppCompatActivity {
         // YOU CANNOT PERFORM THIS IN THE BACKGROUND
         // 1. LEAD USER TO WAITING SCREEN + ANIMATION
         // 2. PERFORM THESE 2 METHODS IN BACKGROUND
-        try {
-            FileProcessing.readFile(FileProcessing.getUserIntent().getData(), getApplicationContext());
-            ReplyTiming.analyzeReplyTimings();
-        } catch (IOException e) {
-            Toast.makeText(getApplicationContext(), "Umm... are you sure that was a WhatsApp text" +
-                    " file?", Toast.LENGTH_SHORT).show();
-        }
+//        try {
+//            FileProcessing.readFile(FileProcessing.getUserIntent().getData(), getApplicationContext());
+//            ReplyTiming.analyzeReplyTimings();
+//        } catch (IOException e) {
+//            Toast.makeText(getApplicationContext(), "Umm... are you sure that was a WhatsApp text" +
+//                    " file?", Toast.LENGTH_SHORT).show();
+//        }
 
         // SET THE VALUES FOR USER DISPLAY
         TextView leftCircleOne = (TextView) findViewById(R.id.leftCircleOne);
@@ -69,22 +67,6 @@ public class MessageStatisticsActivity extends AppCompatActivity {
         } catch (ArithmeticException e) {
             Toast.makeText(getApplicationContext(), "Umm... could you maybe upload the " +
                     "text file for me first?", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    // TODO : FIX BUG IN ASYNC
-    public class AsyncFileRead extends AsyncTask<PrecomputedText.Params, Integer, String> {
-
-        @Override
-        protected String doInBackground(PrecomputedText.Params... params) {
-            try {
-                FileProcessing.readFile(FileProcessing.getUserIntent().getData(), getApplicationContext());
-                ReplyTiming.analyzeReplyTimings();
-            } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "Hmm... are you sure that was a text " +
-                        "file?", Toast.LENGTH_SHORT).show();
-            }
-            return "Done";
         }
     }
 }

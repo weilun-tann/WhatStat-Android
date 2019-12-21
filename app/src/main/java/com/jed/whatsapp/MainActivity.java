@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO : PERFORM MULTITHREAD HERE
-                Intent intent = new Intent(MainActivity.this, MessageStatisticsActivity.class);
+                Intent intent = new Intent(MainActivity.this, WaitingScreenActivity.class);
                 startActivityForResult(intent, 100);
                 overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
             }
