@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LineChartTime"
+            android:name=".ScatterChartTime"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label=""
             android:theme="@style/FullscreenTheme"></activity>

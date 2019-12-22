@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, WaitingScreenActivity.class);
-                startActivityForResult(intent, 100);
+                startActivityForResult(intent, ANALYZE_REQUEST_CODE);
                 overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
             }
         });
@@ -69,9 +69,8 @@ public class MainActivity extends AppCompatActivity {
         graphButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO : IMPLEMENT GRAPHING ONCLICK FUNCTION
-                Intent intent = new Intent(MainActivity.this, LineChartTime.class);
-                startActivityForResult(intent, 400);
+                Intent intent = new Intent(MainActivity.this, ScatterChartTime.class);
+                startActivityForResult(intent, GRAPH_REQUEST_CODE);
                 overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
             }
         });
@@ -86,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                     File selectedFile = new File(selectedFilePath);
                     FileProcessing.setUploadedFile(selectedFile);
                     FileProcessing.setUserIntent(data);
+                    FileProcessing.setInitialized(false);
                     break;
 
                 case ANALYZE_REQUEST_CODE:

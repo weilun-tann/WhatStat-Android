@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.String;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -57,9 +56,7 @@ public class FileProcessing {
     // LOGIC METHODS
     public static void setInitialized(boolean init) { initialized = init; }
 
-    public static void setUploadedFile(File f) {
-        uploadedFile = f;
-    }
+    public static void setUploadedFile(File f) { uploadedFile = f; }
 
     public static void setUserIntent(Intent userIntent) {
         FileProcessing.userIntent = userIntent;

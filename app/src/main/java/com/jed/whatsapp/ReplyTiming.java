@@ -9,23 +9,23 @@ import java.util.List;
 public class ReplyTiming {
     // ATTRIBUTES
     private static List<Date> senderOneTimeStamp = new ArrayList<>();
-    private static List<Long> senderOneReplyTimeInMinutes = new ArrayList<>();
+    private static List<Float> senderOneReplyTimeInMinutes = new ArrayList<>();
     private static List<Date> senderTwoTimeStamp = new ArrayList<>();
-    private static List<Long> senderTwoReplyTimeInMinutes = new ArrayList<>();
+    private static List<Float> senderTwoReplyTimeInMinutes = new ArrayList<>();
     private static List<String> uniqueSenderList = new ArrayList<>();
-    private static long senderOneAverageReplyTiming = 0;
-    private static long senderTwoAverageReplyTiming = 0;
+    private static float senderOneAverageReplyTiming = 0;
+    private static float senderTwoAverageReplyTiming = 0;
     private static int senderOneTotalMessages = 0;
     private static int senderTwoTotalMessages = 0;
-    private static long senderOneTotalWords = 0;
-    private static long senderTwoTotalWords = 0;
+    private static int senderOneTotalWords = 0;
+    private static int senderTwoTotalWords = 0;
 
     // ACCESSOR METHODS
     public static List<Date> getSenderOneTimeStamp() {
         return senderOneTimeStamp;
     }
 
-    public static List<Long> getSenderOneReplyTimeInMinutes() {
+    public static List<Float> getSenderOneReplyTimeInMinutes() {
         return senderOneReplyTimeInMinutes;
     }
 
@@ -33,7 +33,7 @@ public class ReplyTiming {
         return senderTwoTimeStamp;
     }
 
-    public static List<Long> getSenderTwoReplyTimeInMinutes() {
+    public static List<Float> getSenderTwoReplyTimeInMinutes() {
         return senderTwoReplyTimeInMinutes;
     }
 
@@ -41,11 +41,11 @@ public class ReplyTiming {
         return uniqueSenderList;
     }
 
-    public static double getSenderOneAverageReplyTiming() {
+    public static float getSenderOneAverageReplyTiming() {
         return senderOneAverageReplyTiming;
     }
 
-    public static double getSenderTwoAverageReplyTiming() {
+    public static float getSenderTwoAverageReplyTiming() {
         return senderTwoAverageReplyTiming;
     }
 
@@ -57,11 +57,11 @@ public class ReplyTiming {
         return senderTwoTotalMessages;
     }
 
-    public static long getSenderOneTotalWords() {
+    public static int getSenderOneTotalWords() {
         return senderOneTotalWords;
     }
 
-    public static long getSenderTwoTotalWords() {
+    public static int getSenderTwoTotalWords() {
         return senderTwoTotalWords;
     }
 
@@ -90,10 +90,10 @@ public class ReplyTiming {
         countMessages();
 
         // SUM BOTH SENDERS' REPLY TIMINGS
-        for (long replyTime : senderOneReplyTimeInMinutes) {
+        for (float replyTime : senderOneReplyTimeInMinutes) {
             senderOneAverageReplyTiming += replyTime;
         }
-        for (long replyTime : senderTwoReplyTimeInMinutes) {
+        for (float replyTime : senderTwoReplyTimeInMinutes) {
             senderTwoAverageReplyTiming += replyTime;
         }
         senderOneAverageReplyTiming /= senderOneReplyTimeInMinutes.size();
@@ -139,10 +139,10 @@ public class ReplyTiming {
         for (int i = 1; i < FileProcessing.getSender().size(); i++) {
             // PROCESS IFF DIFFERENT SENDERS
             if (!FileProcessing.getSender().get(i).equals(FileProcessing.getSender().get(i - 1))) {
-                long replyTimingInMilliseconds =
+                float replyTimingInMilliseconds =
                         FileProcessing.getMessageTimeStamp().get(i).getTime() - (FileProcessing.getMessageTimeStamp().get(i - 1).getTime());
-                long replyTimingInMinutes = replyTimingInMilliseconds / (60 * 1000) % 60;
-                long replyTimingInDays = replyTimingInMilliseconds / (24 * 60 * 60 * 1000);
+                float replyTimingInMinutes = replyTimingInMilliseconds / (60 * 1000) % 60;
+                float replyTimingInDays = replyTimingInMilliseconds / (24 * 60 * 60 * 1000);
 
                 if (!FileProcessing.getSender().get(i).equals(getSenderList().get(0))) {
                     // TODO : CREATE USER-DEFINED THRESHOLD TO FILTER ANOMALIES

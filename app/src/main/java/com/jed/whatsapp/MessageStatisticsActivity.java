@@ -35,8 +35,8 @@ public class MessageStatisticsActivity extends AppCompatActivity {
         // RETRIEVE AND DISPLAY ALL RELEVANT FIELDS
         try {
             int senderOneTotalMessages = ReplyTiming.getSenderOneTotalMessages();
-            long senderOneTotalWords = ReplyTiming.getSenderOneTotalWords();
-            long senderOneWPM = ReplyTiming.getSenderOneTotalWords() / ReplyTiming.getSenderOneTotalMessages();
+            int senderOneTotalWords = ReplyTiming.getSenderOneTotalWords();
+            int senderOneWPM = ReplyTiming.getSenderOneTotalWords() / ReplyTiming.getSenderOneTotalMessages();
             double senderOneAvgReplyTiming = ReplyTiming.getSenderOneAverageReplyTiming();
 
             int senderTwoTotalMessages = ReplyTiming.getSenderTwoTotalMessages();
@@ -50,12 +50,12 @@ public class MessageStatisticsActivity extends AppCompatActivity {
             leftCircleOne.setText("" + senderOneTotalMessages);
             leftCircleTwo.setText("" + senderOneTotalWords);
             leftCircleThree.setText("" + senderOneWPM);
-            leftCircleFour.setText("" + senderOneAvgReplyTiming);
+            leftCircleFour.setText("" + (int)senderOneAvgReplyTiming);
 
             rightCircleOne.setText("" + senderTwoTotalMessages);
             rightCircleTwo.setText("" + senderTwoTotalWords);
             rightCircleThree.setText("" + senderTwoWPM);
-            rightCircleFour.setText("" + senderTwoAvgReplyTiming);
+            rightCircleFour.setText("" + (int)senderTwoAvgReplyTiming);
         } catch (ArithmeticException e) {
             Toast.makeText(getApplicationContext(), "Umm... could you maybe upload the " +
                     "text file for me first?", Toast.LENGTH_SHORT).show();
