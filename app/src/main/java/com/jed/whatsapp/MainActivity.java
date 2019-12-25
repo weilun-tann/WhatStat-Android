@@ -1,21 +1,33 @@
 package com.jed.whatsapp;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
-import com.github.mikephil.charting.data.LineDataSet;
+import com.firebase.client.Firebase;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.File;
+import java.time.LocalDateTime;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int UPLOAD_REQUEST_CODE = 1;
     private static final int ANALYZE_REQUEST_CODE = 2;
     private static final int GRAPH_REQUEST_CODE = 3;
+    private static final int LOGIN_REQUEST_CODE = 4;
 
+    private StorageReference mStorageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +49,11 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "NO FUNCTIONALITY YET", Snackbar.LENGTH_SHORT)
+//                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivityForResult(intent, LOGIN_REQUEST_CODE);
+                overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
             }
         });
 
@@ -78,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case UPLOAD_REQUEST_CODE:
@@ -86,6 +104,44 @@ public class MainActivity extends AppCompatActivity {
                     FileProcessing.setUploadedFile(selectedFile);
                     FileProcessing.setUserIntent(data);
                     FileProcessing.setInitialized(false);
+
+                    // FIREBASE STORAGE SETUP
+                    mStorageRef = FirebaseStorage.getInstance().getReference();
+                    Uri uri = data.getData();
+
+                    // GET CURRENT USER IF EXISTS
+                    String currentUserName;
+                    String timeStamp = LocalDateTime.now().toString();
+                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                        currentUserName =
+                                FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+                    } else {
+                        currentUserName = "Guest User";
+                    }
+
+                    StorageReference filePath =
+                            mStorageRef.child(currentUserName).child(uri.getLastPathSegment()+"_"+timeStamp);
+                    UploadTask uploadTask = filePath.putFile(uri);
+
+
+                    // Register observers to listen for when the download is done or if it fails
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle unsuccessful uploads
+                            Toast.makeText(getApplicationContext(), "Upload Failed",
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                            Toast.makeText(getApplicationContext(), "Upload Done",
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
                     break;
 
                 case ANALYZE_REQUEST_CODE:
