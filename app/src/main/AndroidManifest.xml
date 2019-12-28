@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
     package="com.jed.whatsapp">
 
@@ -18,46 +19,37 @@
 
         <activity
             android:name=".ChatHistoryActivity"
-            android:label="" />
+            android:theme="@style/AppTheme"/>
 
         <activity
             android:name=".LoginActivity"
-            android:label=""
             android:theme="@style/AppTheme" />
 
         <activity
             android:name=".ScatterChartTime"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label=""
             android:theme="@style/AppTheme" />
 
         <activity
             android:name=".MessageStatisticsActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/MsgStats_Title"
             android:theme="@style/AppTheme" />
 
         <activity
             android:name=".WaitingScreenStatsActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label=""
             android:theme="@style/AppTheme" />
 
         <activity
             android:name=".WaitingScreenHistoryActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label=""
             android:theme="@style/AppTheme" />
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

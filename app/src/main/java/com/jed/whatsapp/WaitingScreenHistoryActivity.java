@@ -5,6 +5,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -70,6 +71,9 @@ public class WaitingScreenHistoryActivity extends AppCompatActivity {
                                 // REDIRECT USER TO CHAT HISTORY SCREEN
                                 Intent intent = new Intent(WaitingScreenHistoryActivity.this, ChatHistoryActivity.class);
                                 intent.putExtra("uploadedFiles", uploadedFiles);
+                                //DEBUG
+                                Toast.makeText(getApplicationContext(), uploadedFiles.toString(),
+                                        Toast.LENGTH_LONG).show();
                                 startActivityForResult(intent, 300);
                                 overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
                                 WaitingScreenHistoryActivity.this.finish();
