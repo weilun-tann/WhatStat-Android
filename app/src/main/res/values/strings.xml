@@ -5,6 +5,8 @@
     <string name="action_settings">Settings</string>
 
     <!--MAIN MENU ACTIVITY-->
+    <string name="loginButton">LOGIN</string>
+    <string name="viewHistoryButton">VIEW HISTORY</string>
     <string name="menuUploadButton">UPLOAD</string>
     <string name="menuAnalyzeButton">ANALYZE</string>
     <string name="menuGraphButton">GRAPH</string>

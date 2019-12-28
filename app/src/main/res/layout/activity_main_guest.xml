@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mainMenuBackground">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/loginButton"
+        app:cornerRadius="10dp"
+        android:layout_width="250dp"
+        android:layout_height="75dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="@string/loginButton"
+        android:textSize="20sp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/uploadButton"
+        app:strokeWidth="50sp"
+        app:cornerRadius="10dp"
+        android:layout_width="250dp"
+        android:layout_height="75dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="220dp"
+        android:text="@string/menuUploadButton"
+        android:textSize="20sp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/analyzeButton"
+        app:strokeWidth="50sp"
+        app:cornerRadius="10dp"
+        android:layout_width="250dp"
+        android:layout_height="75dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="410dp"
+        android:text="@string/menuAnalyzeButton"
+        android:textSize="20sp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/graphButton"
+        app:strokeWidth="50sp"
+        app:cornerRadius="10dp"
+        android:layout_width="250dp"
+        android:layout_height="75dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="590dp"
+        android:text="@string/menuGraphButton"
+        android:textSize="20sp"/>
+
+</RelativeLayout>

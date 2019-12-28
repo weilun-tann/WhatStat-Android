@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class WaitingScreenActivity extends AppCompatActivity {
+public class WaitingScreenStatsActivity extends AppCompatActivity {
 
     // CLASS ATTRIBUTES
     private List<String> promptList = Arrays.asList(
@@ -44,10 +44,10 @@ public class WaitingScreenActivity extends AppCompatActivity {
             new backgroundThread().start();
             new textThread().start();
         } else {
-            Intent intent = new Intent(WaitingScreenActivity.this, MessageStatisticsActivity.class);
+            Intent intent = new Intent(WaitingScreenStatsActivity.this, MessageStatisticsActivity.class);
             startActivityForResult(intent, 300);
             overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
-            WaitingScreenActivity.this.finish();
+            WaitingScreenStatsActivity.this.finish();
         }
     }
 
@@ -61,10 +61,10 @@ public class WaitingScreenActivity extends AppCompatActivity {
                 ReplyTiming.analyzeReplyTimings();
 
                 // Redirect user to analysis screen
-                Intent intent = new Intent(WaitingScreenActivity.this, MessageStatisticsActivity.class);
+                Intent intent = new Intent(WaitingScreenStatsActivity.this, MessageStatisticsActivity.class);
                 startActivityForResult(intent, 300);
                 overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
-                WaitingScreenActivity.this.finish();
+                WaitingScreenStatsActivity.this.finish();
             } catch (IOException e) {
                 Toast.makeText(getApplicationContext(), "Umm... are you sure that was a WhatsApp text" +
                         " file?", Toast.LENGTH_SHORT).show();
