@@ -3,7 +3,6 @@ package com.jed.whatsapp;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +37,7 @@ public class WaitingScreenStatsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_waiting_screen);
 
         // Perform analysis iff not already done
-        if (!FileProcessing.isInitialized()) {
+        if (!ReplyTiming.isInitialized) {
             new logicThread().start();
             new backgroundThread().start();
             new textThread().start();
@@ -50,39 +49,55 @@ public class WaitingScreenStatsActivity extends AppCompatActivity {
         }
     }
 
-    // This thread shall run our 2 computationally-heavy methods
+    // This thread shall run our FileRead and AnalyzeReplyTimings methods
     public class logicThread extends Thread {
         @Override
         public void run() {
             try {
-                // 2 computationally-heavy methods
-                Log.d(TAG,
-                        "FileProcessing.getUploadedFileURI() : " + FileProcessing.getUploadedFileURI());
-                Log.d(TAG, "getApplicationContext() : " + getApplicationContext());
+                // 1. PERFORM FILE READ
                 if (FileProcessing.getUploadedFileURI().toString().contains("firebase")) {
                     FileProcessing.readFile(FileProcessing.getUploadedFileURI(),
                             getApplicationContext(), true);
-                 } else {
+                } else {
                     FileProcessing.readFile(FileProcessing.getUploadedFileURI(),
-                            getApplicationContext() , false);
+                            getApplicationContext(), false);
                 }
 
-                Log.d(TAG, "readFile SUCCESS");
-
-
-
+                // 2. PERFORM FILE ANALYSIS
                 ReplyTiming.analyzeReplyTimings();
-                Log.d(TAG, "analyzeReplyTimings SUCCESS");
 
-
-                // Redirect user to analysis screen
-                Intent intent = new Intent(WaitingScreenStatsActivity.this, MessageStatisticsActivity.class);
-                startActivityForResult(intent, 300);
-                overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
-                WaitingScreenStatsActivity.this.finish();
+                // 3. REDIRECT TO EITHER THE STATS OR GRAPHING SCREEN
+                if (getIntent().getStringExtra("StatsOrGraph").equals("Stats")) {
+                    // REDIRECT TO STATS ACTIVITY
+                    Intent intent = new Intent(WaitingScreenStatsActivity.this, MessageStatisticsActivity.class);
+                    startActivityForResult(intent, 300);
+                    overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+                    WaitingScreenStatsActivity.this.finish();
+                } else {
+                    // REDIRECT TO GRAPH ACTIVITY
+                    Intent intent = new Intent(WaitingScreenStatsActivity.this, ScatterChartTime.class);
+                    startActivityForResult(intent, 300);
+                    overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+                    WaitingScreenStatsActivity.this.finish();
+                }
             } catch (IOException e) {
-                Toast.makeText(getApplicationContext(), "Umm... are you sure that was a WhatsApp text" +
-                        " file?", Toast.LENGTH_SHORT).show();
+                // THROWN FROM FileProcessing.readFile(...)
+                String error = "That's embarrassing, I couldn't quite read the file you gave me...";
+                Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+            } catch (NullPointerException e) {
+                String error = "I'm sorry, but you haven't yet given me a file to work with!";
+                WaitingScreenStatsActivity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(WaitingScreenStatsActivity.this, error,
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+                try {
+                    sleep(4800);
+                } catch (InterruptedException ie) {
+
+                }
+                WaitingScreenStatsActivity.this.finish();
             }
         }
     }

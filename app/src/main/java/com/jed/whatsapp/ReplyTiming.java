@@ -8,6 +8,7 @@ import java.util.List;
 
 public class ReplyTiming {
     // ATTRIBUTES
+    public static boolean isInitialized = false;
     private static List<Date> senderOneTimeStamp = new ArrayList<>();
     private static List<Float> senderOneReplyTimeInMinutes = new ArrayList<>();
     private static List<Date> senderTwoTimeStamp = new ArrayList<>();
@@ -24,43 +25,29 @@ public class ReplyTiming {
     public static List<Date> getSenderOneTimeStamp() {
         return senderOneTimeStamp;
     }
-
-    public static List<Float> getSenderOneReplyTimeInMinutes() {
-        return senderOneReplyTimeInMinutes;
-    }
-
+    public static List<Float> getSenderOneReplyTimeInMinutes() { return senderOneReplyTimeInMinutes; }
     public static List<Date> getSenderTwoTimeStamp() {
         return senderTwoTimeStamp;
     }
-
-    public static List<Float> getSenderTwoReplyTimeInMinutes() {
-        return senderTwoReplyTimeInMinutes;
-    }
-
+    public static List<Float> getSenderTwoReplyTimeInMinutes() { return senderTwoReplyTimeInMinutes; }
     public static List<String> getSenderList() {
         return uniqueSenderList;
     }
-
     public static float getSenderOneAverageReplyTiming() {
         return senderOneAverageReplyTiming;
     }
-
     public static float getSenderTwoAverageReplyTiming() {
         return senderTwoAverageReplyTiming;
     }
-
     public static int getSenderOneTotalMessages() {
         return senderOneTotalMessages;
     }
-
     public static int getSenderTwoTotalMessages() {
         return senderTwoTotalMessages;
     }
-
     public static int getSenderOneTotalWords() {
         return senderOneTotalWords;
     }
-
     public static int getSenderTwoTotalWords() {
         return senderTwoTotalWords;
     }
@@ -73,23 +60,11 @@ public class ReplyTiming {
 
     static void analyzeReplyTimings() {
         // EDGE CASE : FOR < 2 MESSAGES SENT
-        if (FileProcessing.getSender().size() < 2) {
-            return;
-        }
-
-        // RESET ALL ATTRIBUTES
-        wipeInternalState();
-
-        // CHANGE THE SENDER LIST TO MATCH THE CHAT
+        if (FileProcessing.getSender().size() < 2) { return; }
+        reset();
         changeSenderList();
-
-        // PROCESS THE DATAFRAME
         processReplyTimings();
-
-        // COUNT THE NUMBER OF MESSAGES
         countMessages();
-
-        // SUM BOTH SENDERS' REPLY TIMINGS
         for (float replyTime : senderOneReplyTimeInMinutes) {
             senderOneAverageReplyTiming += replyTime;
         }
@@ -99,15 +74,17 @@ public class ReplyTiming {
         senderOneAverageReplyTiming /= senderOneReplyTimeInMinutes.size();
         senderTwoAverageReplyTiming /= senderTwoReplyTimeInMinutes.size();
 
-        System.out.println("senderOneTotalMessages " + senderOneTotalMessages);
-        System.out.println("senderTwoTotalMessages " + senderTwoTotalMessages);
-        System.out.println("Average Reply Timing of " + getSenderList().get(0) +
-                " " + senderOneAverageReplyTiming + "hours");
-        System.out.println("Average Reply Timing of " + getSenderList().get(1) +
-                " " + senderTwoAverageReplyTiming + " hours");
+        isInitialized = true;
+//        System.out.println("senderOneTotalMessages " + senderOneTotalMessages);
+//        System.out.println("senderTwoTotalMessages " + senderTwoTotalMessages);
+//        System.out.println("Average Reply Timing of " + getSenderList().get(0) +
+//                " " + senderOneAverageReplyTiming + "hours");
+//        System.out.println("Average Reply Timing of " + getSenderList().get(1) +
+//                " " + senderTwoAverageReplyTiming + " hours");
     }
 
-    static void wipeInternalState() {
+    static void reset() {
+        isInitialized = false;
         senderOneTimeStamp.clear();
         senderOneReplyTimeInMinutes.clear();
         senderTwoTimeStamp.clear();

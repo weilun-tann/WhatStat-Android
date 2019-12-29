@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 
 public class FileProcessing {
     // ATTRIBUTES
-    private static boolean initialized = false;
+    public static boolean isInitialized = false;
 //    private static File uploadedFile = null;
     private static Uri uploadedFileURI = null;
 //    private static Intent userIntent = null;
@@ -35,7 +35,6 @@ public class FileProcessing {
 
     // ACCESSOR METHODS
 
-    public static boolean isInitialized() { return initialized; }
 
 //    public static File getUploadedFile() {
 //        return uploadedFile;
@@ -60,7 +59,7 @@ public class FileProcessing {
     public static List<Message> getConversationHistory() { return conversationHistory; }
 
     // LOGIC METHODS
-    public static void setInitialized(boolean init) { initialized = init; }
+    public static void setIsInitialized(boolean init) { isInitialized = init; }
 
 //    public static void setUploadedFile(File f) { uploadedFile = f; }
 
@@ -73,7 +72,7 @@ public class FileProcessing {
     public static void readFile(Uri fileURI, Context fileContext, boolean fromCloud) throws IOException {
 
         // WIPE INTERNAL STATE BEFORE FILE READ
-        wipeInternalState();
+        reset();
 
         // PERFORM FILE READ (LOCAL VS CLOUD STORAGE)
         BufferedReader br;
@@ -105,10 +104,10 @@ public class FileProcessing {
             }
         }
         br.close();
-        FileProcessing.setInitialized(true);
+        FileProcessing.setIsInitialized(true);
     }
 
-    static void wipeInternalState() {
+    static void reset() {
         fileContents = "";
         fileContentLines.clear();
         messageTimeStamp.clear();

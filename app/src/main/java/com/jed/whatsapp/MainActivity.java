@@ -78,17 +78,36 @@ public class MainActivity extends Activity {
         // ANALYZE BUTTON
         final Button analyzeButton = findViewById(R.id.analyzeButton);
         analyzeButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, WaitingScreenStatsActivity.class);
-            startActivityForResult(intent, ANALYZE_REQUEST_CODE);
-            overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+            if (FileProcessing.getUploadedFileURI() == null) {
+                String error = "I'm sorry, but you haven't yet given me a file to work with!";
+                Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(MainActivity.this, WaitingScreenStatsActivity.class);
+                intent.putExtra("StatsOrGraph", "Stats");
+                startActivityForResult(intent, ANALYZE_REQUEST_CODE);
+                overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+            }
         });
 
         // GRAPH BUTTON
         final Button graphButton = findViewById(R.id.graphButton);
         graphButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, ScatterChartTime.class);
-            startActivityForResult(intent, GRAPH_REQUEST_CODE);
-            overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+            if (!FileProcessing.isInitialized) {
+                String error = "I'm sorry, but you haven't yet given me a file to work with!";
+                Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+            }
+            else if (!ReplyTiming.isInitialized) {
+                Intent intent = new Intent(MainActivity.this, WaitingScreenStatsActivity.class);
+                intent.putExtra("StatsOrGraph", "Graph");
+                startActivityForResult(intent, GRAPH_REQUEST_CODE);
+                overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+            } else {
+                Intent intent = new Intent(MainActivity.this, ScatterChartTime.class);
+                startActivityForResult(intent, GRAPH_REQUEST_CODE);
+                overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+            }
+
+
         });
     }
 
@@ -102,8 +121,10 @@ public class MainActivity extends Activity {
 //                    File selectedFile = new File(selectedFilePath);
 //                    FileProcessing.setUploadedFile(selectedFile);
 //                    FileProcessing.setUserIntent(data);
+                    FileProcessing.reset();
+                    ReplyTiming.reset();
                     FileProcessing.setUploadedFileURI(data.getData());
-                    FileProcessing.setInitialized(false);
+                    FileProcessing.setIsInitialized(true);
                     uploadToFB(data);
                     break;
 

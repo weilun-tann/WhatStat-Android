@@ -15,6 +15,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -28,7 +29,7 @@ public class WaitingScreenHistoryActivity extends AppCompatActivity {
         "My my, you're really active in this app, I need just a little more time!");
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(currentUser.getDisplayName());
-    private TreeMap<Date, String> uploadedFiles = new TreeMap<>();
+    private TreeMap<Date, String> uploadedFiles = new TreeMap<>(Collections.reverseOrder());
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,12 +49,12 @@ public class WaitingScreenHistoryActivity extends AppCompatActivity {
                 if (result.getItems().size() != 0) {
                     for (StorageReference fileRef : result.getItems()) {
                         fileRef.getMetadata().addOnSuccessListener(storageMetadata -> {
-                            Date fileDate = new Date(storageMetadata.getUpdatedTimeMillis());
+                            Date fileDate = new Date(storageMetadata.getCreationTimeMillis());
                             String fileName = fileRef.getName();
                             uploadedFiles.put(fileDate, fileName);
 
+                            // REDIRECT USER TO CHAT HISTORY SCREEN WHEN DONE
                             if (uploadedFiles.size() == result.getItems().size()) {
-                                // REDIRECT USER TO CHAT HISTORY SCREEN
                                 Intent intent = new Intent(WaitingScreenHistoryActivity.this, ChatHistoryActivity.class);
                                 intent.putExtra("uploadedFiles", uploadedFiles);
                                 startActivityForResult(intent, 300);
@@ -63,7 +64,8 @@ public class WaitingScreenHistoryActivity extends AppCompatActivity {
                         });
                     }
                 } else {
-                    // REDIRECT USER TO CHAT HISTORY SCREEN
+                    // REDIRECT USER TO EMPTY CHAT HISTORY SCREEN
+                    // TODO : EMPTY CHAT HISTORY SCREEN
                     Intent intent = new Intent(WaitingScreenHistoryActivity.this, ChatHistoryActivity.class);
                     intent.putExtra("uploadedFiles", uploadedFiles);
                     startActivityForResult(intent, 300);

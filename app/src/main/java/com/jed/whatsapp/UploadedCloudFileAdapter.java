@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -23,10 +22,9 @@ import java.util.List;
 
 public class UploadedCloudFileAdapter extends RecyclerView.Adapter<UploadedCloudFileAdapter.ViewHolder> {
 
-    public static final String TAG = "UploadedCloudFileAdapter";
-
-    List<UploadedCloudFile> UploadedCloudFileList;
-    Context context;
+    private static final String TAG = "UploadedCloudFileAdapter";
+    private List<UploadedCloudFile> UploadedCloudFileList;
+    private Context context;
 
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(currentUser.getDisplayName());
@@ -55,8 +53,8 @@ public class UploadedCloudFileAdapter extends RecyclerView.Adapter<UploadedCloud
         c.add(Calendar.HOUR_OF_DAY, 8);
         Date localDate = c.getTime();
         String truncatedDate = localDate.toString().substring(0, localDate.toString().length() - 9);
-        holder.fileName.setText(truncatedFileName);
         holder.fileDate.setText(truncatedDate);
+        holder.fileName.setText(truncatedFileName);
     }
 
     @Override
@@ -69,7 +67,6 @@ public class UploadedCloudFileAdapter extends RecyclerView.Adapter<UploadedCloud
         TextView fileName;
         Button selectButton;
         CardView cv;
-        LinearLayout linearLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -80,31 +77,24 @@ public class UploadedCloudFileAdapter extends RecyclerView.Adapter<UploadedCloud
             selectButton.setOnClickListener(this);
         }
 
-        /*
-        TODO
-        1. Based on filename, download file object
-        2. Place activeFile in FileProcessing
-
-         */
         @Override
         public void onClick(View v) {
-            int position = this.getPosition();
-            Log.d(TAG, "Position : " + position);
-            Log.d(TAG, "FileName : " + UploadedCloudFileList.get(position).getFileName());
 
+            // SET THE NEWLY CHOSEN FILE FOR ANALYSIS
+            FileProcessing.reset();
+            ReplyTiming.reset();
 
-            System.out.println(fileName.getText().toString() + " CHOSEN");
-            // TODO : FIND OUT HOW TO GET URI FROM FIREBASE AND  PROCESS THE FILE
-            // TODO : READING FILE DIRECTLY FROM FB CLOUD
-            StorageReference chosenFileRef =
-                    mStorageRef.child(UploadedCloudFileList.get(position).getFileName());
+            // DETERMINE SELECTED FILE AND PULL FROM CLOUD
+            int chosenPosition = this.getPosition();
+            UploadedCloudFile chosenFile = UploadedCloudFileList.get(chosenPosition);
+            String chosenFileCloudDir = chosenFile.getFileName();
+            StorageReference chosenFileRef = mStorageRef.child(chosenFileCloudDir);
             chosenFileRef.getDownloadUrl()
                     .addOnSuccessListener(uri -> {
                         FileProcessing.setUploadedFileURI(uri);
-                        FileProcessing.setInitialized(false);
+                        FileProcessing.setIsInitialized(false);
                     })
-                    .addOnFailureListener(e -> Log.d(TAG,
-                            mStorageRef.child("DOWNLOAD FAILURE + " + UploadedCloudFileList.get(position).getFileName()).toString()));
+                    .addOnFailureListener(e -> Log.d(TAG, "DOWNLOAD FAILURE + " + chosenFileCloudDir));
         }
     }
 }
