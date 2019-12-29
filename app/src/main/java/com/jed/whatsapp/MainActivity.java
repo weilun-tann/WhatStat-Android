@@ -6,19 +6,17 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.widget.Button;
+import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import androidx.annotation.Nullable;
-
-import android.provider.MediaStore;
-import android.widget.Button;
-import android.widget.Toast;
-
-import java.io.File;
 import java.time.LocalDateTime;
 
 public class MainActivity extends Activity {
@@ -100,12 +98,13 @@ public class MainActivity extends Activity {
         if (resultCode == RESULT_OK && data != null && data.getData() != null) {
             switch (requestCode) {
                 case UPLOAD_REQUEST_CODE:
-                    String selectedFilePath = data.getData().getPath();
-                    File selectedFile = new File(selectedFilePath);
-                    FileProcessing.setUploadedFile(selectedFile);
-                    FileProcessing.setUserIntent(data);
+//                    String selectedFilePath = data.getData().getPath();
+//                    File selectedFile = new File(selectedFilePath);
+//                    FileProcessing.setUploadedFile(selectedFile);
+//                    FileProcessing.setUserIntent(data);
+                    FileProcessing.setUploadedFileURI(data.getData());
                     FileProcessing.setInitialized(false);
-                    configureStorage(data);
+                    uploadToFB(data);
                     break;
 
                 case ANALYZE_REQUEST_CODE:
@@ -122,7 +121,7 @@ public class MainActivity extends Activity {
      * Uploads the chosen file to Firebase Storage in the cloud
      * @param data : Intent associated with the file upload
      */
-    public void configureStorage(Intent data) {
+    public void uploadToFB(Intent data) {
 
         // GET FILE NAME
         Uri uri = data.getData();
@@ -131,8 +130,10 @@ public class MainActivity extends Activity {
         // GET CURRENT USER'S USERNAME
         String currentUserName = "GuestUser";
         String timeStamp = LocalDateTime.now().toString();
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+        try {
             currentUserName = mAuthRef.getCurrentUser().getDisplayName();
+        } catch (NullPointerException e) {
+
         }
 
         // SET CLOUD PATH AND PERFORM UPLOAD
@@ -140,11 +141,10 @@ public class MainActivity extends Activity {
         UploadTask uploadTask = filePath.putFile(uri);
 
         // ADD SUCCESS AND FAILURE LISTENERS TO FILE UPLOAD PROCESS
-        uploadTask.addOnFailureListener(exception -> {
-            Toast.makeText(getApplicationContext(), "Upload Failed", Toast.LENGTH_SHORT).show();
-        }).addOnSuccessListener(taskSnapshot -> {
-            Toast.makeText(getApplicationContext(), "Upload Done", Toast.LENGTH_SHORT).show();
-        });
+        uploadTask.addOnFailureListener(exception ->
+                        Toast.makeText(getApplicationContext(), "Upload Failed", Toast.LENGTH_SHORT).show())
+                .addOnSuccessListener(taskSnapshot ->
+                        Toast.makeText(getApplicationContext(), "Upload Done", Toast.LENGTH_SHORT).show());
     }
 
     /**

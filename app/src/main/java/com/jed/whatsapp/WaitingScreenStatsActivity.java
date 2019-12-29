@@ -3,6 +3,7 @@ package com.jed.whatsapp;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,8 @@ import java.util.Random;
 public class WaitingScreenStatsActivity extends AppCompatActivity {
 
     // CLASS ATTRIBUTES
+    public static final String TAG = "WaitingScreenStatsActivity";
+
     private List<String> promptList = Arrays.asList(
             "Please wait while I work hard to analyze your texts!",
             "I promise this will be done soon!",
@@ -33,11 +36,7 @@ public class WaitingScreenStatsActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_screen);
-        try {
-            getSupportActionBar().hide();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+
         // Perform analysis iff not already done
         if (!FileProcessing.isInitialized()) {
             new logicThread().start();
@@ -57,8 +56,24 @@ public class WaitingScreenStatsActivity extends AppCompatActivity {
         public void run() {
             try {
                 // 2 computationally-heavy methods
-                FileProcessing.readFile(FileProcessing.getUserIntent().getData(), getApplicationContext());
+                Log.d(TAG,
+                        "FileProcessing.getUploadedFileURI() : " + FileProcessing.getUploadedFileURI());
+                Log.d(TAG, "getApplicationContext() : " + getApplicationContext());
+                if (FileProcessing.getUploadedFileURI().toString().contains("firebase")) {
+                    FileProcessing.readFile(FileProcessing.getUploadedFileURI(),
+                            getApplicationContext(), true);
+                 } else {
+                    FileProcessing.readFile(FileProcessing.getUploadedFileURI(),
+                            getApplicationContext() , false);
+                }
+
+                Log.d(TAG, "readFile SUCCESS");
+
+
+
                 ReplyTiming.analyzeReplyTimings();
+                Log.d(TAG, "analyzeReplyTimings SUCCESS");
+
 
                 // Redirect user to analysis screen
                 Intent intent = new Intent(WaitingScreenStatsActivity.this, MessageStatisticsActivity.class);

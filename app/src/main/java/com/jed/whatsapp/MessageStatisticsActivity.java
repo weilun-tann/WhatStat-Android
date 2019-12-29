@@ -12,11 +12,6 @@ public class MessageStatisticsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_statistics);
-        try {
-            getSupportActionBar().hide();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
 
         // SET THE VALUES FOR USER DISPLAY
         TextView leftSenderName = findViewById(R.id.leftSenderName);

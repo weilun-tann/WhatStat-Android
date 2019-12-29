@@ -5,7 +5,6 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +22,6 @@ import java.util.TreeMap;
 
 public class WaitingScreenHistoryActivity extends AppCompatActivity {
 
-    // CLASS ATTRIBUTES
     private List<String> promptList = Arrays.asList(
         "Hold on while I pull your uploaded conversations from the cloud!",
         "All right, we're almost there, this will be done real soon!",
@@ -32,26 +30,13 @@ public class WaitingScreenHistoryActivity extends AppCompatActivity {
     private StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(currentUser.getDisplayName());
     private TreeMap<Date, String> uploadedFiles = new TreeMap<>();
 
-    public TreeMap<Date, String> getUploadedFiles() {
-        return uploadedFiles;
-    }
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_screen);
-
-        // Perform analysis iff not already done
-        if (!FileProcessing.isInitialized()) {
-            new logicThread().start();
-            new backgroundThread().start();
-            new textThread().start();
-        } else {
-            Intent intent = new Intent(WaitingScreenHistoryActivity.this, MessageStatisticsActivity.class);
-            startActivityForResult(intent, 300);
-            overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
-            WaitingScreenHistoryActivity.this.finish();
-        }
+        new logicThread().start();
+        new backgroundThread().start();
+        new textThread().start();
     }
 
     // This thread shall run our computationally-heavy methods
@@ -71,9 +56,6 @@ public class WaitingScreenHistoryActivity extends AppCompatActivity {
                                 // REDIRECT USER TO CHAT HISTORY SCREEN
                                 Intent intent = new Intent(WaitingScreenHistoryActivity.this, ChatHistoryActivity.class);
                                 intent.putExtra("uploadedFiles", uploadedFiles);
-                                //DEBUG
-                                Toast.makeText(getApplicationContext(), uploadedFiles.toString(),
-                                        Toast.LENGTH_LONG).show();
                                 startActivityForResult(intent, 300);
                                 overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
                                 WaitingScreenHistoryActivity.this.finish();
@@ -108,13 +90,12 @@ public class WaitingScreenHistoryActivity extends AppCompatActivity {
     public class textThread extends Thread {
         @Override
         public void run() {
-            final TextView talkToUser = (TextView) findViewById(R.id.talkToUser);
+            final TextView talkToUser = findViewById(R.id.talkToUser);
             for (int i = 0; i < 99; i++) {
                 try {
                     talkToUser.setText(promptList.get(new Random().nextInt(promptList.size())));
                     sleep(3000);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
                     break;
                 }
             }

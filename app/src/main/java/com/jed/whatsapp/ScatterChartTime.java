@@ -32,11 +32,6 @@ public class ScatterChartTime extends DemoBase implements OnSeekBarChangeListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graphing);
-        try {
-            getSupportActionBar().hide();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
 
         // Horizontal seek bar
         tvX = findViewById(R.id.tvXMax);

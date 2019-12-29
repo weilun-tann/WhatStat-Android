@@ -1,27 +1,31 @@
 package com.jed.whatsapp;
 
+import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
+
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.String;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FileProcessing {
     // ATTRIBUTES
     private static boolean initialized = false;
-    private static File uploadedFile = null;
-    private static Intent userIntent = null;
+//    private static File uploadedFile = null;
+    private static Uri uploadedFileURI = null;
+//    private static Intent userIntent = null;
+
     private static String fileContents = "";
     private static List<String> fileContentLines = new ArrayList<String>();
     private static List<Date> messageTimeStamp = new ArrayList<Date>();
@@ -33,11 +37,13 @@ public class FileProcessing {
 
     public static boolean isInitialized() { return initialized; }
 
-    public static File getUploadedFile() {
-        return uploadedFile;
-    }
+//    public static File getUploadedFile() {
+//        return uploadedFile;
+//    }
 
-    public static Intent getUserIntent() { return userIntent; }
+    public static Uri getUploadedFileURI() { return uploadedFileURI; }
+
+//    public static Intent getUserIntent() { return userIntent; }
 
     public static String getFileContents() {
         return fileContents;
@@ -56,22 +62,32 @@ public class FileProcessing {
     // LOGIC METHODS
     public static void setInitialized(boolean init) { initialized = init; }
 
-    public static void setUploadedFile(File f) { uploadedFile = f; }
+//    public static void setUploadedFile(File f) { uploadedFile = f; }
 
-    public static void setUserIntent(Intent userIntent) {
-        FileProcessing.userIntent = userIntent;
-    }
+    public static void setUploadedFileURI(Uri u) { uploadedFileURI = u; }
 
-    public static void readFile(Uri fileURI, Context fileContext) throws IOException {
+//    public static void setUserIntent(Intent userIntent) {
+//        FileProcessing.userIntent = userIntent;
+//    }
+
+    public static void readFile(Uri fileURI, Context fileContext, boolean fromCloud) throws IOException {
 
         // WIPE INTERNAL STATE BEFORE FILE READ
         wipeInternalState();
 
-        // PERFORM FILE READ
-//        StringBuilder text = new StringBuilder();
-        InputStream fileIS = fileContext.getContentResolver().openInputStream(fileURI);
-        BufferedReader br =
-                new BufferedReader(new InputStreamReader(Objects.requireNonNull(fileIS)));
+        // PERFORM FILE READ (LOCAL VS CLOUD STORAGE)
+        BufferedReader br;
+        if (!fromCloud) {
+            ContentResolver fileCS = fileContext.getContentResolver();
+            InputStream fileIS = fileCS.openInputStream(fileURI);
+            br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(fileIS)));
+        } else {
+            URL url = new URL(fileURI.toString());
+            HttpURLConnection con =(HttpURLConnection) url.openConnection();
+            con.setConnectTimeout(30000);
+            br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        }
+
         String line;
 
         while ((line = br.readLine()) != null) {
@@ -88,10 +104,7 @@ public class FileProcessing {
                         .add(new Message(lineDate, lineSender, lineMessageBody));
             }
         }
-//        fileContents = text.toString();
-//        fileContentLines = extractLines(fileContents);
         br.close();
-        // Set intialized to true
         FileProcessing.setInitialized(true);
     }
 
@@ -120,34 +133,6 @@ public class FileProcessing {
             sender.add(mySender);
         }
     }
-
-//    static void retrieveConversationHistory() {
-//
-//        if (fileContentLines.size() == 0) { return; }
-//
-//        // EXTRACT THE 3 ELEMENTS
-//        for (String line : fileContentLines) {
-//            Date lineDate = retrieveDate(line);
-//            String lineSender = retrieveSender(line);
-//            String lineMessageBody = retrieveMessageBody(line);
-//            if ((lineDate != null) &
-//                    (lineSender != null) &
-//                    (lineMessageBody != null)) {
-//                addMessageTimeStamp(lineDate);
-//                addSender(lineSender);
-//                addMessageBody(lineMessageBody);
-//                conversationHistory
-//                        .add(new Message(lineDate, lineSender, lineMessageBody));
-//            }
-//        }
-//
-//        // @DEBUG
-//        System.out.println("sender.size() : " + sender.size());
-//        System.out.println("messageTimeStamp.size() : " + messageTimeStamp.size());
-//        System.out.println("messageBody.size() : " + messageBody.size());
-//        System.out.println("conversationHistory.size() : " + conversationHistory.size());
-//    }
-
 
     static Date retrieveDate(String line) {
         try {

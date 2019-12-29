@@ -1,22 +1,19 @@
 package com.jed.whatsapp;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 public class ChatHistoryActivity extends Activity {
 
@@ -31,16 +28,7 @@ public class ChatHistoryActivity extends Activity {
         setContentView(R.layout.activity_history_view);
 
         // RETRIEVE UPLOADED FILES
-        Intent i = getIntent();
-        if (i == null) {
-            Toast.makeText(getApplicationContext(), "NULL INTENT", Toast.LENGTH_LONG).show();
-            System.out.println("ERROR! NULL INTENT");
-        }
-        else {
-            System.out.println("INTENT IS NORMAL");
-        }
-        HashMap uploadedFiles = (HashMap<Date, String>) i.getSerializableExtra("uploadedFiles");
-
+        HashMap uploadedFiles = (HashMap<Date, String>) getIntent().getSerializableExtra("uploadedFiles");
         Set<Map.Entry> entries = uploadedFiles.entrySet();
         for (Map.Entry entry : entries) {
             UploadedCloudFile f = new UploadedCloudFile();
