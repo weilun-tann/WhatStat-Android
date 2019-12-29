@@ -71,8 +71,8 @@ Of course, this is a simple app with very limited functionality right now, but d
 
 ## Tech Stack
 These are the key ⚒ frameworks and tools ⚒ which were used extensively during the development of 🔍WhatsAnalyzer 🔍.
-* [Firebase](https://firebase.google.com/)
-* [Java](https://www.java.com/en/)
+* [Firebase](https://firebase.google.com/), where user files can be stored and retrieved quickly from the 🌨, eliminating the need to keep these files on your device.
+* [Java](https://www.java.com/en/), for native Android development for optimal speed ⏱, and using Google's extensive 🎨 Material Design 🎨 UI kit for the frontend
 * [Android Studio](https://developer.android.com/studio) <br><br>
 
 
