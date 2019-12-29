@@ -42,7 +42,7 @@
 
 
 
-## About The Project
+## ✏ About The Project ✏
 <p align="center">
   <a href="https://weilunn97.wixsite.com/journeywithjed">
     <img src="img/AppIcon.JPG" />
@@ -56,7 +56,7 @@ Currently, the app is still in it's 🏗 early development stage  🏗, and henc
 <br><br>
 
 
-## Key Features
+## ✨ Key Features ✨
 Here're some of its key highlights and functionality. <br><br>
 *  :alarm_clock:  <b>Reply Timing Analysis : </b> Of course, that's the whole point of this app, right? Available in both 🔢 (numerical analysis) and 📉 (visual analysis).
 
@@ -69,7 +69,7 @@ Of course, this is a simple app with very limited functionality right now, but d
 
 
 
-## Tech Stack
+## 💻 Tech Stack 💻
 These are the key ⚒ frameworks and tools ⚒ which were used extensively during the development of 🔍WhatsAnalyzer 🔍.
 * [Firebase](https://firebase.google.com/), where user files can be stored and retrieved quickly from the 🌨, eliminating the need to keep these files on your device.
 * [Java](https://www.java.com/en/), for native Android development for optimal speed ⏱, and using Google's extensive 🎨 Material Design 🎨 UI kit for the frontend
@@ -77,7 +77,7 @@ These are the key ⚒ frameworks and tools ⚒ which were used extensively durin
 
 
 
-## Usage & Demo
+## 📸 Usage & Demo 📸
 <!-- INSERT PICTURES HERE-->
 
 
@@ -87,7 +87,7 @@ Pictures to be added soon... 📷
 
 
 
-## Contributing
+## 🍻 Contributing 🍻
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -100,21 +100,23 @@ Contributions are what make the open source community such an amazing place to b
 
 
 <!-- LICENSE -->
-## License
+## 📑 License 📑
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
 
 
-## Contact
+## 📞 Contact 📞
+📛 **Wei Lun**
 
-Wei Lun - [LinkedIn](https://www.linkedin.com/in/tan-wei-lun/) - WTAN132@e.ntu.edu.sg
+🔗 [LinkedIn](https://www.linkedin.com/in/tan-wei-lun/)
 
-Project Link: [WhatsAnalyzer (Android)](https://github.com/weilunn97/WhatsAnalyzer-Android-e)
+📧 [Email](mailto:WTAN132@e.ntu.edu.sg)
+
+<br><br>
 
 
-
-## Acknowledgements
+## 💳 Acknowledgements 💳
 * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
 * [GitHub Pages](https://pages.github.com)
 * [MIT License](https://opensource.org/licenses/MIT)
