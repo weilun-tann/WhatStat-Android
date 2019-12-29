@@ -131,7 +131,7 @@ Project Link: [WhatsAnalyzer (Android)](https://github.com/weilunn97/WhatsAnalyz
 [forks-url]:https://github.com/weilunn97/WhatsAnalyzer-Android-/network
 [stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=flat-square
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=flat-square
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+[license-url]: https://github.com/weilunn97/WhatsAnalyzer-Android-/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/tan-wei-lun
 [product-screenshot]: images/screenshot.png
