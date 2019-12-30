@@ -22,11 +22,7 @@
             android:theme="@style/AppTheme"/>
 
         <activity
-            android:name=".LoginActivity"
-            android:theme="@style/AppTheme" />
-
-        <activity
-            android:name=".ScatterChartTime"
+            android:name=".ScatterTimeActivity"
             android:theme="@style/AppTheme" />
 
         <activity

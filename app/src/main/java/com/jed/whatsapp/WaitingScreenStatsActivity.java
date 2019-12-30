@@ -75,7 +75,7 @@ public class WaitingScreenStatsActivity extends AppCompatActivity {
                     WaitingScreenStatsActivity.this.finish();
                 } else {
                     // REDIRECT TO GRAPH ACTIVITY
-                    Intent intent = new Intent(WaitingScreenStatsActivity.this, ScatterChartTime.class);
+                    Intent intent = new Intent(WaitingScreenStatsActivity.this, ScatterTimeActivity.class);
                     startActivityForResult(intent, 300);
                     overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
                     WaitingScreenStatsActivity.this.finish();

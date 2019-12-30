@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class ScatterChartTime extends DemoBase implements OnSeekBarChangeListener {
+public class ScatterTimeActivity extends DemoBase implements OnSeekBarChangeListener {
 
     private ScatterChart chart;
     private SeekBar seekBarX;
@@ -70,7 +70,6 @@ public class ScatterChartTime extends DemoBase implements OnSeekBarChangeListene
         xAxis.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.senderOne));
         xAxis.setCenterAxisLabels(true);
         xAxis.setGridColor(ContextCompat.getColor(getApplicationContext(), R.color.senderOne));
-
 
         // Generate lookup dictionary for MONTH
         final HashMap<Integer, String> monthMap = new HashMap<>();
@@ -176,7 +175,6 @@ public class ScatterChartTime extends DemoBase implements OnSeekBarChangeListene
         chart.getAxisLeft().setAxisLineColor(ContextCompat.getColor(getApplicationContext(), R.color.senderOne));
     }
 
-
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
@@ -190,7 +188,7 @@ public class ScatterChartTime extends DemoBase implements OnSeekBarChangeListene
 
     @Override
     protected void saveToGallery() {
-        saveToGallery(chart, "ScatterChartTime");
+        saveToGallery(chart, "ScatterTimeActivity");
     }
 
     @Override

@@ -34,8 +34,8 @@
 
 
     <!--Main App Theme Colors-->
-    <color name="colorPrimary">#e84393</color>
-    <color name="colorPrimaryDark">#e84393</color>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorAccent">#2d3436</color>
 
 
