@@ -7,7 +7,7 @@
 <br />
 <p align="center">
   <a href="https://weilunn97.wixsite.com/journeywithjed">
-    <img src="img/Logo.jpg" />
+    <img src="img/WhatsAnalyzer Mockup.png" />
   </a>
 
   <h1 align="center">:sunglasses: WhatsAnalyzer (Android) :sunglasses:</h1>
