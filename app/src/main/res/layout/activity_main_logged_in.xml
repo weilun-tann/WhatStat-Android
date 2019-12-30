@@ -2,55 +2,82 @@
 
 <!--TODO : REVAMP THE MAIN MENU UI-->
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mainMenuBackground">
+    android:background="@drawable/main_menu_bg"
+    android:orientation="vertical">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/viewHistoryButton"
-        app:cornerRadius="10dp"
-        android:layout_width="250dp"
-        android:layout_height="75dp"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="@dimen/main_menu_button_width"
+        android:layout_height="@dimen/main_menu_button_height"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="370dp"
         android:text="@string/viewHistoryButton"
-        android:textSize="20sp"/>
+        android:textSize="@dimen/main_menu_button_text"
+        app:cornerRadius="10dp"
+        app:icon="@drawable/history_icon"
+        app:iconGravity="start"
+        app:iconSize="@dimen/main_menu_icon" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/uploadButton"
-        app:strokeWidth="50sp"
-        app:cornerRadius="10dp"
-        android:layout_width="250dp"
-        android:layout_height="75dp"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_below="@id/viewHistoryButton"
+        android:layout_width="@dimen/main_menu_button_width"
+        android:layout_height="@dimen/main_menu_button_height"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="220dp"
         android:text="@string/menuUploadButton"
-        android:textSize="20sp"/>
+        android:textSize="@dimen/main_menu_button_text"
+        app:cornerRadius="10dp"
+        app:icon="@drawable/upload_icon"
+        app:iconGravity="start"
+        app:iconSize="@dimen/main_menu_icon"
+        app:strokeWidth="50sp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/analyzeButton"
-        app:strokeWidth="50sp"
-        app:cornerRadius="10dp"
-        android:layout_width="250dp"
-        android:layout_height="75dp"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_below="@id/uploadButton"
+        android:layout_width="@dimen/main_menu_button_width"
+        android:layout_height="@dimen/main_menu_button_height"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="410dp"
         android:text="@string/menuAnalyzeButton"
-        android:textSize="20sp"/>
+        android:textSize="@dimen/main_menu_button_text"
+        app:cornerRadius="10dp"
+        app:icon="@drawable/analyze_icon"
+        app:iconGravity="start"
+        app:iconSize="@dimen/main_menu_icon"
+        app:strokeWidth="50sp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/graphButton"
-        app:strokeWidth="50sp"
-        app:cornerRadius="10dp"
-        android:layout_width="250dp"
-        android:layout_height="75dp"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_below="@id/analyzeButton"
+        android:layout_width="@dimen/main_menu_button_width"
+        android:layout_height="@dimen/main_menu_button_height"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="590dp"
+        android:background="@color/teal"
         android:text="@string/menuGraphButton"
-        android:textSize="20sp"/>
+        android:textSize="@dimen/main_menu_button_text"
+        app:cornerRadius="10dp"
+        app:icon="@drawable/graph_icon"
+        app:iconGravity="start"
+        app:iconSize="@dimen/main_menu_icon"
+        app:strokeWidth="50sp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/loginFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        app:backgroundTint="@color/teal"
+        app:srcCompat="@drawable/google_plus_icon" />
+
 
 </RelativeLayout>

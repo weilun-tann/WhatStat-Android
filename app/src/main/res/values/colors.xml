@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--activity_login-->
+    <!--Login-->
 
-    <!--activity_main-->
+    <!--Main Menu-->
+    <color name="loginFAB">#55EFC4</color>
+
     <color name="mainMenuBackground">#FFEBFC</color>
     <color name="mainMenuButtonBorder">#FFFFFF</color>
     <color name="mainMenuButtonFill">#FFFFFF</color>
     <color name="mainMenuButtonOnClick">#55EFC4</color>
 
-    <!--activity_message_statistics-->
+    <!--Message Stats-->
     <color name="colorStatsHeader">#F6E58D</color>
     <color name="statsCircularBorder">#FFFFFF</color>
 
@@ -22,19 +24,24 @@
     <color name="msgStatsCircle">#000000</color>
     <color name="msgStatsDescription">#000000</color>
 
-    <!--activity_graphing-->
+    <!--Graphing-->
     <color name="senderOne">#143D59</color>
     <color name="senderTwo">#F4B41A</color>
     <color name="axisLine">#143D59</color>
 
-    <!--card_view-->
+    <!--Card View-->
     <color name="cardText">#636E72</color>
 
 
     <!--Main App Theme Colors-->
-    <color name="colorPrimary">#5F27CD</color>
-    <color name="colorPrimaryDark">#341F97</color>
+    <color name="colorPrimary">#e84393</color>
+    <color name="colorPrimaryDark">#e84393</color>
+    <color name="colorAccent">#2d3436</color>
 
-    <color name="colorAccent">#D81B60</color>
-    <color name="black_overlay">#66000000</color>
+
+    <!--Generic Colors-->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="teal">#00CEC9</color>
+
 </resources>

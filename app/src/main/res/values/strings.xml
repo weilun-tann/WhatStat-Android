@@ -6,7 +6,7 @@
 
     <!--MAIN MENU ACTIVITY-->
     <string name="loginButton">LOGIN</string>
-    <string name="viewHistoryButton">UPLOAD HISTORY</string>
+    <string name="viewHistoryButton">HISTORY</string>
     <string name="menuUploadButton">UPLOAD</string>
     <string name="menuAnalyzeButton">ANALYZE</string>
     <string name="menuGraphButton">GRAPH</string>
