@@ -20,12 +20,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FileProcessing {
-    // ATTRIBUTES
-    public static boolean isInitialized = false;
-//    private static File uploadedFile = null;
-    private static Uri uploadedFileURI = null;
-//    private static Intent userIntent = null;
 
+    // ATTRIBUTES
+    public static boolean initialized = false;
+    private static Uri uploadedFileURI = null;
     private static String fileContents = "";
     private static List<String> fileContentLines = new ArrayList<String>();
     private static List<Date> messageTimeStamp = new ArrayList<Date>();
@@ -34,21 +32,9 @@ public class FileProcessing {
     private static List<Message> conversationHistory = new ArrayList<Message>();
 
     // ACCESSOR METHODS
-
-
-//    public static File getUploadedFile() {
-//        return uploadedFile;
-//    }
+    public static boolean isInitialized() { return initialized; }
 
     public static Uri getUploadedFileURI() { return uploadedFileURI; }
-
-//    public static Intent getUserIntent() { return userIntent; }
-
-    public static String getFileContents() {
-        return fileContents;
-    }
-
-    public static List<String> getFileContentLines() { return fileContentLines; }
 
     public static List<Date> getMessageTimeStamp() { return messageTimeStamp; }
 
@@ -56,39 +42,33 @@ public class FileProcessing {
 
     public static List<String> getMessageBody() { return messageBody; }
 
-    public static List<Message> getConversationHistory() { return conversationHistory; }
-
     // LOGIC METHODS
-    public static void setIsInitialized(boolean init) { isInitialized = init; }
-
-//    public static void setUploadedFile(File f) { uploadedFile = f; }
+    public static void setInitialized(boolean init) { initialized = init; }
 
     public static void setUploadedFileURI(Uri u) { uploadedFileURI = u; }
-
-//    public static void setUserIntent(Intent userIntent) {
-//        FileProcessing.userIntent = userIntent;
-//    }
 
     public static void readFile(Uri fileURI, Context fileContext, boolean fromCloud) throws IOException {
 
         // WIPE INTERNAL STATE BEFORE FILE READ
-        reset();
+        FileProcessing.reset();
 
         // PERFORM FILE READ (LOCAL VS CLOUD STORAGE)
         BufferedReader br;
         if (!fromCloud) {
+            // LOCAL READ
             ContentResolver fileCS = fileContext.getContentResolver();
             InputStream fileIS = fileCS.openInputStream(fileURI);
             br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(fileIS)));
         } else {
+            // CLOUD READ
             URL url = new URL(fileURI.toString());
             HttpURLConnection con =(HttpURLConnection) url.openConnection();
             con.setConnectTimeout(30000);
             br = new BufferedReader(new InputStreamReader(con.getInputStream()));
         }
 
+        // PERFORM FILE PROCESSING INTO MESSAGE OBJECTS
         String line;
-
         while ((line = br.readLine()) != null) {
             Date lineDate = retrieveDate(line);
             String lineSender = retrieveSender(line);
@@ -104,7 +84,7 @@ public class FileProcessing {
             }
         }
         br.close();
-        FileProcessing.setIsInitialized(true);
+        FileProcessing.setInitialized(true);
     }
 
     static void reset() {

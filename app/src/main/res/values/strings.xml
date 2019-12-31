@@ -11,6 +11,9 @@
     <string name="menuAnalyzeButton">ANALYZE</string>
     <string name="menuGraphButton">GRAPH</string>
 
+    <!--Main Menu Snackbar-->
+    <string name="loginBarButton">SIGN IN</string>
+
     <!--MESSAGE STATISTICS ACTIVITY-->
     <string name="MsgStats_Title"></string>
     <string name="MsgStats_NumMessages">TOTAL MESSAGES</string>

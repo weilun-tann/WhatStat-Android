@@ -98,7 +98,7 @@ public class UploadedCloudFileAdapter extends RecyclerView.Adapter<UploadedCloud
             chosenFileRef.getDownloadUrl()
                     .addOnSuccessListener(uri -> {
                         FileProcessing.setUploadedFileURI(uri);
-                        FileProcessing.setIsInitialized(false);
+                        FileProcessing.setInitialized(false);
                     })
                     .addOnFailureListener(e -> Log.d(TAG, "DOWNLOAD FAILURE + " + chosenFileCloudDir));
         }

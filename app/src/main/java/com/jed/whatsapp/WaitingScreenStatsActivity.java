@@ -37,7 +37,7 @@ public class WaitingScreenStatsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_waiting_screen);
 
         // Perform analysis iff not already done
-        if (!ReplyTiming.isInitialized) {
+        if (!ReplyTiming.isInitialized()) {
             new logicThread().start();
             new backgroundThread().start();
             new textThread().start();

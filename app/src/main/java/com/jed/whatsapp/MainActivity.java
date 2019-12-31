@@ -72,10 +72,13 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
                 .build();
 
         // LOGIN FAB
-        // TODO : SET TO USER'S FIRST NAME INITIAL UPON LOGIN, TO MINIMIZE CONFUSION
         final FloatingActionButton loginButton = findViewById(R.id.loginFAB);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            loginButton.setImageResource(R.drawable.black_connected_icon);
+        }
+
         loginButton.setOnClickListener(view -> {
-            Log.d(TAG, "LOGIN BUTTON TRIGGERED");
             signIn();
         });
 
@@ -88,6 +91,14 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         // TODO : CHECK FOR CURRENT USER --> SNACKBAR --> NOT AVAILABLE IF NULL
         final Button viewHistoryButton = findViewById(R.id.viewHistoryButton);
         viewHistoryButton.setOnClickListener(view -> {
+            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                String error = "Try signing in first before accessing your secret file stash!";
+                View contextView = findViewById(R.id.activity_main);
+                Snackbar signInBar = Snackbar.make(contextView, error, Snackbar.LENGTH_LONG);
+                signInBar.setAction(R.string.loginBarButton, new loginBarListener());
+                signInBar.show();
+            }
+
             Intent intent = new Intent(MainActivity.this, WaitingScreenHistoryActivity.class);
             startActivityForResult(intent, VIEW_HISTORY_CODE);
             overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
@@ -108,12 +119,14 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
             overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
         });
 
+
         // ANALYZE BUTTON
         final Button analyzeButton = findViewById(R.id.analyzeButton);
         analyzeButton.setOnClickListener(v -> {
             if (FileProcessing.getUploadedFileURI() == null) {
                 String error = "I'm sorry, but you haven't yet given me a file to work with!";
-                Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+                View contextView = findViewById(R.id.activity_main);
+                Snackbar.make(contextView, error, Snackbar.LENGTH_LONG).show();
             } else {
                 Intent intent = new Intent(MainActivity.this, WaitingScreenStatsActivity.class);
                 intent.putExtra("StatsOrGraph", "Stats");
@@ -125,10 +138,11 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         // GRAPH BUTTON
         final Button graphButton = findViewById(R.id.graphButton);
         graphButton.setOnClickListener(v -> {
-            if (!FileProcessing.isInitialized) {
+            if (!FileProcessing.isInitialized()) {
                 String error = "I'm sorry, but you haven't yet given me a file to work with!";
-                Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
-            } else if (!ReplyTiming.isInitialized) {
+                View contextView = findViewById(R.id.activity_main);
+                Snackbar.make(contextView, error, Snackbar.LENGTH_LONG).show();
+            } else if (!ReplyTiming.isInitialized()) {
                 Intent intent = new Intent(MainActivity.this, WaitingScreenStatsActivity.class);
                 intent.putExtra("StatsOrGraph", "Graph");
                 startActivityForResult(intent, GRAPH_REQUEST_CODE);
@@ -141,44 +155,13 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK && data != null) {
-            switch (requestCode) {
-                case UPLOAD_REQUEST_CODE:
-//                    String selectedFilePath = data.getData().getPath();
-//                    File selectedFile = new File(selectedFilePath);
-//                    FileProcessing.setUploadedFile(selectedFile);
-//                    FileProcessing.setUserIntent(data);
-                    FileProcessing.reset();
-                    ReplyTiming.reset();
-                    FileProcessing.setUploadedFileURI(data.getData());
-                    FileProcessing.setIsInitialized(true);
-                    uploadToFB(data);
-                    break;
-
-                case LOGIN_REQUEST_CODE:
-                    Log.d(TAG, "TRIGGERED LOGIN PROCESS");
-                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-                    try {
-                        Log.d(TAG, "START LOGIN PROCESS");
-                        // Google Sign In was successful, authenticate with Firebase
-                        GoogleSignInAccount account = task.getResult(ApiException.class);
-                        firebaseAuthWithGoogle(account);
-                    } catch (ApiException e) {
-                        // Google Sign In failed, update UI appropriately
-                        Log.w(TAG, "Google sign in failed", e);
-                    }
-                    break;
-
-                case ANALYZE_REQUEST_CODE:
-                    break;
-
-                case GRAPH_REQUEST_CODE:
-                    break;
-            }
+    /**
+     * CUSTOM LOGIN SNACKBAR LISTENER (FOR FAILED VIEW HISTORY)
+     */
+    public class loginBarListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            signIn();
         }
     }
 
@@ -196,11 +179,8 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         // GET CURRENT USER'S USERNAME
         String currentUserName = "GuestUser";
         String timeStamp = LocalDateTime.now().toString();
-        try {
-            currentUserName = mAuth.getCurrentUser().getDisplayName();
-        } catch (NullPointerException e) {
-
-        }
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) currentUserName = user.getDisplayName();
 
         // SET CLOUD PATH AND PERFORM UPLOAD
         StorageReference filePath = mStorageRef.child(currentUserName).child(fileName + "_" + timeStamp);
@@ -210,7 +190,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         uploadTask.addOnFailureListener(exception ->
                 Toast.makeText(getApplicationContext(), "Upload Failed", Toast.LENGTH_SHORT).show())
                 .addOnSuccessListener(taskSnapshot ->
-                        Toast.makeText(getApplicationContext(), "Upload Done", Toast.LENGTH_SHORT).show());
+                        Toast.makeText(getApplicationContext(), "Upload Success", Toast.LENGTH_SHORT).show());
     }
 
     /**
@@ -238,12 +218,9 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
 
     // TODO : UNABLE TO LOGIN! (BUG)
     private void signIn() {
-        Log.d(TAG, "signIn() function TRIGGERED");
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
             startActivityForResult(signInIntent, LOGIN_REQUEST_CODE);
-            Log.d(TAG, "signIn() function ENDED");
-            Log.d(TAG, "signInIntent" + signInIntent.toString());
         } else {
             String msg = "LONG HOLD TO SIGN OUT.";
             View contextView = findViewById(R.id.activity_main);
@@ -262,36 +239,86 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
                 String msg = "Goodbye! But do return soon with more chats for me!";
                 View contextView = findViewById(R.id.activity_main);
                 Snackbar.make(contextView, msg, Snackbar.LENGTH_LONG).show();
+                // CHANGE THE UI OF LOGIN FAB TO GUEST USER
+                final FloatingActionButton loginButton = findViewById(R.id.loginFAB);
+                loginButton.setImageResource(R.drawable.google_plus_icon);
             });
             mAuth.signOut();
         }
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && data != null) {
+            switch (requestCode) {
+                case UPLOAD_REQUEST_CODE:
+//                    String selectedFilePath = data.getData().getPath();
+//                    File selectedFile = new File(selectedFilePath);
+//                    FileProcessing.setUploadedFile(selectedFile);
+//                    FileProcessing.setUserIntent(data);
+                    FileProcessing.reset();
+                    ReplyTiming.reset();
+                    FileProcessing.setUploadedFileURI(data.getData());
+                    FileProcessing.setInitialized(true);
+                    uploadToFB(data);
+                    break;
+
+                case LOGIN_REQUEST_CODE:
+                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                    try {
+                        GoogleSignInAccount account = task.getResult(ApiException.class);
+                        firebaseAuthWithGoogle(account);
+                    } catch (ApiException e) {
+                        Log.w(TAG, "Google sign in failed", e);
+                    }
+                    break;
+
+                case ANALYZE_REQUEST_CODE:
+                    break;
+
+                case GRAPH_REQUEST_CODE:
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Helper function to process connection failure to Google
+     * @param connectionResult : indicates the result of the Google sign-in
+     */
+    @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed : " + connectionResult);
     }
 
+    /**
+     * Performs Firebase server-side authentication using the user's Google account
+     * @param acct : the GoogleAccount object used by the user to sign in
+     */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in mCurrentUser's information
-                        Log.d(TAG, "signInWithCredential:success");
                         mCurrentUser = mAuth.getCurrentUser();
                         String msg = "Welcome, " + mCurrentUser.getDisplayName() + " I've " +
                                 "securely linked you up with Google and our servers!";
                         View contextView = findViewById(R.id.activity_main);
                         Snackbar.make(contextView, msg, Snackbar.LENGTH_LONG).show();
-                        Log.d(TAG, "SIGN IN SUCCESS");
+                        Log.d(TAG, "signInWithCredential:success");
+
+                        // CHANGE THE UI OF LOGIN FAB TO SIGNED IN GOOGLE USER
+                        final FloatingActionButton loginButton = findViewById(R.id.loginFAB);
+                        loginButton.setImageResource(R.drawable.black_connected_icon);
 
                     } else {
-                        // If sign in fails, display a message to the mCurrentUser.
+                        String msg = "This is embarrassing, we didn't manage to sign you in to " +
+                                "Google...";
+                        View contextView = findViewById(R.id.activity_main);
+                        Snackbar.make(contextView, msg, Snackbar.LENGTH_LONG).show();
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
-                        Toast.makeText(getApplicationContext(), "signInWithCredential:failure", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
