@@ -3,6 +3,7 @@ package com.jed.whatsapp;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +36,8 @@ public class WaitingScreenStatsActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_screen);
+        Log.d(TAG, "WaitingScreenStatsActivity onCreate() CALLED");
+
 
         // Perform analysis iff not already done
         if (!ReplyTiming.isInitialized()) {

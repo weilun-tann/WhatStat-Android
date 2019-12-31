@@ -8,8 +8,10 @@
     <dimen name="main_menu_icon">30dp</dimen>
     <dimen name="main_menu_button_width">200dp</dimen>
     <dimen name="main_menu_button_height">90dp</dimen>
-    <dimen name="main_menu_button_text">20sp</dimen>
+    <dimen name="main_menu_button_text">14sp</dimen>
 
-
+    <!--Conversation History Selector-->
+    <dimen name="history_filename">14sp</dimen>
+    <dimen name="history_filedate">12sp</dimen>
 
 </resources>

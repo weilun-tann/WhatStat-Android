@@ -32,12 +32,12 @@ public class ChatHistoryActivity extends Activity {
         Set<Map.Entry> entries = uploadedFiles.entrySet();
         for (Map.Entry entry : entries) {
             UploadedCloudFile f = new UploadedCloudFile();
-            f.setLastModified((Date)entry.getKey());
-            f.setFileName((String)entry.getValue());
+            f.setLastModified((Date) entry.getKey());
+            f.setFileName((String) entry.getValue());
             uploadedCloudFiles.add(f);
         }
 
-        uploadedCloudFileAdapter = new UploadedCloudFileAdapter(uploadedCloudFiles);
+        uploadedCloudFileAdapter = new UploadedCloudFileAdapter(uploadedCloudFiles, this);
 
         recyclerView = findViewById(R.id.uploadedFilesRV);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -45,6 +45,6 @@ public class ChatHistoryActivity extends Activity {
         recyclerView.setAdapter(uploadedCloudFileAdapter);
 
         // DEBUG : TO DELETE LATER
-        Toast.makeText(getApplicationContext(), uploadedFiles.toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, uploadedFiles.toString(), Toast.LENGTH_LONG).show();
     }
 }

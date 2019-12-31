@@ -1,5 +1,6 @@
 package com.jed.whatsapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,8 +30,9 @@ public class UploadedCloudFileAdapter extends RecyclerView.Adapter<UploadedCloud
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(currentUser.getDisplayName());
 
-    public UploadedCloudFileAdapter(List<UploadedCloudFile> UploadedCloudFileList) {
+    public UploadedCloudFileAdapter(List<UploadedCloudFile> UploadedCloudFileList, Context context) {
         this.UploadedCloudFileList = UploadedCloudFileList;
+        this.context = context;
     }
 
     @Override
@@ -72,7 +74,7 @@ public class UploadedCloudFileAdapter extends RecyclerView.Adapter<UploadedCloud
             super(itemView);
             fileDate = itemView.findViewById(R.id.fileDate);
             fileName = itemView.findViewById(R.id.fileName);
-            cv = itemView.findViewById(R.id.cv);
+            cv = itemView.findViewById(R.id.uploadHistoryCardView);
             selectButton = itemView.findViewById(R.id.selectButton);
             selectButton.setOnClickListener(this);
         }
@@ -94,13 +96,22 @@ public class UploadedCloudFileAdapter extends RecyclerView.Adapter<UploadedCloud
             int chosenPosition = this.getPosition();
             UploadedCloudFile chosenFile = UploadedCloudFileList.get(chosenPosition);
             String chosenFileCloudDir = chosenFile.getFileName();
+            String chosenFileName = chosenFileCloudDir.substring(0, chosenFileCloudDir.length()-28);
+            Log.d(TAG, "chosenFileCloudDir : " + chosenFile.getFileName());
             StorageReference chosenFileRef = mStorageRef.child(chosenFileCloudDir);
             chosenFileRef.getDownloadUrl()
                     .addOnSuccessListener(uri -> {
+                        // ADD TO FILE PROCESSING
                         FileProcessing.setUploadedFileURI(uri);
-                        FileProcessing.setInitialized(false);
+                        FileProcessing.setInitialized(true);
+                        FileProcessing.setFileName(chosenFileName);
+
+                        // CLOSE THE HISTORY SELECTOR ACTIVITY
+                        ((Activity) context).finish();
                     })
                     .addOnFailureListener(e -> Log.d(TAG, "DOWNLOAD FAILURE + " + chosenFileCloudDir));
+
+            // CLOSE THE CHAT HISTORY SELECTOR ACTIVITY
         }
     }
 }

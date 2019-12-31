@@ -11,8 +11,13 @@
     <string name="menuAnalyzeButton">ANALYZE</string>
     <string name="menuGraphButton">GRAPH</string>
 
-    <!--Main Menu Snackbar-->
+    <!--MAIN MENU SNACKBAR-->
     <string name="loginBarButton">SIGN IN</string>
+    <string name="uploadBarButton">UPLOAD</string>
+
+    <!--UPLOAD HISTORY SELECTOR-->
+    <string name="cardSelectButton">SELECT</string>
+
 
     <!--MESSAGE STATISTICS ACTIVITY-->
     <string name="MsgStats_Title"></string>

@@ -2,7 +2,9 @@ package com.jed.whatsapp;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.MediaStore;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,34 +25,35 @@ public class FileProcessing {
 
     // ATTRIBUTES
     public static boolean initialized = false;
+    private static String fileName = null;
     private static Uri uploadedFileURI = null;
-    private static String fileContents = "";
-    private static List<String> fileContentLines = new ArrayList<String>();
     private static List<Date> messageTimeStamp = new ArrayList<Date>();
     private static List<String> sender = new ArrayList<String>();
     private static List<String> messageBody = new ArrayList<String>();
     private static List<Message> conversationHistory = new ArrayList<Message>();
 
     // ACCESSOR METHODS
-    public static boolean isInitialized() { return initialized; }
-
-    public static Uri getUploadedFileURI() { return uploadedFileURI; }
-
-    public static List<Date> getMessageTimeStamp() { return messageTimeStamp; }
-
-    public static List<String> getSender() { return sender; }
-
-    public static List<String> getMessageBody() { return messageBody; }
+    public static boolean isInitialized() { return FileProcessing.initialized; }
+    public static String getFileName() { return FileProcessing.fileName; }
+    public static Uri getUploadedFileURI() { return FileProcessing.uploadedFileURI; }
+    public static List<Date> getMessageTimeStamp() { return FileProcessing.messageTimeStamp; }
+    public static List<String> getSender() { return FileProcessing.sender; }
+    public static List<String> getMessageBody() { return FileProcessing.messageBody; }
 
     // LOGIC METHODS
-    public static void setInitialized(boolean init) { initialized = init; }
+    public static void setInitialized(boolean init) { FileProcessing.initialized = init; }
 
-    public static void setUploadedFileURI(Uri u) { uploadedFileURI = u; }
+    public static void setUploadedFileURI(Uri u) { FileProcessing.uploadedFileURI = u; }
+
+    public static void setFileName(String fileName) { FileProcessing.fileName = fileName; }
 
     public static void readFile(Uri fileURI, Context fileContext, boolean fromCloud) throws IOException {
 
         // WIPE INTERNAL STATE BEFORE FILE READ
         FileProcessing.reset();
+
+        // SET FILE NAME
+        FileProcessing.fileName = getFileName(fileContext, fileURI);
 
         // PERFORM FILE READ (LOCAL VS CLOUD STORAGE)
         BufferedReader br;
@@ -88,32 +91,32 @@ public class FileProcessing {
     }
 
     static void reset() {
-        fileContents = "";
-        fileContentLines.clear();
-        messageTimeStamp.clear();
-        sender.clear();
-        messageBody.clear();
+        FileProcessing.initialized = false;
+        FileProcessing.fileName = null;
+        FileProcessing.messageTimeStamp.clear();
+        FileProcessing.sender.clear();
+        FileProcessing.messageBody.clear();
     }
 
-    static void addMessageTimeStamp(Date myTimeStamp) {
+    private static void addMessageTimeStamp(Date myTimeStamp) {
         if (myTimeStamp != null) {
             messageTimeStamp.add(myTimeStamp);
         }
     }
 
-    static void addMessageBody(String myMessageBody) {
+    private static void addMessageBody(String myMessageBody) {
         if (myMessageBody != null) {
             messageBody.add(myMessageBody);
         }
     }
 
-    static void addSender(String mySender) {
+    private static void addSender(String mySender) {
         if (mySender != null && mySender != "") {
             sender.add(mySender);
         }
     }
 
-    static Date retrieveDate(String line) {
+    private static Date retrieveDate(String line) {
         try {
             if (line.substring(18, 19).equals("m")) {
                 return parseDateString(line.substring(0, 19));
@@ -127,7 +130,7 @@ public class FileProcessing {
         }
     }
 
-    static String retrieveSender(String line) {
+    private static String retrieveSender(String line) {
         Pattern p = Pattern.compile("m - .*?:");
         Matcher m = p.matcher(line);
         try {
@@ -143,7 +146,7 @@ public class FileProcessing {
         }
     }
 
-    static String retrieveMessageBody(String line) {
+    private static String retrieveMessageBody(String line) {
         Pattern p = Pattern.compile(".*m - .*?: ");
         Matcher m = p.matcher(line);
         if (m.find()) {
@@ -155,15 +158,7 @@ public class FileProcessing {
         }
     }
 
-//    static List<String> extractLines(String fileContents) {
-//        try {
-//            return Arrays.asList(fileContents.split("\n"));
-//        } catch (Exception e) {
-//            return null;
-//        }
-//    }
-
-    static Date parseDateString(String dt) {
+    private static Date parseDateString(String dt) {
         try {
             dt = dt.replaceFirst(" pm", " PM").replaceFirst(" am", " AM");
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy, HH:mm a", Locale.US);
@@ -171,5 +166,28 @@ public class FileProcessing {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    /**
+     * Utility function to retrieve file name from URI
+     *
+     * @param uri : URI of the file to extract name from
+     * @return fileName of the file represented by its URI
+     */
+    public static String getFileName(Context applicationContext, Uri uri) {
+        ContentResolver cr = applicationContext.getContentResolver();
+        String[] projection = {MediaStore.MediaColumns.DISPLAY_NAME};
+        Cursor metaCursor = cr.query(uri, projection, null, null, null);
+        String fileName = "Unnamed File";
+        if (metaCursor != null) {
+            try {
+                if (metaCursor.moveToFirst()) {
+                    fileName = metaCursor.getString(0);
+                }
+            } finally {
+                metaCursor.close();
+            }
+        }
+        return fileName;
     }
 }

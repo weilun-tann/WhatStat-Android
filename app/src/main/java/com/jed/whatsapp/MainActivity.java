@@ -1,11 +1,9 @@
 package com.jed.whatsapp;
 
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.auth.api.Auth;
@@ -45,7 +44,6 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
     private static final int ANALYZE_REQUEST_CODE = 4;
     private static final int GRAPH_REQUEST_CODE = 5;
     private FirebaseAuth mAuth = null;
-    private FirebaseUser mCurrentUser = null;
     private GoogleApiClient mGoogleApiClient = null;
     private StorageReference mStorageRef = null;
 
@@ -57,7 +55,6 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
 
         // FIREBASE AUTHENTICATION STORAGE
         mAuth = FirebaseAuth.getInstance();
-        mCurrentUser = mAuth.getCurrentUser();
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
         // GOOGLE SIGN IN
@@ -87,8 +84,25 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
             return true;
         });
 
+        // FILE FAB - onCreate() will be called again upon return
+        final FloatingActionButton fileButton = findViewById(R.id.fileFAB);
+
+        fileButton.setOnClickListener(view -> {
+            if (FileProcessing.isInitialized()) {
+                String msg = "Current File : " + FileProcessing.getFileName();
+                View contextView = findViewById(R.id.activity_main);
+                Snackbar.make(contextView, msg, Snackbar.LENGTH_LONG).show();
+            } else {
+                String msg = "No File Uploaded";
+                View contextView = findViewById(R.id.activity_main);
+                Snackbar uploadBar = Snackbar.make(contextView, msg, Snackbar.LENGTH_LONG);
+                uploadBar.setAction(R.string.uploadBarButton, new uploadBarListener());
+                uploadBar.setActionTextColor(getResources().getColor(R.color.white));
+                uploadBar.show();
+            }
+        });
+
         // VIEW HISTORY BUTTON
-        // TODO : CHECK FOR CURRENT USER --> SNACKBAR --> NOT AVAILABLE IF NULL
         final Button viewHistoryButton = findViewById(R.id.viewHistoryButton);
         viewHistoryButton.setOnClickListener(view -> {
             if (FirebaseAuth.getInstance().getCurrentUser() == null) {
@@ -96,12 +110,13 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
                 View contextView = findViewById(R.id.activity_main);
                 Snackbar signInBar = Snackbar.make(contextView, error, Snackbar.LENGTH_LONG);
                 signInBar.setAction(R.string.loginBarButton, new loginBarListener());
+                signInBar.setActionTextColor(getResources().getColor(R.color.white));
                 signInBar.show();
+            } else {
+                Intent intent = new Intent(MainActivity.this, WaitingScreenHistoryActivity.class);
+                startActivityForResult(intent, VIEW_HISTORY_CODE);
+                overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
             }
-
-            Intent intent = new Intent(MainActivity.this, WaitingScreenHistoryActivity.class);
-            startActivityForResult(intent, VIEW_HISTORY_CODE);
-            overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
         });
 
         // UPLOAD BUTTON
@@ -155,6 +170,22 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final FloatingActionButton fileButton = findViewById(R.id.fileFAB);
+        if (FileProcessing.isInitialized() && FileProcessing.getUploadedFileURI() != null) {
+            Log.d(TAG, "triggered colour change in onResume()");
+            ColorStateList c = ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(),
+                    R.color.fileFABActive));
+            fileButton.setBackgroundTintList(c);
+        } else {
+            ColorStateList c = ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(),
+                    R.color.fileFABDormant));
+            fileButton.setBackgroundTintList(c);
+        }
+    }
+
     /**
      * CUSTOM LOGIN SNACKBAR LISTENER (FOR FAILED VIEW HISTORY)
      */
@@ -162,6 +193,17 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         @Override
         public void onClick(View v) {
             signIn();
+        }
+    }
+
+    /**
+     * CUSTOM UPLOAD SNACKBAR LISTENER (FOR FILE FAB)
+     */
+    public class uploadBarListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            final Button uploadButton = findViewById(R.id.uploadButton);
+            uploadButton.performClick();
         }
     }
 
@@ -174,7 +216,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
 
         // GET FILE NAME
         Uri uri = data.getData();
-        String fileName = getFileName(uri);
+        String fileName = FileProcessing.getFileName(getApplicationContext(), uri);
 
         // GET CURRENT USER'S USERNAME
         String currentUserName = "GuestUser";
@@ -193,44 +235,20 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
                         Toast.makeText(getApplicationContext(), "Upload Success", Toast.LENGTH_SHORT).show());
     }
 
-    /**
-     * Utility function to retrieve file name from URI
-     *
-     * @param uri : URI of the file to extract name from
-     * @return fileName of the file represented by its URI
-     */
-    public String getFileName(Uri uri) {
-        ContentResolver cr = getApplicationContext().getContentResolver();
-        String[] projection = {MediaStore.MediaColumns.DISPLAY_NAME};
-        Cursor metaCursor = cr.query(uri, projection, null, null, null);
-        String fileName = "Unnamed File";
-        if (metaCursor != null) {
-            try {
-                if (metaCursor.moveToFirst()) {
-                    fileName = metaCursor.getString(0);
-                }
-            } finally {
-                metaCursor.close();
-            }
-        }
-        return fileName;
-    }
 
-    // TODO : UNABLE TO LOGIN! (BUG)
     private void signIn() {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
             startActivityForResult(signInIntent, LOGIN_REQUEST_CODE);
         } else {
-            String msg = "LONG HOLD TO SIGN OUT.";
+            String msg = "LONG HOLD TO SIGN OUT";
             View contextView = findViewById(R.id.activity_main);
             Snackbar.make(contextView, msg, Snackbar.LENGTH_LONG).show();
         }
     }
 
-    // TODO : FIX BUG WHERE USER CAN STILL ACCESS HISTORY EVEN AFTER NOT SIGNING IN
     private void signOut() {
-        if (mCurrentUser == null) {
+        if (mAuth.getCurrentUser() == null) {
             String msg = "SHORT TAP TO SIGN IN";
             View contextView = findViewById(R.id.activity_main);
             Snackbar.make(contextView, msg, Snackbar.LENGTH_LONG).show();
@@ -261,7 +279,17 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
                     FileProcessing.reset();
                     ReplyTiming.reset();
                     FileProcessing.setUploadedFileURI(data.getData());
+                    FileProcessing.setFileName(FileProcessing.getFileName(getApplicationContext()
+                            , data.getData()));
                     FileProcessing.setInitialized(true);
+
+                    // TURN FILE FAB GREEN
+                    FloatingActionButton fileButton = findViewById(R.id.fileFAB);
+                    ColorStateList c = ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(),
+                            R.color.fileFABActive));
+                    fileButton.setBackgroundTintList(c);
+
+                    // UPLOAD THE LOCAL FILE TO FIREBASE STORAGE
                     uploadToFB(data);
                     break;
 
@@ -302,7 +330,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        mCurrentUser = mAuth.getCurrentUser();
+                        FirebaseUser mCurrentUser = mAuth.getCurrentUser();
                         String msg = "Welcome, " + mCurrentUser.getDisplayName() + " I've " +
                                 "securely linked you up with Google and our servers!";
                         View contextView = findViewById(R.id.activity_main);

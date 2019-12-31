@@ -15,7 +15,7 @@
         android:layout_width="@dimen/main_menu_button_width"
         android:layout_height="@dimen/main_menu_button_height"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="370dp"
+        android:layout_marginTop="300dp"
         android:text="@string/viewHistoryButton"
         android:textSize="@dimen/main_menu_button_text"
         app:cornerRadius="10dp"
@@ -73,9 +73,20 @@
         android:id="@+id/loginFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="30dp"
         app:backgroundTint="@color/teal"
         app:srcCompat="@drawable/google_plus_icon" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fileFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="30dp"
+        app:backgroundTint="@color/fileFABDormant"
+        app:srcCompat="@drawable/black_file_icon" />
 
 </RelativeLayout>

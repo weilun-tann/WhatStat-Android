@@ -5,11 +5,10 @@
 
     <!--Main Menu-->
     <color name="loginFAB">#55EFC4</color>
+    <color name="fileFABActive">#0BE881</color>
+    <color name="fileFABDormant">#FF6B81</color>
+    <color name="mainMenuBackground">#FFFFFF</color>
 
-    <color name="mainMenuBackground">#FFEBFC</color>
-    <color name="mainMenuButtonBorder">#FFFFFF</color>
-    <color name="mainMenuButtonFill">#FFFFFF</color>
-    <color name="mainMenuButtonOnClick">#55EFC4</color>
 
     <!--Message Stats-->
     <color name="colorStatsHeader">#F6E58D</color>
@@ -30,13 +29,16 @@
     <color name="axisLine">#143D59</color>
 
     <!--Card View-->
-    <color name="cardText">#636E72</color>
+    <color name="cardFileName">#000000</color>
+    <color name="cardFileDate">#869399</color>
+    <color name="cardBackground">#55EFC4</color>
+
 
 
     <!--Main App Theme Colors-->
-    <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#FFFFFF</color>
-    <color name="colorAccent">#2d3436</color>
+    <color name="colorPrimary">#FF9FF3</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#2D3436</color>
 
 
     <!--Generic Colors-->
