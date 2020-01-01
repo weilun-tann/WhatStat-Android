@@ -101,6 +101,7 @@ public class ScatterTimeActivity extends DemoBase implements OnSeekBarChangeList
         leftAxis.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.senderOne));
         leftAxis.setDrawAxisLine(true);
         leftAxis.setDrawGridLines(true);
+        leftAxis.setDrawLabels(true);
         leftAxis.setTextSize(14f);
         leftAxis.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.senderOne));
         leftAxis.setAxisMinimum(0);
@@ -113,11 +114,10 @@ public class ScatterTimeActivity extends DemoBase implements OnSeekBarChangeList
 
         Legend legend = chart.getLegend();
         legend.setEnabled(true);
-        legend.setTextSize(16f);
+        legend.setTextSize(20f);
         legend.setForm(Legend.LegendForm.CIRCLE);
         legend.setFormSize(16f);
         legend.setWordWrapEnabled(true);
-
     }
 
     private void setData(int count, float range) {
@@ -126,8 +126,9 @@ public class ScatterTimeActivity extends DemoBase implements OnSeekBarChangeList
         ArrayList<Entry> replyTimingsOne = new ArrayList<>();
         try {
             for (int i = 0; i < ReplyTiming.getSenderOneTimeStamp().size(); i++) {
-                replyTimingsOne.add(new Entry(ReplyTiming.getSenderOneTimeStamp().get(i).getTime(),
-                        ReplyTiming.getSenderOneReplyTimeInMinutes().get(i)));
+                long timeStamp = ReplyTiming.getSenderOneTimeStamp().get(i).getTime();
+                float replyTimeInHours = ReplyTiming.getSenderOneReplyTimeInMinutes().get(i) / 60;
+                replyTimingsOne.add(new Entry(timeStamp, replyTimeInHours));
             }
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
@@ -136,8 +137,9 @@ public class ScatterTimeActivity extends DemoBase implements OnSeekBarChangeList
         ArrayList<Entry> replyTimingsTwo = new ArrayList<>();
         try {
             for (int i = 0; i < ReplyTiming.getSenderTwoTimeStamp().size(); i++) {
-                replyTimingsTwo.add(new Entry(ReplyTiming.getSenderTwoTimeStamp().get(i).getTime(),
-                        ReplyTiming.getSenderTwoReplyTimeInMinutes().get(i)));
+                long timeStamp = ReplyTiming.getSenderTwoTimeStamp().get(i).getTime();
+                float replyTimeInHours = ReplyTiming.getSenderTwoReplyTimeInMinutes().get(i) / 60;
+                replyTimingsTwo.add(new Entry(timeStamp, replyTimeInHours));
             }
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
@@ -150,13 +152,10 @@ public class ScatterTimeActivity extends DemoBase implements OnSeekBarChangeList
         set1.setAxisDependency(AxisDependency.LEFT);
         set1.setColor(ContextCompat.getColor(getApplicationContext(), R.color.senderOne));
         set1.setDrawValues(false);
-        set1.setColor(ContextCompat.getColor(getApplicationContext(), R.color.senderOne));
 
         set2.setAxisDependency(AxisDependency.LEFT);
         set2.setColor(ContextCompat.getColor(getApplicationContext(), R.color.senderTwo));
-        set2.setValueTextColor(ContextCompat.getColor(getApplicationContext(), R.color.senderTwo));
         set2.setDrawValues(false);
-        set2.setColor(ContextCompat.getColor(getApplicationContext(), R.color.senderTwo));
 
         // create a data object with the data sets
         ScatterData data = new ScatterData();
@@ -167,12 +166,14 @@ public class ScatterTimeActivity extends DemoBase implements OnSeekBarChangeList
         chart.setData(data);
         set1.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
         set2.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
-        set1.setScatterShapeSize(16f);
-        set2.setScatterShapeSize(16f);
+        set1.setScatterShapeSize(25f);
+        set2.setScatterShapeSize(25f);
 
         // change axis color
-        chart.getAxisLeft().setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.senderOne));
-        chart.getAxisLeft().setAxisLineColor(ContextCompat.getColor(getApplicationContext(), R.color.senderOne));
+        chart.getAxisLeft().setTextColor(ContextCompat.getColor(getApplicationContext(),
+                R.color.black));
+        chart.getAxisLeft().setAxisLineColor(ContextCompat.getColor(getApplicationContext(),
+                R.color.black));
     }
 
     @Override

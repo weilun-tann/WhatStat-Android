@@ -17,7 +17,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -50,11 +49,9 @@ public class UploadedCloudFileAdapter extends RecyclerView.Adapter<UploadedCloud
         // WE STRIP OFF THE DATETIME STAMP FROM THE FILENAME FOR BETTER PRESENTATION
         String truncatedFileName = UploadedCloudFile.getFileName().substring(0,
                 UploadedCloudFile.getFileName().length() - 28);
-        Calendar c = Calendar.getInstance();
-        c.setTime(UploadedCloudFile.getLastModified());
-        c.add(Calendar.HOUR_OF_DAY, 8);
-        Date localDate = c.getTime();
-        String truncatedDate = localDate.toString().substring(0, localDate.toString().length() - 9);
+        Date localDate = UploadedCloudFile.getCreated();
+        String truncatedDate = localDate.toString().substring(0,
+                localDate.toString().length() - 18);
         holder.fileDate.setText(truncatedDate);
         holder.fileName.setText(truncatedFileName);
     }
@@ -96,7 +93,7 @@ public class UploadedCloudFileAdapter extends RecyclerView.Adapter<UploadedCloud
             int chosenPosition = this.getPosition();
             UploadedCloudFile chosenFile = UploadedCloudFileList.get(chosenPosition);
             String chosenFileCloudDir = chosenFile.getFileName();
-            String chosenFileName = chosenFileCloudDir.substring(0, chosenFileCloudDir.length()-28);
+            String chosenFileName = chosenFileCloudDir.substring(0, chosenFileCloudDir.length() - 28);
             Log.d(TAG, "chosenFileCloudDir : " + chosenFile.getFileName());
             StorageReference chosenFileRef = mStorageRef.child(chosenFileCloudDir);
             chosenFileRef.getDownloadUrl()

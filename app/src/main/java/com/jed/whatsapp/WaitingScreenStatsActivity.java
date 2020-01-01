@@ -68,6 +68,7 @@ public class WaitingScreenStatsActivity extends AppCompatActivity {
 
                 // 2. PERFORM FILE ANALYSIS
                 ReplyTiming.analyzeReplyTimings();
+                ReplyTiming.debugReplyTiming();
 
                 // 3. REDIRECT TO EITHER THE STATS OR GRAPHING SCREEN
                 if (getIntent().getStringExtra("StatsOrGraph").equals("Stats")) {
@@ -121,7 +122,7 @@ public class WaitingScreenStatsActivity extends AppCompatActivity {
     public class textThread extends Thread {
         @Override
         public void run() {
-            final TextView talkToUser = (TextView) findViewById(R.id.talkToUser);
+            final TextView talkToUser = findViewById(R.id.talkToUser);
             for (int i = 0; i < 99; i++) {
                 try {
                     talkToUser.setText(promptList.get(new Random().nextInt(promptList.size())));

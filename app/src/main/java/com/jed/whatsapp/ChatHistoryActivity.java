@@ -2,7 +2,6 @@ package com.jed.whatsapp;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -32,7 +31,7 @@ public class ChatHistoryActivity extends Activity {
         Set<Map.Entry> entries = uploadedFiles.entrySet();
         for (Map.Entry entry : entries) {
             UploadedCloudFile f = new UploadedCloudFile();
-            f.setLastModified((Date) entry.getKey());
+            f.setCreated((Date) entry.getKey());
             f.setFileName((String) entry.getValue());
             uploadedCloudFiles.add(f);
         }
@@ -43,8 +42,5 @@ public class ChatHistoryActivity extends Activity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(uploadedCloudFileAdapter);
-
-        // DEBUG : TO DELETE LATER
-        Toast.makeText(this, uploadedFiles.toString(), Toast.LENGTH_LONG).show();
     }
 }

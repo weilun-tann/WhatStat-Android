@@ -32,12 +32,12 @@ public class MessageStatisticsActivity extends AppCompatActivity {
             int senderOneTotalMessages = ReplyTiming.getSenderOneTotalMessages();
             int senderOneTotalWords = ReplyTiming.getSenderOneTotalWords();
             int senderOneWPM = ReplyTiming.getSenderOneTotalWords() / ReplyTiming.getSenderOneTotalMessages();
-            double senderOneAvgReplyTiming = ReplyTiming.getSenderOneAverageReplyTiming();
+            double senderOneAvgReplyTiming = ReplyTiming.getSenderOneAverageReplyTimingInHours();
 
             int senderTwoTotalMessages = ReplyTiming.getSenderTwoTotalMessages();
             long senderTwoTotalWords = ReplyTiming.getSenderTwoTotalWords();
             long senderTwoWPM = ReplyTiming.getSenderTwoTotalWords() / ReplyTiming.getSenderTwoTotalMessages();
-            double senderTwoAvgReplyTiming = ReplyTiming.getSenderTwoAverageReplyTiming();
+            double senderTwoAvgReplyTiming = ReplyTiming.getSenderTwoAverageReplyTimingInHours();
 
             leftSenderName.setText(ReplyTiming.getSenderList().get(0));
             rightSenderName.setText(ReplyTiming.getSenderList().get(1));

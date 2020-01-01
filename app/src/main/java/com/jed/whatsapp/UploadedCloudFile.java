@@ -4,22 +4,22 @@ import java.util.Date;
 
 public class UploadedCloudFile {
 
-    private Date lastModified;
+    private Date dateCreated;
     private String fileName;
 
     public String getFileName() {
         return fileName;
     }
 
-    public Date getLastModified() {
-        return lastModified;
+    public Date getCreated() {
+        return dateCreated;
     }
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
-    public void setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
+    public void setCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 }

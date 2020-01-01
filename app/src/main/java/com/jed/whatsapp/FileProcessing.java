@@ -151,7 +151,7 @@ public class FileProcessing {
         Matcher m = p.matcher(line);
         if (m.find()) {
             String removedBody = m.group();
-            String messageBody = line.substring(removedBody.length(), line.length());
+            String messageBody = line.substring(removedBody.length());
             return messageBody;
         } else {
             return null;
