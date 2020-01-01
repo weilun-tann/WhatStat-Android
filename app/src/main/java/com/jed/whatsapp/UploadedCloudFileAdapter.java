@@ -37,7 +37,7 @@ public class UploadedCloudFileAdapter extends RecyclerView.Adapter<UploadedCloud
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_cardview, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         context = parent.getContext();
         return viewHolder;

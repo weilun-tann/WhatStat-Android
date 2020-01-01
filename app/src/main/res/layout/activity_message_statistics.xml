@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/msg_stats_bg"
-    android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
+    android:theme="@android:style/Theme.Material.Light.NoActionBar"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <TextView
@@ -14,10 +14,11 @@
         android:layout_height="90dp"
         android:layout_marginEnd="209dp"
         android:background="@color/colorStatsRightCircle"
-        android:fontFamily="@font/playfairdisplay_bold"
+        android:fontFamily="@font/montserrat_bold"
         android:gravity="center"
-        android:text=""
-        android:textSize="20sp"
+        android:text="leftSenderName"
+        android:textColor="@color/black"
+        android:textSize="@dimen/senderNameFont"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,10 +29,11 @@
         android:layout_height="90dp"
         android:layout_marginStart="209dp"
         android:background="@color/colorStatsLeftCircle"
-        android:fontFamily="@font/playfairdisplay_bold"
+        android:fontFamily="@font/montserrat_bold"
         android:gravity="center"
-        android:text=""
-        android:textSize="20sp"
+        android:text="rightSenderName"
+        android:textColor="@color/black"
+        android:textSize="@dimen/senderNameFont"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +43,7 @@
         android:layout_width="410dp"
         android:layout_height="600dp"
         android:layout_marginTop="101dp"
-        android:fontFamily="@font/playfairdisplay_bold"
+        android:fontFamily="@font/montserrat_bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,11 +60,10 @@
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="920dp"
-                android:fontFamily="@font/playfairdisplay_bold"
                 android:gravity="center"
                 android:text="AVERAGE REPLY TIMING (HOURS)"
                 android:textColor="@color/msgStatsDescription"
-                android:textSize="20sp" />
+                android:textSize="@dimen/senderNameFont" />
 
             <TextView
                 android:id="@+id/senderOneMsgCount"
@@ -70,11 +71,10 @@
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="200dp"
-                android:fontFamily="@font/playfairdisplay_bold"
                 android:gravity="center"
                 android:text="TOTAL TEXTS"
                 android:textColor="@color/msgStatsDescription"
-                android:textSize="20sp" />
+                android:textSize="@dimen/senderNameFont" />
 
             <TextView
                 android:id="@+id/senderOneWPM"
@@ -82,11 +82,10 @@
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="435dp"
-                android:fontFamily="@font/playfairdisplay_bold"
                 android:gravity="center"
                 android:text="TOTAL WORDS"
                 android:textColor="@color/msgStatsDescription"
-                android:textSize="20sp" />
+                android:textSize="@dimen/senderNameFont" />
 
             <TextView
                 android:id="@+id/senderTwoMsgCount"
@@ -94,11 +93,10 @@
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="680dp"
-                android:fontFamily="@font/playfairdisplay_bold"
                 android:gravity="center"
                 android:text="WORDS PER MESSAGE"
                 android:textColor="@color/msgStatsDescription"
-                android:textSize="20sp" />
+                android:textSize="@dimen/senderNameFont" />
 
             <!--TITLES FOR LEFT CIRCLE-->
             <TextView
@@ -108,11 +106,10 @@
                 android:layout_marginLeft="37dp"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/solid_circle_left"
-                android:fontFamily="@font/playfairdisplay_bold"
                 android:gravity="center"
                 android:text="30452"
                 android:textColor="@color/colorStatsLeftText"
-                android:textSize="30sp" />
+                android:textSize="@dimen/bubbleFont" />
 
             <TextView
                 android:id="@+id/leftCircleTwo"
@@ -121,11 +118,10 @@
                 android:layout_marginLeft="37dp"
                 android:layout_marginTop="280dp"
                 android:background="@drawable/solid_circle_left"
-                android:fontFamily="@font/playfairdisplay_bold"
                 android:gravity="center"
                 android:text="641905"
                 android:textColor="@color/colorStatsLeftText"
-                android:textSize="30sp" />
+                android:textSize="@dimen/bubbleFont" />
 
             <TextView
                 android:id="@+id/leftCircleThree"
@@ -134,11 +130,10 @@
                 android:layout_marginLeft="37dp"
                 android:layout_marginTop="520dp"
                 android:background="@drawable/solid_circle_left"
-                android:fontFamily="@font/playfairdisplay_bold"
                 android:gravity="center"
                 android:text="30452"
                 android:textColor="@color/colorStatsLeftText"
-                android:textSize="30sp" />
+                android:textSize="@dimen/bubbleFont" />
 
             <TextView
                 android:id="@+id/leftCircleFour"
@@ -147,11 +142,10 @@
                 android:layout_marginLeft="37dp"
                 android:layout_marginTop="760dp"
                 android:background="@drawable/solid_circle_left"
-                android:fontFamily="@font/playfairdisplay_bold"
                 android:gravity="center"
                 android:text="30452"
                 android:textColor="@color/colorStatsLeftText"
-                android:textSize="30sp" />
+                android:textSize="@dimen/bubbleFont" />
 
             <TextView
                 android:id="@+id/rightCircleOne"
@@ -160,11 +154,10 @@
                 android:layout_marginLeft="245dp"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/solid_circle_right"
-                android:fontFamily="@font/playfairdisplay_bold"
                 android:gravity="center"
                 android:text="30452"
                 android:textColor="@color/colorStatsRightText"
-                android:textSize="30sp" />
+                android:textSize="@dimen/bubbleFont" />
 
             <TextView
                 android:id="@+id/rightCircleTwo"
@@ -173,11 +166,10 @@
                 android:layout_marginLeft="245dp"
                 android:layout_marginTop="280dp"
                 android:background="@drawable/solid_circle_right"
-                android:fontFamily="@font/playfairdisplay_bold"
                 android:gravity="center"
                 android:text="641905"
                 android:textColor="@color/colorStatsRightText"
-                android:textSize="30sp" />
+                android:textSize="@dimen/bubbleFont" />
 
             <TextView
                 android:id="@+id/rightCircleThree"
@@ -186,11 +178,10 @@
                 android:layout_marginLeft="245dp"
                 android:layout_marginTop="520dp"
                 android:background="@drawable/solid_circle_right"
-                android:fontFamily="@font/playfairdisplay_bold"
                 android:gravity="center"
                 android:text="30452"
                 android:textColor="@color/colorStatsRightText"
-                android:textSize="30sp" />
+                android:textSize="@dimen/bubbleFont" />
 
             <TextView
                 android:id="@+id/rightCircleFour"
@@ -199,11 +190,10 @@
                 android:layout_marginLeft="245dp"
                 android:layout_marginTop="760dp"
                 android:background="@drawable/solid_circle_right"
-                android:fontFamily="@font/playfairdisplay_bold"
                 android:gravity="center"
                 android:text="30452"
                 android:textColor="@color/colorStatsRightText"
-                android:textSize="30sp" />
+                android:textSize="@dimen/bubbleFont" />
 
         </RelativeLayout>
     </ScrollView>

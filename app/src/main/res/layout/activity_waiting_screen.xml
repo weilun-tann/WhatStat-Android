@@ -14,12 +14,10 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/talkToUser"
         android:layout_width="300dp"
-        android:layout_height="120dp"
+        android:layout_height="300dp"
         android:gravity="center"
         android:textSize="20sp"
         android:text=""
-        android:fontFamily="@font/playfairdisplay_bold"
-        android:layout_centerInParent="true">
+android:layout_centerInParent="true">
     </TextView>
-
 </RelativeLayout>

@@ -1,9 +1,6 @@
 // TODO LIST
 
 1. Change SELECT button border in CardView to match card background
-2. Rely on onResume() in MainActivity to implement both the LOGIN and UPLOADED_FILE FABs
-  --> Place the if-else colouring within onResume(), since it'll kick in upon activityPause
-  --> COMMENT out all existing manual changes
-  --> Query via Firebase.getAuthentication()... and Firebase.getStorage()...
 3. Sample Test on Mom, Dad, Sis chats
 4. Revamp Comparison Screen ***
+5. Add BGM

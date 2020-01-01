@@ -12,8 +12,8 @@
     <string name="menuGraphButton">GRAPH</string>
 
     <!--MAIN MENU SNACKBAR-->
-    <string name="loginBarButton">SIGN IN</string>
-    <string name="uploadBarButton">UPLOAD</string>
+    <string name="loginBarButton">Sign In</string>
+    <string name="uploadBarButton">Upload</string>
 
     <!--UPLOAD HISTORY SELECTOR-->
     <string name="cardSelectButton">SELECT</string>

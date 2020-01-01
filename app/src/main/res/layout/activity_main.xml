@@ -7,7 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_menu_bg"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:theme="@android:style/Theme.Material.Light.NoActionBar">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/viewHistoryButton"
@@ -73,8 +74,8 @@
         android:id="@+id/loginFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:layout_margin="30dp"
         app:backgroundTint="@color/teal"
         app:srcCompat="@drawable/google_plus_icon" />
@@ -86,7 +87,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_margin="30dp"
-        app:backgroundTint="@color/fileFABDormant"
+        app:backgroundTint="@color/buttonRed"
         app:srcCompat="@drawable/black_file_icon" />
 
 </RelativeLayout>

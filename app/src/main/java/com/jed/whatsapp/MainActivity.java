@@ -2,6 +2,7 @@ package com.jed.whatsapp;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,9 +39,9 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
 
     // ATTRIBUTES
     private static final String TAG = "MainActivity";
-    private static final int VIEW_HISTORY_CODE = 1;
-    private static final int LOGIN_REQUEST_CODE = 2;
-    private static final int UPLOAD_REQUEST_CODE = 3;
+    private static final int LOGIN_REQUEST_CODE = 1;
+    private static final int UPLOAD_REQUEST_CODE = 2;
+    private static final int VIEW_HISTORY_CODE = 3;
     private static final int ANALYZE_REQUEST_CODE = 4;
     private static final int GRAPH_REQUEST_CODE = 5;
     private FirebaseAuth mAuth = null;
@@ -70,15 +71,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
 
         // LOGIN FAB
         final FloatingActionButton loginButton = findViewById(R.id.loginFAB);
-
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            loginButton.setImageResource(R.drawable.black_connected_icon);
-        }
-
-        loginButton.setOnClickListener(view -> {
-            signIn();
-        });
-
+        loginButton.setOnClickListener(view -> signIn());
         loginButton.setOnLongClickListener(v -> {
             signOut();
             return true;
@@ -170,20 +163,85 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         });
     }
 
+    /**
+     * Triggers the UI redraw for the following components on the Main Menu
+     * according to the Login and FileUploaded status at the current state
+     * 1. Login FAB (Icon + Background Colour)
+     * 2. File FAB (Background Colour)
+     * 3. Upload and History Buttons (Text Colour)
+     */
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume() TRIGGERED");
+
+        final FloatingActionButton loginButton = findViewById(R.id.loginFAB);
         final FloatingActionButton fileButton = findViewById(R.id.fileFAB);
-        if (FileProcessing.isInitialized() && FileProcessing.getUploadedFileURI() != null) {
-            Log.d(TAG, "triggered colour change in onResume()");
-            ColorStateList c = ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(),
-                    R.color.fileFABActive));
-            fileButton.setBackgroundTintList(c);
+        final Button historyButton = findViewById(R.id.viewHistoryButton);
+        final Button uploadButton = findViewById(R.id.uploadButton);
+        int newColor;
+
+        // LOGIN FAB
+        if (mAuth.getCurrentUser() != null) {
+
+            // ICON IMAGE
+            loginButton.setImageResource(R.drawable.black_connected_icon);
+
+            // ICON COLOR
+            newColor = ContextCompat.getColor(getApplicationContext(), R.color.buttonGreen);
+            ColorStateList c = ColorStateList.valueOf(newColor);
+            loginButton.setBackgroundTintList(c);
         } else {
-            ColorStateList c = ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(),
-                    R.color.fileFABDormant));
-            fileButton.setBackgroundTintList(c);
+
+            // ICON IMAGE
+            loginButton.setImageResource(R.drawable.google_plus_icon);
+
+            // ICON COLOR
+            newColor = ContextCompat.getColor(getApplicationContext(), R.color.buttonRed);
+            ColorStateList c = ColorStateList.valueOf(newColor);
+            loginButton.setBackgroundTintList(c);
         }
+
+        // FILE FAB AND HISTORY/UPLOAD BUTTON
+        if (FileProcessing.isInitialized() && FileProcessing.getUploadedFileURI() != null) {
+
+            // FILE FAB
+            newColor = ContextCompat.getColor(getApplicationContext(), R.color.buttonGreen);
+            ColorStateList c = ColorStateList.valueOf(newColor);
+            fileButton.setBackgroundTintList(c);
+
+            // UPLOAD BUTTON
+            newColor = R.color.buttonGreyText;
+            Resources.Theme theme = this.getTheme();
+            uploadButton.setTextColor(getResources().getColor(newColor, theme));
+
+            // HISTORY BUTTON
+            historyButton.setTextColor(getResources().getColor(newColor, theme));
+
+        } else {
+            // FILE FAB
+            newColor = ContextCompat.getColor(getApplicationContext(), R.color.buttonRed);
+            ColorStateList c = ColorStateList.valueOf(newColor);
+            fileButton.setBackgroundTintList(c);
+
+            // UPLOAD BUTTON
+            newColor = R.color.buttonBlackText;
+            Resources.Theme theme = this.getTheme();
+            uploadButton.setTextColor(getResources().getColor(newColor, theme));
+
+            // HISTORY BUTTON
+            historyButton.setTextColor(getResources().getColor(newColor, theme));
+        }
+    }
+
+    /**
+     * Triggers the reset of all internal stored data upon exiting the app
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FileProcessing.reset();
+        ReplyTiming.reset();
     }
 
     /**
@@ -230,12 +288,14 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
 
         // ADD SUCCESS AND FAILURE LISTENERS TO FILE UPLOAD PROCESS
         uploadTask.addOnFailureListener(exception ->
-                Toast.makeText(getApplicationContext(), "Upload Failed", Toast.LENGTH_SHORT).show())
+                Toast.makeText(getApplicationContext(), "Upload Failed", Toast.LENGTH_LONG).show())
                 .addOnSuccessListener(taskSnapshot ->
-                        Toast.makeText(getApplicationContext(), "Upload Success", Toast.LENGTH_SHORT).show());
+                        Toast.makeText(getApplicationContext(), "Upload Success", Toast.LENGTH_LONG).show());
     }
 
-
+    /**
+     * Starts the Google Sign-In process via an SignIn intent from the Google API
+     */
     private void signIn() {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
@@ -247,6 +307,10 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         }
     }
 
+    /**
+     * Starts the Google Sign-Out process via the Google API, and
+     * then modifies the Login FAB UI in MainActivity upon success
+     */
     private void signOut() {
         if (mAuth.getCurrentUser() == null) {
             String msg = "SHORT TAP TO SIGN IN";
@@ -254,12 +318,20 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
             Snackbar.make(contextView, msg, Snackbar.LENGTH_LONG).show();
         } else {
             Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(status -> {
+
+                // SNACK BAR FOR USER BYEBYE
                 String msg = "Goodbye! But do return soon with more chats for me!";
                 View contextView = findViewById(R.id.activity_main);
                 Snackbar.make(contextView, msg, Snackbar.LENGTH_LONG).show();
-                // CHANGE THE UI OF LOGIN FAB TO GUEST USER
-                final FloatingActionButton loginButton = findViewById(R.id.loginFAB);
+
+                // CHANGE TO GOOGLE+ ICON
+                FloatingActionButton loginButton = findViewById(R.id.loginFAB);
                 loginButton.setImageResource(R.drawable.google_plus_icon);
+
+                // CHANGE TO RED COLOR ICON
+                int newColor = ContextCompat.getColor(getApplicationContext(), R.color.buttonRed);
+                ColorStateList c = ColorStateList.valueOf(newColor);
+                loginButton.setBackgroundTintList(c);
             });
             mAuth.signOut();
         }
@@ -283,12 +355,6 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
                             , data.getData()));
                     FileProcessing.setInitialized(true);
 
-                    // TURN FILE FAB GREEN
-                    FloatingActionButton fileButton = findViewById(R.id.fileFAB);
-                    ColorStateList c = ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(),
-                            R.color.fileFABActive));
-                    fileButton.setBackgroundTintList(c);
-
                     // UPLOAD THE LOCAL FILE TO FIREBASE STORAGE
                     uploadToFB(data);
                     break;
@@ -303,6 +369,9 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
                     }
                     break;
 
+                case VIEW_HISTORY_CODE:
+                    break;
+
                 case ANALYZE_REQUEST_CODE:
                     break;
 
@@ -314,6 +383,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
 
     /**
      * Helper function to process connection failure to Google
+     *
      * @param connectionResult : indicates the result of the Google sign-in
      */
     @Override
@@ -323,6 +393,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
 
     /**
      * Performs Firebase server-side authentication using the user's Google account
+     *
      * @param acct : the GoogleAccount object used by the user to sign in
      */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -331,16 +402,21 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser mCurrentUser = mAuth.getCurrentUser();
+
+                        // SNACK BAR FOR HELLO, USER
                         String msg = "Welcome, " + mCurrentUser.getDisplayName() + " I've " +
                                 "securely linked you up with Google and our servers!";
                         View contextView = findViewById(R.id.activity_main);
                         Snackbar.make(contextView, msg, Snackbar.LENGTH_LONG).show();
-                        Log.d(TAG, "signInWithCredential:success");
 
-                        // CHANGE THE UI OF LOGIN FAB TO SIGNED IN GOOGLE USER
-                        final FloatingActionButton loginButton = findViewById(R.id.loginFAB);
+                        // CHANGE TO GOOGLE+ ICON
+                        FloatingActionButton loginButton = findViewById(R.id.loginFAB);
                         loginButton.setImageResource(R.drawable.black_connected_icon);
 
+                        // CHANGE TO RED COLOR ICON
+                        int newColor = ContextCompat.getColor(getApplicationContext(), R.color.buttonGreen);
+                        ColorStateList c = ColorStateList.valueOf(newColor);
+                        loginButton.setBackgroundTintList(c);
                     } else {
                         String msg = "This is embarrassing, we didn't manage to sign you in to " +
                                 "Google...";

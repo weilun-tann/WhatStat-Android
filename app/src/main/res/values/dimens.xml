@@ -1,16 +1,20 @@
 <resources>
     <dimen name="fab_margin">50dp</dimen>
-    <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <!--Main Menu-->
+    <!--MAIN MENU-->
     <dimen name="main_menu_icon">30dp</dimen>
     <dimen name="main_menu_button_width">200dp</dimen>
     <dimen name="main_menu_button_height">90dp</dimen>
     <dimen name="main_menu_button_text">14sp</dimen>
 
-    <!--Conversation History Selector-->
+    <!--MESSAGE STATISTICS-->
+    <dimen name="bubbleFont">20sp</dimen>
+    <dimen name="senderNameFont">16sp</dimen>
+
+
+    <!--CONVERSATION HISTORY SELECTOR-->
     <dimen name="history_filename">14sp</dimen>
     <dimen name="history_filedate">12sp</dimen>
 

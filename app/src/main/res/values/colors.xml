@@ -4,10 +4,13 @@
     <!--Login-->
 
     <!--Main Menu-->
+    <color name="buttonBlackText">#000000</color>
+    <color name="buttonGreyText">#95A5A6</color>
+    <color name="buttonGreen">#0BE881</color>
+    <color name="buttonRed">#FF6B81</color>
     <color name="loginFAB">#55EFC4</color>
-    <color name="fileFABActive">#0BE881</color>
-    <color name="fileFABDormant">#FF6B81</color>
     <color name="mainMenuBackground">#FFFFFF</color>
+
 
 
     <!--Message Stats-->
@@ -34,11 +37,10 @@
     <color name="cardBackground">#55EFC4</color>
 
 
-
     <!--Main App Theme Colors-->
     <color name="colorPrimary">#FF9FF3</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#2D3436</color>
+    <color name="colorAccent">#000000</color>
 
 
     <!--Generic Colors-->
