@@ -45,12 +45,12 @@ public class MessageStatisticsActivity extends AppCompatActivity {
             leftCircleOne.setText("" + senderOneTotalMessages);
             leftCircleTwo.setText("" + senderOneTotalWords);
             leftCircleThree.setText("" + senderOneWPM);
-            leftCircleFour.setText("" + (int)senderOneAvgReplyTiming);
+            leftCircleFour.setText("" + String.format("%.1f", senderOneAvgReplyTiming));
 
             rightCircleOne.setText("" + senderTwoTotalMessages);
             rightCircleTwo.setText("" + senderTwoTotalWords);
             rightCircleThree.setText("" + senderTwoWPM);
-            rightCircleFour.setText("" + (int)senderTwoAvgReplyTiming);
+            rightCircleFour.setText("" + String.format("%.1f", senderTwoAvgReplyTiming));
         } catch (ArithmeticException e) {
             Toast.makeText(getApplicationContext(), "Umm... could you maybe upload the " +
                     "text file for me first?", Toast.LENGTH_SHORT).show();

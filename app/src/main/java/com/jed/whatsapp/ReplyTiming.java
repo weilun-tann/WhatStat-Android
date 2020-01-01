@@ -4,7 +4,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 public class ReplyTiming {
@@ -78,7 +77,11 @@ public class ReplyTiming {
 
     // LOGIC METHODS
     public static void changeSenderList() {
-        uniqueSenderList = new ArrayList<>(new HashSet<>(FileProcessing.getSender()));
+//        uniqueSenderList = new ArrayList<>(new HashSet<>(FileProcessing.getSender()));
+        for (String sender : FileProcessing.getSender()) {
+            if (uniqueSenderList.size() == 2) break;
+            else if (!uniqueSenderList.contains(sender)) uniqueSenderList.add(sender);
+        }
     }
 
     public static void analyzeReplyTimings() {
@@ -97,16 +100,9 @@ public class ReplyTiming {
             senderTwoAverageReplyTimingInHours += replyTime;
         }
 
-        Log.d(TAG, "S1 Total RT : " + senderOneAverageReplyTimingInHours);
-        Log.d(TAG, "S2 Total RT: " + senderTwoAverageReplyTimingInHours);
-
         senderOneAverageReplyTimingInHours /= (senderOneReplyTimeInMinutes.size() * 60f);
         senderTwoAverageReplyTimingInHours /= (senderTwoReplyTimeInMinutes.size() * 60f);
         ReplyTiming.setInitialized(true);
-
-        Log.d(TAG, "S1 RT Size : " + senderOneReplyTimeInMinutes.size());
-        Log.d(TAG, "S2 RT Size : " + senderTwoReplyTimeInMinutes.size());
-
     }
 
     public static void debugReplyTiming() {
@@ -115,10 +111,16 @@ public class ReplyTiming {
         Log.d(TAG, "senderOneAverageReplyTimingInHours : " + senderOneAverageReplyTimingInHours);
         Log.d(TAG, "senderOneReplyTimeInMinutes.size() : " + senderOneReplyTimeInMinutes.size());
 
+        Log.d(TAG, "\n");
+
         Log.d(TAG, "senderTwoTimeStamp.size() : " + senderTwoTimeStamp.size());
         Log.d(TAG, "senderTwoTotalWords : " + senderTwoTotalWords);
         Log.d(TAG, "senderTwoAverageReplyTimingInHours : " + senderTwoAverageReplyTimingInHours);
         Log.d(TAG, "senderTwoReplyTimeInMinutes.size() : " + senderTwoReplyTimeInMinutes.size());
+
+        Log.d(TAG, "\n");
+
+        Log.d(TAG, "uniqueSenderList : " + uniqueSenderList.toString());
     }
 
     public static void reset() {
@@ -162,7 +164,7 @@ public class ReplyTiming {
                 float replyTimingInMinutes = replyTimingInMilliseconds / (60 * 1000);
                 float replyTimingInDays = replyTimingInMilliseconds / (24 * 60 * 60 * 1000);
 
-                if (!FileProcessing.getSender().get(i).equals(getSenderList().get(0))) {
+                if (FileProcessing.getSender().get(i).equals(getSenderList().get(0))) {
                     // TODO : CREATE USER-DEFINED THRESHOLD TO FILTER ANOMALIES
                     if ((replyTimingInDays >= MIN_REPLY_TIME_DAYS) & (replyTimingInDays <= MAX_REPLY_TIME_DAYS)) {
                         senderOneTimeStamp.add(FileProcessing.getMessageTimeStamp().get(i));
