@@ -78,12 +78,6 @@ public class UploadedCloudFileAdapter extends RecyclerView.Adapter<UploadedCloud
 
         @Override
         public void onClick(View v) {
-            /*
-            TODO
-            1. IMPLEMENT ChatHistoryActivity.finish() UPON CLICK,
-            2. GREY OUT (VIA CODE) THE UPLOAD BUTTON
-            3. CHANGE ICON (TO TICK) OF UPLOAD BUTTON
-             */
 
             // SET THE NEWLY CHOSEN FILE FOR ANALYSIS
             FileProcessing.reset();

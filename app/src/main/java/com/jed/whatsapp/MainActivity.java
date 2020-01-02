@@ -112,12 +112,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
             }
         });
 
-        // UPLOAD BUTTON
-        /*
-        TODO
-        1. CHECK IF EXISTING UPLOAD (FROM FILE_PROCESSING.INITIALIZED) IS TRUE
-        2. PROVIDE CONFIRMATION SCREEN IF ALREADY INITIALIZED
-         */
+        // UPLOAD BUTTONs
         final Button uploadButton = findViewById(R.id.uploadButton);
         uploadButton.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
@@ -183,7 +178,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
 
         // LOGIN FAB
         if (mAuth.getCurrentUser() != null) {
-
+            Log.d(TAG, "current user : " + mAuth.getCurrentUser().getDisplayName());
             // ICON IMAGE
             loginButton.setImageResource(R.drawable.black_connected_icon);
 
@@ -404,8 +399,8 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
                         FirebaseUser mCurrentUser = mAuth.getCurrentUser();
 
                         // SNACK BAR FOR HELLO, USER
-                        String msg = "Welcome, " + mCurrentUser.getDisplayName() + " I've " +
-                                "securely linked you up with Google and our servers!";
+                        String msg = "Welcome, " + mCurrentUser.getDisplayName() + ", you've been" +
+                                " connected!";
                         View contextView = findViewById(R.id.activity_main);
                         Snackbar.make(contextView, msg, Snackbar.LENGTH_LONG).show();
 

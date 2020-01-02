@@ -43,7 +43,6 @@
         android:layout_width="410dp"
         android:layout_height="600dp"
         android:layout_marginTop="101dp"
-        android:fontFamily="@font/montserrat_bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,51 +53,56 @@
             android:layout_height="wrap_content">
 
             <!--TITLES FOR MESSAGE STATISTICS-->
-            <TextView
-                android:id="@+id/senderTwoWPM"
-                android:layout_width="300dp"
-                android:layout_height="100dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="920dp"
-                android:gravity="center"
-                android:text="AVERAGE REPLY TIMING (HOURS)"
-                android:textColor="@color/msgStatsDescription"
-                android:textSize="@dimen/senderNameFont" />
 
             <TextView
-                android:id="@+id/senderOneMsgCount"
-                android:layout_width="300dp"
+                android:id="@+id/total_messages_tag"
+                android:layout_width="260dp"
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="200dp"
+                android:fontFamily="@font/montserrat_bold"
                 android:gravity="center"
-                android:text="TOTAL TEXTS"
+                android:text="@string/MsgStats_NumMessages"
                 android:textColor="@color/msgStatsDescription"
                 android:textSize="@dimen/senderNameFont" />
 
             <TextView
-                android:id="@+id/senderOneWPM"
-                android:layout_width="300dp"
+                android:id="@+id/total_words_tag"
+                android:layout_width="260dp"
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="435dp"
+                android:fontFamily="@font/montserrat_bold"
                 android:gravity="center"
-                android:text="TOTAL WORDS"
+                android:text="@string/MsgStats_NumWords"
                 android:textColor="@color/msgStatsDescription"
                 android:textSize="@dimen/senderNameFont" />
 
             <TextView
-                android:id="@+id/senderTwoMsgCount"
-                android:layout_width="300dp"
+                android:id="@+id/wpm_tag"
+                android:layout_width="260dp"
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="680dp"
+                android:fontFamily="@font/montserrat_bold"
                 android:gravity="center"
-                android:text="WORDS PER MESSAGE"
+                android:text="@string/MsgStats_WPM"
                 android:textColor="@color/msgStatsDescription"
                 android:textSize="@dimen/senderNameFont" />
 
+            <TextView
+                android:id="@+id/average_reply_tag"
+                android:layout_width="260dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="920dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:gravity="center"
+                android:text="@string/MsgStats_AvgReplyTime"
+                android:textColor="@color/msgStatsDescription"
+                android:textSize="@dimen/senderNameFont" />
             <!--TITLES FOR LEFT CIRCLE-->
+
             <TextView
                 android:id="@+id/leftCircleOne"
                 android:layout_width="130dp"

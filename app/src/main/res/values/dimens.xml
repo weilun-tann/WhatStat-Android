@@ -17,5 +17,6 @@
     <!--CONVERSATION HISTORY SELECTOR-->
     <dimen name="history_filename">14sp</dimen>
     <dimen name="history_filedate">12sp</dimen>
+    <dimen name="history_button">14sp</dimen>
 
 </resources>
