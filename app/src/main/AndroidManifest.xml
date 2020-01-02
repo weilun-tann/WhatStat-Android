@@ -17,9 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <service android:enabled="true" android:name=".BackgroundSoundService" />
+
         <activity
             android:name=".ChatHistoryActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
 
         <activity
             android:name=".ScatterTimeActivity"

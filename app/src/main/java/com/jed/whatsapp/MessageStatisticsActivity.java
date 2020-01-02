@@ -8,24 +8,35 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MessageStatisticsActivity extends AppCompatActivity {
 
+    TextView leftSenderName;
+    TextView rightSenderName;
+    TextView leftCircleOne;
+    TextView leftCircleTwo;
+    TextView leftCircleThree;
+    TextView leftCircleFour;
+    TextView rightCircleOne;
+    TextView rightCircleTwo;
+    TextView rightCircleThree;
+    TextView rightCircleFour;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_statistics);
 
         // SET THE VALUES FOR USER DISPLAY
-        TextView leftSenderName = findViewById(R.id.leftSenderName);
-        TextView rightSenderName = findViewById(R.id.rightSenderName);
+        leftSenderName = findViewById(R.id.leftSenderName);
+        rightSenderName = findViewById(R.id.rightSenderName);
 
-        TextView leftCircleOne = findViewById(R.id.leftCircleOne);
-        TextView leftCircleTwo = findViewById(R.id.leftCircleTwo);
-        TextView leftCircleThree = findViewById(R.id.leftCircleThree);
-        TextView leftCircleFour = findViewById(R.id.leftCircleFour);
+        leftCircleOne = findViewById(R.id.leftCircleOne);
+        leftCircleTwo = findViewById(R.id.leftCircleTwo);
+        leftCircleThree = findViewById(R.id.leftCircleThree);
+        leftCircleFour = findViewById(R.id.leftCircleFour);
 
-        TextView rightCircleOne = findViewById(R.id.rightCircleOne);
-        TextView rightCircleTwo = findViewById(R.id.rightCircleTwo);
-        TextView rightCircleThree = findViewById(R.id.rightCircleThree);
-        TextView rightCircleFour = findViewById(R.id.rightCircleFour);
+        rightCircleOne = findViewById(R.id.rightCircleOne);
+        rightCircleTwo = findViewById(R.id.rightCircleTwo);
+        rightCircleThree = findViewById(R.id.rightCircleThree);
+        rightCircleFour = findViewById(R.id.rightCircleFour);
 
         // RETRIEVE AND DISPLAY ALL RELEVANT FIELDS
         try {

@@ -3,7 +3,9 @@ package com.jed.whatsapp;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,8 +14,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -35,7 +37,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.time.LocalDateTime;
 
-public class MainActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     // ATTRIBUTES
     private static final String TAG = "MainActivity";
@@ -53,6 +55,10 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // BGM
+        Intent svc=new Intent(this, BackgroundSoundService.class);
+        startService(svc);
 
         // FIREBASE AUTHENTICATION STORAGE
         mAuth = FirebaseAuth.getInstance();
@@ -176,9 +182,24 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         final Button uploadButton = findViewById(R.id.uploadButton);
         int newColor;
 
+
+        // BGM
+//        try {
+//            mBackgroundSound = new BackgroundSound();
+//            mBackgroundSound.execute(null, null, null);
+//        } catch (IllegalStateException e) {
+//            e.printStackTrace();
+//            if (mBackgroundSound.isCancelled()) {
+//                mBackgroundSound = new BackgroundSound();
+//                mBackgroundSound.execute(null, null, null);
+//                Log.d(TAG, "Started new BGM in onResume()");
+//            }
+//        }
+
+
         // LOGIN FAB
         if (mAuth.getCurrentUser() != null) {
-            Log.d(TAG, "current user : " + mAuth.getCurrentUser().getDisplayName());
+
             // ICON IMAGE
             loginButton.setImageResource(R.drawable.black_connected_icon);
 
@@ -230,16 +251,6 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
     }
 
     /**
-     * Triggers the reset of all internal stored data upon exiting the app
-     */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        FileProcessing.reset();
-        ReplyTiming.reset();
-    }
-
-    /**
      * CUSTOM LOGIN SNACKBAR LISTENER (FOR FAILED VIEW HISTORY)
      */
     public class loginBarListener implements View.OnClickListener {
@@ -248,6 +259,63 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
             signIn();
         }
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && data != null) {
+            switch (requestCode) {
+                case UPLOAD_REQUEST_CODE:
+//                    String selectedFilePath = data.getData().getPath();
+//                    File selectedFile = new File(selectedFilePath);
+//                    FileProcessing.setUploadedFile(selectedFile);
+//                    FileProcessing.setUserIntent(data);
+                    FileProcessing.reset();
+                    ReplyTiming.reset();
+                    FileProcessing.setUploadedFileURI(data.getData());
+                    FileProcessing.setFileName(FileProcessing.getFileName(getApplicationContext()
+                            , data.getData()));
+                    FileProcessing.setInitialized(true);
+
+                    // UPLOAD THE LOCAL FILE TO FIREBASE STORAGE
+                    uploadToFB(data);
+                    break;
+
+                case LOGIN_REQUEST_CODE:
+                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                    try {
+                        GoogleSignInAccount account = task.getResult(ApiException.class);
+                        firebaseAuthWithGoogle(account);
+                    } catch (ApiException e) {
+                        Log.w(TAG, "Google sign in failed", e);
+                    }
+                    break;
+
+                case VIEW_HISTORY_CODE:
+                    break;
+
+                case ANALYZE_REQUEST_CODE:
+                    break;
+
+                case GRAPH_REQUEST_CODE:
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Triggers the reset of all internal stored data upon exiting the app
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy() TRIGGERED");
+        FileProcessing.reset();
+        ReplyTiming.reset();
+    }
+
 
     /**
      * CUSTOM UPLOAD SNACKBAR LISTENER (FOR FILE FAB)
@@ -332,50 +400,6 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK && data != null) {
-            switch (requestCode) {
-                case UPLOAD_REQUEST_CODE:
-//                    String selectedFilePath = data.getData().getPath();
-//                    File selectedFile = new File(selectedFilePath);
-//                    FileProcessing.setUploadedFile(selectedFile);
-//                    FileProcessing.setUserIntent(data);
-                    FileProcessing.reset();
-                    ReplyTiming.reset();
-                    FileProcessing.setUploadedFileURI(data.getData());
-                    FileProcessing.setFileName(FileProcessing.getFileName(getApplicationContext()
-                            , data.getData()));
-                    FileProcessing.setInitialized(true);
-
-                    // UPLOAD THE LOCAL FILE TO FIREBASE STORAGE
-                    uploadToFB(data);
-                    break;
-
-                case LOGIN_REQUEST_CODE:
-                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-                    try {
-                        GoogleSignInAccount account = task.getResult(ApiException.class);
-                        firebaseAuthWithGoogle(account);
-                    } catch (ApiException e) {
-                        Log.w(TAG, "Google sign in failed", e);
-                    }
-                    break;
-
-                case VIEW_HISTORY_CODE:
-                    break;
-
-                case ANALYZE_REQUEST_CODE:
-                    break;
-
-                case GRAPH_REQUEST_CODE:
-                    break;
-            }
-        }
-    }
-
     /**
      * Helper function to process connection failure to Google
      *
@@ -420,5 +444,23 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
                     }
                 });
+    }
+
+
+    /**
+     * Background Music Player
+     */
+
+    public class BackgroundSound extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            MediaPlayer player = MediaPlayer.create(MainActivity.this, R.raw.bgm_track_1);
+            player.setLooping(true); // Set looping
+            player.setVolume(1.0f, 1.0f);
+            player.start();
+            Log.d(TAG, "player.start() invoked in doInBackground(...)");
+            return null;
+        }
     }
 }

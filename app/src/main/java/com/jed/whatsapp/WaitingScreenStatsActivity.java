@@ -68,7 +68,7 @@ public class WaitingScreenStatsActivity extends AppCompatActivity {
 
                 // 2. PERFORM FILE ANALYSIS
                 ReplyTiming.analyzeReplyTimings();
-                ReplyTiming.debugReplyTiming();
+//                ReplyTiming.debugReplyTiming();
 
                 // 3. REDIRECT TO EITHER THE STATS OR GRAPHING SCREEN
                 if (getIntent().getStringExtra("StatsOrGraph").equals("Stats")) {
