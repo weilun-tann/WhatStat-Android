@@ -11,7 +11,9 @@
 
     <!--MESSAGE STATISTICS-->
     <dimen name="bubbleFont">20sp</dimen>
+    <dimen name="tagFont">18sp</dimen>
     <dimen name="senderNameFont">16sp</dimen>
+
 
 
     <!--CONVERSATION HISTORY SELECTOR-->

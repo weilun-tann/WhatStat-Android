@@ -90,6 +90,7 @@ public class WaitingScreenStatsActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
             } catch (NullPointerException e) {
                 String error = "I'm sorry, but you haven't yet given me a file to work with!";
+                e.printStackTrace();
                 WaitingScreenStatsActivity.this.runOnUiThread(new Runnable() {
                     public void run() {
                         Toast.makeText(WaitingScreenStatsActivity.this, error,

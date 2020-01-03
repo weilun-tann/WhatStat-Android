@@ -57,58 +57,75 @@
             <TextView
                 android:id="@+id/total_messages_tag"
                 android:layout_width="260dp"
-                android:layout_height="50dp"
+                android:layout_height="70dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="200dp"
+                android:layout_marginTop="50dp"
                 android:fontFamily="@font/montserrat_bold"
                 android:gravity="center"
                 android:text="@string/MsgStats_NumMessages"
                 android:textColor="@color/msgStatsDescription"
-                android:textSize="@dimen/senderNameFont" />
+                android:textSize="@dimen/tagFont" />
+
+            <TextView
+                android:id="@+id/total_media_tag"
+                android:layout_width="260dp"
+                android:layout_height="70dp"
+                android:layout_below="@id/total_messages_tag"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="220dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:gravity="center"
+                android:text="@string/MsgStats_NumMedia"
+                android:textColor="@color/msgStatsDescription"
+                android:textSize="@dimen/tagFont" />
 
             <TextView
                 android:id="@+id/total_words_tag"
                 android:layout_width="260dp"
-                android:layout_height="50dp"
+                android:layout_height="70dp"
+                android:layout_below="@id/total_media_tag"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="435dp"
+                android:layout_marginTop="220dp"
                 android:fontFamily="@font/montserrat_bold"
                 android:gravity="center"
                 android:text="@string/MsgStats_NumWords"
                 android:textColor="@color/msgStatsDescription"
-                android:textSize="@dimen/senderNameFont" />
+                android:textSize="@dimen/tagFont" />
 
             <TextView
                 android:id="@+id/wpm_tag"
                 android:layout_width="260dp"
-                android:layout_height="50dp"
+                android:layout_height="70dp"
+                android:layout_below="@id/total_words_tag"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="680dp"
+                android:layout_marginTop="220dp"
                 android:fontFamily="@font/montserrat_bold"
                 android:gravity="center"
                 android:text="@string/MsgStats_WPM"
                 android:textColor="@color/msgStatsDescription"
-                android:textSize="@dimen/senderNameFont" />
+                android:textSize="@dimen/tagFont" />
 
             <TextView
                 android:id="@+id/average_reply_tag"
                 android:layout_width="260dp"
-                android:layout_height="50dp"
+                android:layout_height="70dp"
+                android:layout_below="@id/wpm_tag"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="920dp"
+                android:layout_marginTop="220dp"
                 android:fontFamily="@font/montserrat_bold"
                 android:gravity="center"
                 android:text="@string/MsgStats_AvgReplyTime"
                 android:textColor="@color/msgStatsDescription"
-                android:textSize="@dimen/senderNameFont" />
-            <!--TITLES FOR LEFT CIRCLE-->
+                android:textSize="@dimen/tagFont" />
 
+
+            <!--TITLES FOR LEFT CIRCLES-->
             <TextView
                 android:id="@+id/leftCircleOne"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_marginLeft="37dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="130dp"
                 android:background="@drawable/solid_circle_left"
                 android:gravity="center"
                 android:text="30452"
@@ -119,8 +136,9 @@
                 android:id="@+id/leftCircleTwo"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
+                android:layout_below="@id/leftCircleOne"
                 android:layout_marginLeft="37dp"
-                android:layout_marginTop="280dp"
+                android:layout_marginTop="160dp"
                 android:background="@drawable/solid_circle_left"
                 android:gravity="center"
                 android:text="641905"
@@ -131,8 +149,9 @@
                 android:id="@+id/leftCircleThree"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
+                android:layout_below="@id/leftCircleTwo"
                 android:layout_marginLeft="37dp"
-                android:layout_marginTop="520dp"
+                android:layout_marginTop="160dp"
                 android:background="@drawable/solid_circle_left"
                 android:gravity="center"
                 android:text="30452"
@@ -143,8 +162,9 @@
                 android:id="@+id/leftCircleFour"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
+                android:layout_below="@id/leftCircleThree"
                 android:layout_marginLeft="37dp"
-                android:layout_marginTop="760dp"
+                android:layout_marginTop="160dp"
                 android:background="@drawable/solid_circle_left"
                 android:gravity="center"
                 android:text="30452"
@@ -152,11 +172,27 @@
                 android:textSize="@dimen/bubbleFont" />
 
             <TextView
+                android:id="@+id/leftCircleFive"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_below="@id/leftCircleFour"
+                android:layout_marginLeft="37dp"
+                android:layout_marginTop="160dp"
+                android:layout_marginBottom="50dp"
+                android:background="@drawable/solid_circle_left"
+                android:gravity="center"
+                android:text="30452"
+                android:textColor="@color/colorStatsLeftText"
+                android:textSize="@dimen/bubbleFont" />
+
+
+            <!-- TITLES FOR RIGHT CIRCLES-->
+            <TextView
                 android:id="@+id/rightCircleOne"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_marginLeft="245dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="130dp"
                 android:background="@drawable/solid_circle_right"
                 android:gravity="center"
                 android:text="30452"
@@ -167,8 +203,9 @@
                 android:id="@+id/rightCircleTwo"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
+                android:layout_below="@id/rightCircleOne"
                 android:layout_marginLeft="245dp"
-                android:layout_marginTop="280dp"
+                android:layout_marginTop="160dp"
                 android:background="@drawable/solid_circle_right"
                 android:gravity="center"
                 android:text="641905"
@@ -179,8 +216,9 @@
                 android:id="@+id/rightCircleThree"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
+                android:layout_below="@id/rightCircleTwo"
                 android:layout_marginLeft="245dp"
-                android:layout_marginTop="520dp"
+                android:layout_marginTop="160dp"
                 android:background="@drawable/solid_circle_right"
                 android:gravity="center"
                 android:text="30452"
@@ -191,8 +229,23 @@
                 android:id="@+id/rightCircleFour"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
+                android:layout_below="@id/rightCircleThree"
                 android:layout_marginLeft="245dp"
-                android:layout_marginTop="760dp"
+                android:layout_marginTop="160dp"
+                android:background="@drawable/solid_circle_right"
+                android:gravity="center"
+                android:text="30452"
+                android:textColor="@color/colorStatsRightText"
+                android:textSize="@dimen/bubbleFont" />
+
+            <TextView
+                android:id="@+id/rightCircleFive"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_below="@id/rightCircleFour"
+                android:layout_marginLeft="245dp"
+                android:layout_marginTop="160dp"
+                android:layout_marginBottom="50dp"
                 android:background="@drawable/solid_circle_right"
                 android:gravity="center"
                 android:text="30452"

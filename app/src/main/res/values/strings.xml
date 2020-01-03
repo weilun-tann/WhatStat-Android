@@ -22,18 +22,9 @@
     <!--MESSAGE STATISTICS ACTIVITY-->
     <string name="MsgStats_Title"></string>
     <string name="MsgStats_NumMessages">TOTAL MESSAGES</string>
+    <string name="MsgStats_NumMedia">TOTAL MEDIA</string>
     <string name="MsgStats_NumWords">TOTAL  WORDS</string>
     <string name="MsgStats_WPM">WORDS PER MESSAGE</string>
     <string name="MsgStats_AvgReplyTime">AVERAGE REPLY TIME (HOURS)</string>
-    <string name="title_activity_login">Sign in</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign In</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
-
 
 </resources>

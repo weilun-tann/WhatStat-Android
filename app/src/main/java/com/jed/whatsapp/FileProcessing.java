@@ -39,6 +39,7 @@ public class FileProcessing {
     public static List<Date> getMessageTimeStamp() { return FileProcessing.messageTimeStamp; }
     public static List<String> getSender() { return FileProcessing.sender; }
     public static List<String> getMessageBody() { return FileProcessing.messageBody; }
+    public static List<Message> getConversationHistory() { return conversationHistory; }
 
     // LOGIC METHODS
     public static void setInitialized(boolean init) { FileProcessing.initialized = init; }
