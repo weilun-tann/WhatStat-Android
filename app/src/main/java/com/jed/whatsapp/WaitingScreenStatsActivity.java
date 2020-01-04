@@ -82,7 +82,9 @@ public class WaitingScreenStatsActivity extends AppCompatActivity {
                     Intent intent = new Intent(WaitingScreenStatsActivity.this, ScatterTimeActivity.class);
                     startActivityForResult(intent, 300);
                     overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
+                    Log.d(TAG, "logicThread() executed successfully");
                     WaitingScreenStatsActivity.this.finish();
+
                 }
             } catch (IOException e) {
                 // THROWN FROM FileProcessing.readFile(...)
@@ -91,16 +93,12 @@ public class WaitingScreenStatsActivity extends AppCompatActivity {
             } catch (NullPointerException e) {
                 String error = "I'm sorry, but you haven't yet given me a file to work with!";
                 e.printStackTrace();
-                WaitingScreenStatsActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(WaitingScreenStatsActivity.this, error,
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
+                WaitingScreenStatsActivity.this.runOnUiThread(() -> Toast.makeText(WaitingScreenStatsActivity.this, error,
+                        Toast.LENGTH_LONG).show());
                 try {
                     sleep(4800);
                 } catch (InterruptedException ie) {
-
+                    ie.printStackTrace();
                 }
                 WaitingScreenStatsActivity.this.finish();
             }

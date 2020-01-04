@@ -72,6 +72,7 @@ public class MessageStatisticsActivity extends AppCompatActivity {
             rightCircleFour.setText("" + senderTwoWPM);
             rightCircleFive.setText("" + String.format("%.1f", senderTwoAvgReplyTiming));
         } catch (ArithmeticException e) {
+            e.printStackTrace();
             Toast.makeText(getApplicationContext(), "Umm... could you maybe upload the " +
                     "text file for me first?", Toast.LENGTH_SHORT).show();
         }

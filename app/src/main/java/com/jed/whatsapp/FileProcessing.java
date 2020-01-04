@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,7 +25,8 @@ import java.util.regex.Pattern;
 public class FileProcessing {
 
     // ATTRIBUTES
-    public static boolean initialized = false;
+    private static String TAG = "FileProcessing";
+    private static boolean initialized = false;
     private static String fileName = null;
     private static Uri uploadedFileURI = null;
     private static List<Date> messageTimeStamp = new ArrayList<Date>();
@@ -89,6 +91,7 @@ public class FileProcessing {
         }
         br.close();
         FileProcessing.setInitialized(true);
+        Log.d(TAG, "FileProcessing READ FILE DONE");
     }
 
     static void reset() {
