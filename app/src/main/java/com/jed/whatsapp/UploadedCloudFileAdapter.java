@@ -47,13 +47,12 @@ public class UploadedCloudFileAdapter extends RecyclerView.Adapter<UploadedCloud
         UploadedCloudFile UploadedCloudFile = UploadedCloudFileList.get(position);
 
         // WE STRIP OFF THE DATETIME STAMP FROM THE FILENAME FOR BETTER PRESENTATION
-        String truncatedFileName = UploadedCloudFile.getFileName().substring(0,
-                UploadedCloudFile.getFileName().length() - 4);
+        String fileName = UploadedCloudFile.getFileName();
         Date localDate = UploadedCloudFile.getCreated();
         String truncatedDate = localDate.toString().substring(0,
                 localDate.toString().length() - 18);
         holder.fileDate.setText(truncatedDate);
-        holder.fileName.setText(truncatedFileName);
+        holder.fileName.setText(fileName);
     }
 
     @Override
@@ -86,9 +85,8 @@ public class UploadedCloudFileAdapter extends RecyclerView.Adapter<UploadedCloud
             // DETERMINE SELECTED FILE AND PULL FROM CLOUD
             int chosenPosition = this.getPosition();
             UploadedCloudFile chosenFile = UploadedCloudFileList.get(chosenPosition);
-            String chosenFileCloudDir = chosenFile.getFileName();
-            String chosenFileName = chosenFileCloudDir.substring(0, chosenFileCloudDir.length() - 4);
-            StorageReference chosenFileRef = mStorageRef.child(chosenFileCloudDir);
+            String chosenFileName = chosenFile.getFileName();
+            StorageReference chosenFileRef = mStorageRef.child(chosenFileName);
             chosenFileRef.getDownloadUrl()
                     .addOnSuccessListener(uri -> {
                         // ADD TO FILE PROCESSING
@@ -99,7 +97,7 @@ public class UploadedCloudFileAdapter extends RecyclerView.Adapter<UploadedCloud
                         // CLOSE THE HISTORY SELECTOR ACTIVITY
                         ((Activity) context).finish();
                     })
-                    .addOnFailureListener(e -> Log.d(TAG, "DOWNLOAD FAILURE + " + chosenFileCloudDir));
+                    .addOnFailureListener(e -> Log.d(TAG, "DOWNLOAD FAILURE + " + chosenFileName));
 
             // CLOSE THE CHAT HISTORY SELECTOR ACTIVITY
         }
