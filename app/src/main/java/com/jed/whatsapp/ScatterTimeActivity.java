@@ -2,6 +2,7 @@ package com.jed.whatsapp;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -27,6 +28,8 @@ public class ScatterTimeActivity extends DemoBase implements OnSeekBarChangeList
     private ScatterChart chart;
     private SeekBar seekBarX;
     private TextView tvX;
+    private final String TAG = "ScatterTimeActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +94,7 @@ public class ScatterTimeActivity extends DemoBase implements OnSeekBarChangeList
             @Override
             public String getFormattedValue(float value) {
                 Date returnDate = new Date((long) value);
-                return monthMap.get(returnDate.getMonth()) + " " + (returnDate.getYear() - 100);
+                return DateFormat.format("MMM", returnDate) + " " + (returnDate.getYear() - 100);
             }
         });
 
@@ -125,9 +128,9 @@ public class ScatterTimeActivity extends DemoBase implements OnSeekBarChangeList
         // Generate list of reply timings
         ArrayList<Entry> replyTimingsOne = new ArrayList<>();
         try {
-            for (int i = 0; i < ReplyTiming.getSenderOneTimeStamp().size(); i++) {
-                long timeStamp = ReplyTiming.getSenderOneTimeStamp().get(i).getTime();
-                float replyTimeInHours = ReplyTiming.getSenderOneReplyTimeInMinutes().get(i) / 60;
+            for (int i = 0; i < Metrics.getSenderOneTimeStamp().size(); i++) {
+                long timeStamp = Metrics.getSenderOneTimeStamp().get(i).getTime();
+                float replyTimeInHours = Metrics.getSenderOneReplyTimeInMinutes().get(i) / 60;
                 replyTimingsOne.add(new Entry(timeStamp, replyTimeInHours));
             }
         } catch (IndexOutOfBoundsException e) {
@@ -136,9 +139,9 @@ public class ScatterTimeActivity extends DemoBase implements OnSeekBarChangeList
 
         ArrayList<Entry> replyTimingsTwo = new ArrayList<>();
         try {
-            for (int i = 0; i < ReplyTiming.getSenderTwoTimeStamp().size(); i++) {
-                long timeStamp = ReplyTiming.getSenderTwoTimeStamp().get(i).getTime();
-                float replyTimeInHours = ReplyTiming.getSenderTwoReplyTimeInMinutes().get(i) / 60;
+            for (int i = 0; i < Metrics.getSenderTwoTimeStamp().size(); i++) {
+                long timeStamp = Metrics.getSenderTwoTimeStamp().get(i).getTime();
+                float replyTimeInHours = Metrics.getSenderTwoReplyTimeInMinutes().get(i) / 60;
                 replyTimingsTwo.add(new Entry(timeStamp, replyTimeInHours));
             }
         } catch (IndexOutOfBoundsException e) {
@@ -146,8 +149,8 @@ public class ScatterTimeActivity extends DemoBase implements OnSeekBarChangeList
         }
 
         // create a dataset and give it a type
-        ScatterDataSet set1 = new ScatterDataSet(replyTimingsOne, ReplyTiming.getSenderList().get(0));
-        ScatterDataSet set2 = new ScatterDataSet(replyTimingsTwo, ReplyTiming.getSenderList().get(1));
+        ScatterDataSet set1 = new ScatterDataSet(replyTimingsOne, Metrics.getSenderList().get(0));
+        ScatterDataSet set2 = new ScatterDataSet(replyTimingsTwo, Metrics.getSenderList().get(1));
 
         set1.setAxisDependency(AxisDependency.LEFT);
         set1.setColor(ContextCompat.getColor(getApplicationContext(), R.color.senderOne));

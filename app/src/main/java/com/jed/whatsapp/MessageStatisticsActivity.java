@@ -45,20 +45,20 @@ public class MessageStatisticsActivity extends AppCompatActivity {
 
         // RETRIEVE AND DISPLAY ALL RELEVANT FIELDS
         try {
-            int senderOneTotalMessages = ReplyTiming.getSenderOneTotalMessages();
-            int senderOneTotalMedia = ReplyTiming.getSenderOneTotalMedia();
-            int senderOneTotalWords = ReplyTiming.getSenderOneTotalWords();
-            int senderOneWPM = ReplyTiming.getSenderOneTotalWords() / ReplyTiming.getSenderOneTotalMessages();
-            double senderOneAvgReplyTiming = ReplyTiming.getSenderOneAverageReplyTimingInHours();
+            int senderOneTotalMessages = Metrics.getSenderOneTotalMessages();
+            int senderOneTotalMedia = Metrics.getSenderOneTotalMedia();
+            int senderOneTotalWords = Metrics.getSenderOneTotalWords();
+            int senderOneWPM = Metrics.getSenderOneTotalWords() / Metrics.getSenderOneTotalMessages();
+            double senderOneAvgReplyTiming = Metrics.getSenderOneAverageReplyTimingInHours();
 
-            int senderTwoTotalMessages = ReplyTiming.getSenderTwoTotalMessages();
-            int senderTwoTotalMedia = ReplyTiming.getSenderTwoTotalMedia();
-            long senderTwoTotalWords = ReplyTiming.getSenderTwoTotalWords();
-            long senderTwoWPM = ReplyTiming.getSenderTwoTotalWords() / ReplyTiming.getSenderTwoTotalMessages();
-            double senderTwoAvgReplyTiming = ReplyTiming.getSenderTwoAverageReplyTimingInHours();
+            int senderTwoTotalMessages = Metrics.getSenderTwoTotalMessages();
+            int senderTwoTotalMedia = Metrics.getSenderTwoTotalMedia();
+            long senderTwoTotalWords = Metrics.getSenderTwoTotalWords();
+            long senderTwoWPM = Metrics.getSenderTwoTotalWords() / Metrics.getSenderTwoTotalMessages();
+            double senderTwoAvgReplyTiming = Metrics.getSenderTwoAverageReplyTimingInHours();
 
-            leftSenderName.setText(ReplyTiming.getSenderList().get(0));
-            rightSenderName.setText(ReplyTiming.getSenderList().get(1));
+            leftSenderName.setText(Metrics.getSenderList().get(0));
+            rightSenderName.setText(Metrics.getSenderList().get(1));
 
             leftCircleOne.setText("" + senderOneTotalMessages);
             leftCircleTwo.setText("" + senderOneTotalMedia);

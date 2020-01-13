@@ -48,7 +48,7 @@ public class UploadedCloudFileAdapter extends RecyclerView.Adapter<UploadedCloud
 
         // WE STRIP OFF THE DATETIME STAMP FROM THE FILENAME FOR BETTER PRESENTATION
         String truncatedFileName = UploadedCloudFile.getFileName().substring(0,
-                UploadedCloudFile.getFileName().length() - 28);
+                UploadedCloudFile.getFileName().length() - 4);
         Date localDate = UploadedCloudFile.getCreated();
         String truncatedDate = localDate.toString().substring(0,
                 localDate.toString().length() - 18);
@@ -81,14 +81,13 @@ public class UploadedCloudFileAdapter extends RecyclerView.Adapter<UploadedCloud
 
             // SET THE NEWLY CHOSEN FILE FOR ANALYSIS
             FileProcessing.reset();
-            ReplyTiming.reset();
+            Metrics.reset();
 
             // DETERMINE SELECTED FILE AND PULL FROM CLOUD
             int chosenPosition = this.getPosition();
             UploadedCloudFile chosenFile = UploadedCloudFileList.get(chosenPosition);
             String chosenFileCloudDir = chosenFile.getFileName();
-            String chosenFileName = chosenFileCloudDir.substring(0, chosenFileCloudDir.length() - 28);
-            Log.d(TAG, "chosenFileCloudDir : " + chosenFile.getFileName());
+            String chosenFileName = chosenFileCloudDir.substring(0, chosenFileCloudDir.length() - 4);
             StorageReference chosenFileRef = mStorageRef.child(chosenFileCloudDir);
             chosenFileRef.getDownloadUrl()
                     .addOnSuccessListener(uri -> {

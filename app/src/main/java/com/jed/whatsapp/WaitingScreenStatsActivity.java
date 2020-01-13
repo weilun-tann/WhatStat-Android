@@ -40,7 +40,7 @@ public class WaitingScreenStatsActivity extends AppCompatActivity {
 
 
         // Perform analysis iff not already done
-        if (!ReplyTiming.isInitialized()) {
+        if (!Metrics.isInitialized()) {
             new logicThread().start();
             new backgroundThread().start();
             new textThread().start();
@@ -67,8 +67,8 @@ public class WaitingScreenStatsActivity extends AppCompatActivity {
                 }
 
                 // 2. PERFORM FILE ANALYSIS
-                ReplyTiming.analyzeReplyTimings();
-//                ReplyTiming.debugReplyTiming();
+                Metrics.analyzeReplyTimings();
+//                Metrics.debugReplyTiming();
 
                 // 3. REDIRECT TO EITHER THE STATS OR GRAPHING SCREEN
                 if (getIntent().getStringExtra("StatsOrGraph").equals("Stats")) {

@@ -3,9 +3,7 @@ package com.jed.whatsapp;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,8 +33,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.time.LocalDateTime;
-
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     // ATTRIBUTES
@@ -57,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         setContentView(R.layout.activity_main);
 
         // BGM
-        Intent svc=new Intent(this, BackgroundSoundService.class);
+        Intent svc = new Intent(this, BackgroundSoundService.class);
         startService(svc);
 
         // FIREBASE AUTHENTICATION STORAGE
@@ -151,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 String error = "I'm sorry, but you haven't yet given me a file to work with!";
                 View contextView = findViewById(R.id.activity_main);
                 Snackbar.make(contextView, error, Snackbar.LENGTH_LONG).show();
-            } else if (!ReplyTiming.isInitialized()) {
+            } else if (!Metrics.isInitialized()) {
                 Intent intent = new Intent(MainActivity.this, WaitingScreenStatsActivity.class);
                 intent.putExtra("StatsOrGraph", "Graph");
                 startActivityForResult(intent, GRAPH_REQUEST_CODE);
@@ -181,21 +177,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         final Button historyButton = findViewById(R.id.viewHistoryButton);
         final Button uploadButton = findViewById(R.id.uploadButton);
         int newColor;
-
-
-        // BGM
-//        try {
-//            mBackgroundSound = new BackgroundSound();
-//            mBackgroundSound.execute(null, null, null);
-//        } catch (IllegalStateException e) {
-//            e.printStackTrace();
-//            if (mBackgroundSound.isCancelled()) {
-//                mBackgroundSound = new BackgroundSound();
-//                mBackgroundSound.execute(null, null, null);
-//                Log.d(TAG, "Started new BGM in onResume()");
-//            }
-//        }
-
 
         // LOGIN FAB
         if (mAuth.getCurrentUser() != null) {
@@ -268,19 +249,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         if (resultCode == RESULT_OK && data != null) {
             switch (requestCode) {
                 case UPLOAD_REQUEST_CODE:
+
+                    // UPLOAD THE LOCAL FILE TO FIREBASE STORAGE
+                    uploadToFB(data);
+
 //                    String selectedFilePath = data.getData().getPath();
 //                    File selectedFile = new File(selectedFilePath);
 //                    FileProcessing.setUploadedFile(selectedFile);
 //                    FileProcessing.setUserIntent(data);
-                    FileProcessing.reset();
-                    ReplyTiming.reset();
-                    FileProcessing.setUploadedFileURI(data.getData());
-                    FileProcessing.setFileName(FileProcessing.getFileName(getApplicationContext()
-                            , data.getData()));
-                    FileProcessing.setInitialized(true);
 
-                    // UPLOAD THE LOCAL FILE TO FIREBASE STORAGE
-                    uploadToFB(data);
+                    // PERFORM FILE PROCESSING
+                    FileProcessing.reset();
+                    Metrics.reset();
+                    FileProcessing.setUploadedFileURI(data.getData());
+                    FileProcessing.setFileName(FileProcessing.getFileName(getApplicationContext(), data.getData()));
+                    FileProcessing.setInitialized(true);
                     break;
 
                 case LOGIN_REQUEST_CODE:
@@ -313,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onDestroy();
         Log.d(TAG, "onDestroy() TRIGGERED");
         FileProcessing.reset();
-        ReplyTiming.reset();
+        Metrics.reset();
     }
 
 
@@ -341,12 +324,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         // GET CURRENT USER'S USERNAME
         String currentUserName = "GuestUser";
-        String timeStamp = LocalDateTime.now().toString();
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) currentUserName = user.getDisplayName();
 
         // SET CLOUD PATH AND PERFORM UPLOAD
-        StorageReference filePath = mStorageRef.child(currentUserName).child(fileName + "_" + timeStamp);
+        StorageReference filePath = mStorageRef.child(currentUserName).child(fileName);
         UploadTask uploadTask = filePath.putFile(uri);
 
         // ADD SUCCESS AND FAILURE LISTENERS TO FILE UPLOAD PROCESS
@@ -444,23 +426,5 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
                     }
                 });
-    }
-
-
-    /**
-     * Background Music Player
-     */
-
-    public class BackgroundSound extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            MediaPlayer player = MediaPlayer.create(MainActivity.this, R.raw.bgm_track_1);
-            player.setLooping(true); // Set looping
-            player.setVolume(1.0f, 1.0f);
-            player.start();
-            Log.d(TAG, "player.start() invoked in doInBackground(...)");
-            return null;
-        }
     }
 }

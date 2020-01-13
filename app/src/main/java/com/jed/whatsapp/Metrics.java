@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ReplyTiming {
+public class Metrics {
 
     // ATTRIBUTES
-    private static final String TAG = "ReplyTiming";
+    private static final String TAG = "Metrics";
     private static boolean initialized = false;
     private static int senderOneTotalMessages = 0;
     private static int senderTwoTotalMessages = 0;
@@ -59,7 +59,7 @@ public class ReplyTiming {
     public static int getSenderOneTotalMedia() { return senderOneTotalMedia; }
     public static int getSenderTwoTotalMedia() { return senderTwoTotalMedia; }
 
-    public static void setInitialized(boolean initialized) { ReplyTiming.initialized = initialized; }
+    public static void setInitialized(boolean initialized) { Metrics.initialized = initialized; }
 
     // LOGIC METHODS
     public static void senderListToSet() {
@@ -74,10 +74,10 @@ public class ReplyTiming {
         if (FileProcessing.getSender().size() < 2) {
             return;
         }
-        ReplyTiming.reset();
-        ReplyTiming.senderListToSet();
-        ReplyTiming.calculateMetrics();
-        ReplyTiming.setInitialized(true);
+        Metrics.reset();
+        Metrics.senderListToSet();
+        Metrics.calculateMetrics();
+        Metrics.setInitialized(true);
     }
 
     public static void debugReplyTiming() {
@@ -177,12 +177,14 @@ public class ReplyTiming {
                         if (m.getSender().equals(getSenderList().get(0))) {
                             senderOneReplyTimeInMinutes.add(replyTimingInMinutes);
                             senderOneTotalReplyTimingInMinutes += replyTimingInMinutes;
+                            senderOneTimeStamp.add(startMsg.getMessageDate());
                         }
 
                         // Add to senderTwo's RT
                         else {
                             senderTwoReplyTimeInMinutes.add(replyTimingInMinutes);
                             senderTwoTotalReplyTimingInMinutes += replyTimingInMinutes;
+                            senderTwoTimeStamp.add(startMsg.getMessageDate());
                         }
                     }
 

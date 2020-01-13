@@ -35,20 +35,46 @@ public class FileProcessing {
     private static List<Message> conversationHistory = new ArrayList<Message>();
 
     // ACCESSOR METHODS
-    public static boolean isInitialized() { return FileProcessing.initialized; }
-    public static String getFileName() { return FileProcessing.fileName; }
-    public static Uri getUploadedFileURI() { return FileProcessing.uploadedFileURI; }
-    public static List<Date> getMessageTimeStamp() { return FileProcessing.messageTimeStamp; }
-    public static List<String> getSender() { return FileProcessing.sender; }
-    public static List<String> getMessageBody() { return FileProcessing.messageBody; }
-    public static List<Message> getConversationHistory() { return conversationHistory; }
+    public static boolean isInitialized() {
+        return FileProcessing.initialized;
+    }
+
+    public static String getFileName() {
+        return FileProcessing.fileName;
+    }
+
+    public static Uri getUploadedFileURI() {
+        return FileProcessing.uploadedFileURI;
+    }
+
+    public static List<Date> getMessageTimeStamp() {
+        return FileProcessing.messageTimeStamp;
+    }
+
+    public static List<String> getSender() {
+        return FileProcessing.sender;
+    }
+
+    public static List<String> getMessageBody() {
+        return FileProcessing.messageBody;
+    }
+
+    public static List<Message> getConversationHistory() {
+        return conversationHistory;
+    }
 
     // LOGIC METHODS
-    public static void setInitialized(boolean init) { FileProcessing.initialized = init; }
+    public static void setInitialized(boolean init) {
+        FileProcessing.initialized = init;
+    }
 
-    public static void setUploadedFileURI(Uri u) { FileProcessing.uploadedFileURI = u; }
+    public static void setUploadedFileURI(Uri u) {
+        FileProcessing.uploadedFileURI = u;
+    }
 
-    public static void setFileName(String fileName) { FileProcessing.fileName = fileName; }
+    public static void setFileName(String fileName) {
+        FileProcessing.fileName = fileName;
+    }
 
     public static void readFile(Uri fileURI, Context fileContext, boolean fromCloud) throws IOException {
 
@@ -68,13 +94,16 @@ public class FileProcessing {
         } else {
             // CLOUD READ
             URL url = new URL(fileURI.toString());
-            HttpURLConnection con =(HttpURLConnection) url.openConnection();
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setConnectTimeout(30000);
             br = new BufferedReader(new InputStreamReader(con.getInputStream()));
         }
 
         // PERFORM FILE PROCESSING INTO MESSAGE OBJECTS
         String line;
+        int totalMsg = 0;
+        int processedMsg = 0;
+
         while ((line = br.readLine()) != null) {
             Date lineDate = retrieveDate(line);
             String lineSender = retrieveSender(line);
@@ -87,11 +116,13 @@ public class FileProcessing {
                 addMessageBody(lineMessageBody);
                 conversationHistory
                         .add(new Message(lineDate, lineSender, lineMessageBody));
+                processedMsg++;
             }
+            totalMsg++;
         }
+        Log.d(TAG, "Messages Processed : " + processedMsg + " / " + totalMsg);
         br.close();
         FileProcessing.setInitialized(true);
-        Log.d(TAG, "FileProcessing READ FILE DONE");
     }
 
     static void reset() {
@@ -122,10 +153,13 @@ public class FileProcessing {
 
     private static Date retrieveDate(String line) {
         try {
-            if (line.substring(18, 19).equals("m")) {
-                return parseDateString(line.substring(0, 19));
-            } else if (line.substring(19, 20).equals("m")) {
-                return parseDateString(line.substring(0, 20));
+            // AM/PM TIME STAMP
+            Pattern p = Pattern.compile(".* -");
+            Matcher m = p.matcher(line);
+            if (m.find()) {
+                String timeStamp = m.group();
+                timeStamp = timeStamp.substring(0, timeStamp.length() - 2);
+                return parseDateString(timeStamp);
             } else {
                 return null;
             }
@@ -134,24 +168,42 @@ public class FileProcessing {
         }
     }
 
+    private static Date parseDateString(String dt) {
+        try {
+            // AM/PM TIMESTAMP
+            dt = dt.replaceFirst(" pm", " PM").replaceFirst(" am", " AM");
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy, HH:mm a", Locale.US);
+            return format.parse(dt);
+        } catch (Exception e) {
+            // 24H TIMESTAMP
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy, HH:mm", Locale.US);
+                return format.parse(dt);
+            } catch (Exception f) {
+                return null;
+            }
+        }
+    }
+
     private static String retrieveSender(String line) {
-        Pattern p = Pattern.compile("m - .*?:");
+        Pattern p = Pattern.compile(" - .*?:");
         Matcher m = p.matcher(line);
         try {
             String senderName = null;
             if (m.find()) {
                 senderName = m.group();
-                return senderName.substring(4, senderName.length() - 1);
+                return senderName.substring(3, senderName.length() - 1);
             } else {
                 return null;
             }
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
             return null;
         }
     }
 
     private static String retrieveMessageBody(String line) {
-        Pattern p = Pattern.compile(".*m - .*?: ");
+        Pattern p = Pattern.compile(".* - .*?: ");
         Matcher m = p.matcher(line);
         if (m.find()) {
             String removedBody = m.group();
@@ -162,15 +214,6 @@ public class FileProcessing {
         }
     }
 
-    private static Date parseDateString(String dt) {
-        try {
-            dt = dt.replaceFirst(" pm", " PM").replaceFirst(" am", " AM");
-            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy, HH:mm a", Locale.US);
-            return format.parse(dt);
-        } catch (Exception e) {
-            return null;
-        }
-    }
 
     /**
      * Utility function to retrieve file name from URI
@@ -192,6 +235,6 @@ public class FileProcessing {
                 metaCursor.close();
             }
         }
-        return fileName;
+        return fileName.substring(0, fileName.length() - 4);
     }
 }
