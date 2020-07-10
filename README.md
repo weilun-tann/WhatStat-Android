@@ -44,10 +44,6 @@
 
 ## ✏ About The Project ✏
 <p align="center">
-  <a href="https://weilunn97.wixsite.com/journeywithjed">
-    <img src="img/AppIcon.JPG" />
-  </a>
-
 There're quite a few WhatsApp chat analyzers out there in the App and PlayStore today, but none of them gave me what I was looking for... How quickly the other person was taking to reply to my texts!
 
  :alarm_clock: **IN OTHER WORDS, OUR REPLY TIMINGS!** :alarm_clock: 
