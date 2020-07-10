@@ -10,18 +10,18 @@
     <img src="img/WhatsAnalyzer Mockup.png" />
   </a>
 
-  <h1 align="center">:sunglasses: WhatsAnalyzer (Android) :sunglasses:</h1>
+  <h1 align="center">:sunglasses: WhatStat (Android) :sunglasses:</h1>
 
   <p align="center">
     Built to provide :mag: insight :mag: into your WhatsApp conversations
     <br />
     <br />
     <br />
-    <a href="https://github.com/weilunn97/WhatsAnalyzer-Android-/tree/master/app">Source Code</a>
+    <a href="https://github.com/weilunn97/WhatStat-Android-/tree/master/app">Source Code</a>
     ·
-    <a href="https://github.com/weilunn97/WhatsAnalyzer-Android-/issues">Report Bug</a>
+    <a href="https://github.com/weilunn97/WhatStat-Android-/issues">Report Bug</a>
     ·
-    <a href="https://github.com/weilunn97/WhatsAnalyzer-Android-/issues">Request Feature</a>
+    <a href="https://github.com/weilunn97/WhatStat-Android-/issues">Request Feature</a>
   </p>
 </p>
 
@@ -70,7 +70,7 @@ Of course, this is a simple app with very limited functionality right now, but d
 
 
 ## 💻 Tech Stack 💻
-These are the key ⚒ frameworks and tools ⚒ which were used extensively during the development of 🔍WhatsAnalyzer 🔍.
+These are the key ⚒ frameworks and tools ⚒ which were used extensively during the development of 🔍WhatStat Android 🔍.
 * [Firebase](https://firebase.google.com/), where user files can be stored and retrieved quickly from the 🌨, eliminating the need to keep these files on your device.
 * [Java](https://www.java.com/en/), for native Android development for optimal speed ⏱, and using Google's extensive 🎨 Material Design 🎨 UI kit for the frontend
 * [Android Studio](https://developer.android.com/studio) <br><br>
@@ -130,12 +130,12 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=flat-square
-[contributors-url]: https://github.com/weilunn97/WhatsAnalyzer-Android-/graphs/contributors
+[contributors-url]: https://github.com/weilunn97/WhatStat-Android-/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=flat-square
-[forks-url]:https://github.com/weilunn97/WhatsAnalyzer-Android-/network
+[forks-url]:https://github.com/weilunn97/WhatStat-Android-/network
 [stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=flat-square
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=flat-square
-[license-url]: https://github.com/weilunn97/WhatsAnalyzer-Android-/blob/master/LICENSE.txt
+[license-url]: https://github.com/weilunn97/WhatStat-Android-/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/tan-wei-lun
 [product-screenshot]: images/screenshot.png
